@@ -16,7 +16,7 @@ const AppRoutes = () => (
     <Layout>
       <Route path="/Orders" exact component={Orders} />
       <Route path="/Customer" exact component={Customer} />
-      <Route path="/Product" exact component={Product} />
+      <Route path="/produto" exact component={Product} />
       <Route path="/Orders/Create" exact component={CreateOrders} />
       <Route path="/Product/Create" exact component={CreateProduct} />
       <Route path="/Client/Create" exact component={CreateClient} />

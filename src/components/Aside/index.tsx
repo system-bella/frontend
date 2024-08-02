@@ -57,7 +57,7 @@ export default function Aside() {
         </S.MenuLink> */}
 
         <S.MenuLink
-          href="/Product"
+          href="/produto"
           onClick={() => tootleMenu('Product')}
           style={
             clicked === 'Product' || clicked === 'Product/Create'
