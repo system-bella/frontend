@@ -43,7 +43,7 @@ export const FormContent = styled.div`
 export const Input = styled.input`
   width: 350px;
   border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
-  padding: 16px;
+  padding: 10px;
   border-radius: 10px;
   &::placeholder {
     font-size: 16px;

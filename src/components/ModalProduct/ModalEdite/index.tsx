@@ -1,5 +1,5 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import axios from '../../api/axios';
+import axios from '../../../api/axios_production';
 import { AxiosError } from 'axios';
 
 //styles
@@ -100,28 +100,16 @@ export default function ModalEdit({
               <strong>Produtos{'>'}</strong>Editar Produto
             </span>
             <S.Form onSubmit={handleSubmit}>
-              <div>
-                <S.FormInput>
-                  <label>Referência *</label>
-                  <S.Input
-                    type="text"
-                    name="reference"
-                    value={formData.reference}
-                    onChange={handleInputChange}
-                    placeholder="Referência"
-                  />
-                </S.FormInput>
-                <S.FormInput>
-                  <label>Código de Barras *</label>
-                  <S.Input
-                    type="text"
-                    name="barcode"
-                    value={formData.barcode}
-                    onChange={handleInputChange}
-                    placeholder="Informe o código de barras"
-                  />
-                </S.FormInput>
-              </div>
+              <S.FormInput>
+                <label>Referência *</label>
+                <S.Input
+                  type="text"
+                  name="reference"
+                  value={formData.reference}
+                  onChange={handleInputChange}
+                  placeholder="Referência"
+                />
+              </S.FormInput>
 
               <div>
                 <S.FormInput>

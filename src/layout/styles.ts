@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: grid;
 
-  grid-template-columns: 300px auto;
+  grid-template-columns: 220px auto;
   //grid-template-rows: auto;
   grid-template-areas: 'AS CT' 'AS CT';
 

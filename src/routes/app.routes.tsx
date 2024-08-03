@@ -9,14 +9,16 @@ import Report from '../pages/Report';
 import CreateProduct from '../components/CreateProduct';
 import CreateOrders from '../components/CreateOrders';
 import CreateClient from '../components/CreateClient';
+import User from '../pages/User';
 
 const AppRoutes = () => (
   <Switch>
     <Route path="/" exact component={Login} />
     <Layout>
       <Route path="/Orders" exact component={Orders} />
-      <Route path="/Customer" exact component={Customer} />
+      <Route path="/cliente" exact component={Customer} />
       <Route path="/produto" exact component={Product} />
+      <Route path="/usuario" exact component={User} />
       <Route path="/Orders/Create" exact component={CreateOrders} />
       <Route path="/Product/Create" exact component={CreateProduct} />
       <Route path="/Client/Create" exact component={CreateClient} />

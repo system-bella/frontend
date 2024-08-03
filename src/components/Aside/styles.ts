@@ -5,11 +5,12 @@ export const Container = styled.div`
   background-color: ${(props) => props.theme.colors.primary};
 
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
 
   img {
     padding: 30px 16px;
-    width: 290px;
+    height: 120px;
   }
 
   span {
@@ -17,7 +18,7 @@ export const Container = styled.div`
     font-weight: 200;
     color: ${(props) => props.theme.colors.white};
 
-    margin: 25px 0;
+    margin: 10px 0;
     padding: 0 16px;
   }
 `;
@@ -49,7 +50,25 @@ export const MenuLink = styled.a`
   transition: 0.3s;
 
   &:hover {
-    //border: 1px solid ${(props) => props.theme.colors.white};
     background-color: rgb(255, 255, 255, 0.3);
   }
 `;
+
+export const Footer = styled.footer`
+  display: flex;
+  align-items: center;
+
+  height: 40px;
+  margin-bottom: 15px;
+  color: ${(props) => props.theme.colors.white};
+  
+  
+  img{
+    border-radius: 50%;
+    object-fit: cover;
+    height: 100px;
+  }
+  `
+
+export const Imagem = styled.div`
+`

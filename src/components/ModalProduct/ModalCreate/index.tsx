@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from '../../api/axios';
+import axios_production from '../../../api/axios_production';
 import { AxiosError } from 'axios';
 
 import React, { useState } from 'react';
@@ -15,10 +15,9 @@ interface IModalCreateProps {
 
 interface IProductData {
   reference: number;
-  barcode: number;
   category: string;
   name_product: string;
-  description: string;
+  description?: string;
   price: number;
   quantity: number;
 }
@@ -26,15 +25,6 @@ interface IProductData {
 // Validation
 const schema = Yup.object().shape({
   reference: Yup.number()
-    .transform((value, originalValue) => {
-      if (originalValue === '' || isNaN(originalValue)) {
-        return undefined; // Retorna undefined para que o Yup não considere o campo
-      }
-      return Number(originalValue); // Converte o valor para número
-    })
-    .required('Campo obrigatório e único'),
-
-  barcode: Yup.number()
     .transform((value, originalValue) => {
       if (originalValue === '' || isNaN(originalValue)) {
         return undefined; // Retorna undefined para que o Yup não considere o campo
@@ -68,8 +58,7 @@ const schema = Yup.object().shape({
         return undefined;
       }
       return String(originalValue); //
-    })
-    .required('Campo obrigatório'),
+    }),
 
   price: Yup.number()
     .transform((value, originalValue) => {
@@ -101,12 +90,12 @@ export default function ModalCreate({
   });
 
   const { errors } = formState;
-  console.log('erros: ', errors);
+  // console.log('erros: ', errors);
 
   const onSubmit: SubmitHandler<IProductData> = async (data) => {
     setLoading(true);
     try {
-      const response = await axios.post('/products', data);
+      const response = await axios_production.post('/products', data);
       const statusCode = response.status;
 
       if (statusCode === 201) {
@@ -142,7 +131,6 @@ export default function ModalCreate({
               <strong>Produtos{'>'}</strong>Cadastrar produto
             </span>
             <S.Form onSubmit={handleSubmit(onSubmit)}>
-              <div>
                 <S.FormInput>
                   <label>Referência *</label>
                   <S.Input
@@ -154,17 +142,6 @@ export default function ModalCreate({
                     <small>{errors.reference.message}</small>
                   )}
                 </S.FormInput>
-                <S.FormInput>
-                  <label>Código de Barras *</label>
-                  <S.Input
-                    {...register('barcode')}
-                    type="number"
-                    placeholder="Informe o código de barras"
-                  />
-                  {errors.barcode && <small>{errors.barcode.message}</small>}
-                </S.FormInput>
-              </div>
-
               <div>
                 <S.FormInput>
                   <label>Categoria *</label>
@@ -215,9 +192,6 @@ export default function ModalCreate({
                   rows={4}
                   placeholder="Descrição..."
                 />
-                {errors.description && (
-                  <small>{errors.description.message}</small>
-                )}
               </S.FormInput>
               <S.Actions>
                 <S.Cancel onClick={setModalOpen}>Cancelar</S.Cancel>

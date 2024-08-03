@@ -5,7 +5,7 @@ import * as S from './styles';
 import Modal from '../../components/ModalDelete';
 import NewItem from '../../components/NewItem';
 //import Pagination from '../../components/Pagination';
-import ModalDetails from '../../components/ModalDetails';
+import ModalDetails from '../../components/ModalProduct/ModalDetails';
 
 import { PiClipboardTextThin } from 'react-icons/pi';
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
@@ -70,6 +70,7 @@ export default function Orders() {
             itemId={1}
             isOpen={openModal}
             setModalOpen={() => setOpenModal(false)}
+            url='order'
           />
           <ModalDetails
             itemId={1}

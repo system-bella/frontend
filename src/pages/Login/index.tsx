@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 //api
-import api from '../../api/axios';
+import api from '../../api/axios_production';
 import axios, { AxiosError } from 'axios';
 // form validation
 import * as Yup from 'yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // assets
-const logo = require('../../assets/logo.png');
-const imgLateral = require('../../assets/imgLateral.jpg');
-import { CiLock, CiUnlock } from 'react-icons/ci';
-
 // styles
 import * as S from './styles';
+import { CiLock, CiUnlock } from 'react-icons/ci';
+
+const logo = require('../../assets/logo.png');
+const imgLateral = require('../../assets/imgLateral.jpg');
+
 
 interface ILogin {
   email: string;
@@ -48,19 +49,35 @@ export default function Login() {
   };
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
+    setLoading(true);
     try {
-      setLoading(!loading);
-      const response = await api.post('/login', data);
-      if (response.status === 201) {
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/login',
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true, // Inclui cookies na requisição
+        }
+      );
+
+      if (response.status === 200) {
+        const { token } = response.data;
+        localStorage.setItem('token', token);
         history.push('/Product');
-        setLoading(false);
         window.location.reload();
+      } else {
+        setError('Credenciais inválidas!');
       }
     } catch (err) {
       if (axios.isAxiosError(err)) {
         handleLoginError(err);
-        setLoading(false);
+      } else {
+        setError('Erro inesperado. Por favor, tente novamente.');
       }
+    } finally {
+      setLoading(false);
     }
   };
 

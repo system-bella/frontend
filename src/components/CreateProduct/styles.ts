@@ -46,9 +46,9 @@ export const InputForm = styled.div`
 `;
 
 export const Input = styled.input`
-  width: 380px;
+  /* width: 380px; */
   border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
-  padding: 16px;
+  /* padding: 16px; */
   border-radius: 6px;
   &::placeholder {
     font-size: 16px;

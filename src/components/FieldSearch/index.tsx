@@ -3,7 +3,8 @@ import * as S from './styles';
 import { CiSearch } from 'react-icons/ci';
 
 interface IFildeSearch {
-  onSearch: (searchTerm: string) => void;
+  // onSearch: (searchTerm: string) => void;
+  onSearch: any;
 }
 
 export default function FieldSearch({ onSearch }: IFildeSearch) {

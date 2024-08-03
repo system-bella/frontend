@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios from '../../api/axios';
+import axios from '../../api/axios_production';
 import { AxiosError } from 'axios';
 
 // styles
@@ -121,7 +121,7 @@ export default function CreateProduct() {
     <S.Container>
       <S.Title>
         <span>
-          Produtos{'>'}
+          Produtos {'>'}
           <small>Cadastrar Produto</small>
         </span>
       </S.Title>
@@ -135,16 +135,6 @@ export default function CreateProduct() {
             placeholder="Informe a referência"
           />
           {errors.reference && <small>{errors.reference.message}</small>}
-        </S.InputForm>
-
-        <S.InputForm>
-          <label>Código de barras *</label>
-          <S.Input
-            {...register('barcode')}
-            type="number"
-            placeholder="Informe o código de barras"
-          />
-          {errors.barcode && <small>{errors.barcode.message}</small>}
         </S.InputForm>
 
         <S.InputForm>

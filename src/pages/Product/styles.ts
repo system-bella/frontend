@@ -67,7 +67,7 @@ export const BodyTable = styled.table`
   td,
   th {
     text-align: center;
-    padding: 12px 0;
+    padding: 10px 0;
   }
 
   thead > tr > th {

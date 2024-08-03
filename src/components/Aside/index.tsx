@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import * as S from './styles';
 import {
   CiGrid42,
-  // CiUser,
+  CiUser,
   // CiShoppingCart,
+  CiSun,
   CiCircleInfo,
   CiLogout
 } from 'react-icons/ci';
-//import { IoAnalytics } from 'react-icons/io5';
 
 export default function Aside() {
   const [clicked, setClicked] = useState(() => {
@@ -15,7 +15,7 @@ export default function Aside() {
     return currentURL || 'Orders';
   });
 
-  useEffect(() => {}, [clicked]);
+  useEffect(() => { }, [clicked]);
 
   const tootleMenu = (value: string) => {
     setClicked(value);
@@ -23,14 +23,16 @@ export default function Aside() {
 
   return (
     <S.Container>
-      <a href="/Orders">
-        <img src={require('../../assets/logo.png')} alt="logo" />
-      </a>
+      <div>
 
-      <span>Principal</span>
+        <a href="/Orders">
+          <img src={require('../../assets/logo.png')} alt="logo" />
+        </a>
 
-      <S.Menu>
-        {/* <S.MenuLink
+        <span>Principal</span>
+
+        <S.Menu>
+          {/* <S.MenuLink
           href="/Orders"
           onClick={() => tootleMenu('Orders')}
           style={
@@ -43,33 +45,33 @@ export default function Aside() {
           <small>Vendas</small>
         </S.MenuLink> */}
 
-        {/* <S.MenuLink
-          href="/Customer"
-          onClick={() => tootleMenu('Customer')}
-          style={
-            clicked === 'Customer'
-              ? { background: 'rgb(255, 255, 255, 0.3)' }
-              : { background: 'none' }
-          }
-        >
-          <CiUser />
-          <small>Clientes</small>
-        </S.MenuLink> */}
+          <S.MenuLink
+            href="/produto"
+            onClick={() => tootleMenu('produto')}
+            style={
+              clicked === 'produto' || clicked === 'produto/Create'
+                ? { background: 'rgb(255, 255, 255, 0.3)' }
+                : { background: 'none' }
+            }
+          >
+            <CiGrid42 />
+            <small>Produtos</small>
+          </S.MenuLink>
 
-        <S.MenuLink
-          href="/produto"
-          onClick={() => tootleMenu('Product')}
-          style={
-            clicked === 'Product' || clicked === 'Product/Create'
-              ? { background: 'rgb(255, 255, 255, 0.3)' }
-              : { background: 'none' }
-          }
-        >
-          <CiGrid42 />
-          <small>Produtos</small>
-        </S.MenuLink>
+          <S.MenuLink
+            href="/cliente"
+            onClick={() => tootleMenu('cliente')}
+            style={
+              clicked === 'cliente'
+                ? { background: 'rgb(255, 255, 255, 0.3)' }
+                : { background: 'none' }
+            }
+          >
+            <CiUser />
+            <small>Clientes</small>
+          </S.MenuLink>
 
-        {/* <S.MenuLink
+          {/* <S.MenuLink
           href="/Report"
           onClick={() => tootleMenu('Report')}
           style={
@@ -81,23 +83,38 @@ export default function Aside() {
           <IoAnalytics />
           <small>Relatórios</small>
         </S.MenuLink> */}
-      </S.Menu>
+        </S.Menu>
 
-      <span>Outros</span>
+        <span>Outros</span>
 
-      <S.Menu>
-        <S.MenuLink
-          href="https://truth-macaroon-fe8.notion.site/Manual-de-Usu-rio-do-Sistema-L-Bella-40dac94394de4aa7ad7e437d81cb8055?pvs=4"
-          target="_blank"
-        >
-          <CiCircleInfo />
-          <small>Manual</small>
-        </S.MenuLink>
-        <S.MenuLink href="/">
-          <CiLogout />
-          <small>Sair</small>
-        </S.MenuLink>
-      </S.Menu>
+        <S.Menu>
+          <S.MenuLink
+            href="/usuario"
+          >
+            <CiSun />
+            <small>User</small>
+          </S.MenuLink>
+
+          <S.MenuLink
+            href="https://truth-macaroon-fe8.notion.site/Manual-de-Usu-rio-do-Sistema-L-Bella-40dac94394de4aa7ad7e437d81cb8055?pvs=4"
+            target="_blank">
+            <CiCircleInfo />
+            <small>Manual</small>
+          </S.MenuLink>
+
+          <S.MenuLink href="/">
+            <CiLogout />
+            <small>Sair</small>
+          </S.MenuLink>
+
+        </S.Menu>
+      </div>
+      <S.Footer>
+          <img src={require('../../assets/imgLateral.jpg')} alt="foto-perfil" />
+        <small>Admin</small>
+
+      </S.Footer>
+
     </S.Container>
   );
 }
