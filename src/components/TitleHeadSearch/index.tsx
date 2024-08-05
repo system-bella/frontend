@@ -2,13 +2,21 @@ import styled from "styled-components";
 import React from "react";
 import { CiSearch, CiCirclePlus } from 'react-icons/ci';
 
-export default function TitleHeadSearch() {
+interface ModalSearch {
+    title: string,
+    restTitle: string,
+}
+
+export default function TitleHeadSearch({
+    title,
+    restTitle
+}: ModalSearch) {
     return (
         <Container>
             <Title>
                 <span>
-                    Produtos{'>'}
-                    <small>Todos os produtos</small>
+                    {title}{'>'}
+                    <small>{restTitle}</small>
                 </span>
             </Title>
 
@@ -63,6 +71,7 @@ export const Search = styled.div`
     input {
         padding: 10px;
         border-radius: 10px;
+        max-width: 250px;
 
         color: ${(props) => props.theme.colors.black};
         font-size: 16px;

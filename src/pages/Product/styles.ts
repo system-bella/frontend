@@ -8,7 +8,6 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   flex: 1;
-  //flex-direction:
 `;
 
 export const Header = styled.header`

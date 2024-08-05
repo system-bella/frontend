@@ -48,11 +48,7 @@ export default function Aside() {
           <S.MenuLink
             href="/produto"
             onClick={() => tootleMenu('produto')}
-            style={
-              clicked === 'produto' || clicked === 'produto/Create'
-                ? { background: 'rgb(255, 255, 255, 0.3)' }
-                : { background: 'none' }
-            }
+            className={clicked === 'produto' || clicked === 'produto/Create' ? 'active' : ''}
           >
             <CiGrid42 />
             <small>Produtos</small>
@@ -61,11 +57,7 @@ export default function Aside() {
           <S.MenuLink
             href="/cliente"
             onClick={() => tootleMenu('cliente')}
-            style={
-              clicked === 'cliente'
-                ? { background: 'rgb(255, 255, 255, 0.3)' }
-                : { background: 'none' }
-            }
+            className={clicked === 'cliente' ? 'active' : ''}
           >
             <CiUser />
             <small>Clientes</small>
@@ -90,9 +82,11 @@ export default function Aside() {
         <S.Menu>
           <S.MenuLink
             href="/usuario"
+            onClick={() => tootleMenu('usuario')}
+            className={clicked === 'usuario' ? 'active' : ''}
           >
             <CiSun />
-            <small>User</small>
+            <small>Usuário</small>
           </S.MenuLink>
 
           <S.MenuLink
@@ -110,9 +104,10 @@ export default function Aside() {
         </S.Menu>
       </div>
       <S.Footer>
-          <img src={require('../../assets/imgLateral.jpg')} alt="foto-perfil" />
+        <S.Imagem>
+          <p>AS</p>
+        </S.Imagem>
         <small>Admin</small>
-
       </S.Footer>
 
     </S.Container>

@@ -9,8 +9,9 @@ export const Container = styled.div`
   flex-direction: column;
 
   img {
-    padding: 30px 16px;
-    height: 120px;
+    margin: 30px 16px;
+    height: 60px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 10px;
   }
 
   span {
@@ -57,18 +58,23 @@ export const MenuLink = styled.a`
 export const Footer = styled.footer`
   display: flex;
   align-items: center;
+  padding: 10px 16px;
 
   height: 40px;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
   color: ${(props) => props.theme.colors.white};
-  
-  
-  img{
-    border-radius: 50%;
-    object-fit: cover;
-    height: 100px;
-  }
   `
 
 export const Imagem = styled.div`
+  color: ${(props) => props.theme.colors.white};
+  border-radius: 50%;
+  height: 35px;
+  margin-right: 30px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 10px;
+  
+  p{
+    font-weight: 500;
+    padding: 6px;
+  }
+
 `
