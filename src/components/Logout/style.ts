@@ -50,12 +50,15 @@ export const InfoModel = styled.div`
     text-align: left;
   }
 
-  div > span {
+  & span {
     font-weight: bold;
     font-size: 16px;
+    padding: 0px;
+    margin: 0px;
+    color: ${(props) => props.theme.colors.black};
   }
 
-  div > small {
+  & small {
     font-weight: 400;
     font-size: 16px;
     color: ${(props) => props.theme.colors.secondary.gray_100};

@@ -81,9 +81,9 @@ export const FormTotal = styled.div`
 
 export const Filter = styled.select`
   margin-bottom: 15px;
-  border: 2px solid #df3b82;
+  border: 2px solid #ef9dc0;
   border-radius: 10px;
-  padding: 12px;
+  padding: 12px 10px;
   display: flex;
   width: 300px;
   font-size: 1em;
@@ -93,7 +93,7 @@ export const Filter = styled.select`
 
 export const InputFildset = styled.input`
   margin-bottom: 15px;
-  border: 2px solid #df3b82;
+  border: 2px solid #ef9dc0;
   border-radius: 10px;
   padding: 12px;
   display: flex;
@@ -107,7 +107,7 @@ export const Input = styled.input`
   margin-left: 10px;
   width: 250px;
   border: 1px solid ${(props) => props.theme.colors.black};
-  padding: 16px;
+  padding: 12px 10px;
   border-radius: 10px;
   font-size: 1em;
   &::placeholder {
@@ -118,7 +118,7 @@ export const InputSmall = styled.input`
   margin-left: 10px;
   width: 120px;
   border: 1px solid ${(props) => props.theme.colors.black};
-  padding: 16px;
+  padding: 12px 10px;
   border-radius: 10px;
   text-align: center;
   font-size: 1em;
@@ -128,7 +128,7 @@ export const InputSmall = styled.input`
 `;
 export const InputLarge = styled.input`
   margin-bottom: 15px;
-  border: 2px solid #df3b82;
+  border: 2px solid #ef9dc0;
   border-radius: 10px;
   padding: 12px;
   display: flex;
@@ -139,7 +139,7 @@ export const InputLarge = styled.input`
 `;
 export const InputDesconto = styled.select`
   margin: 0px 30px 0px 0px;
-  border: 2px solid #df3b82;
+  border: 2px solid #ef9dc0;
   border-radius: 10px;
   padding: 12px;
   display: flex;
@@ -154,8 +154,8 @@ export const DivLateral = styled.div`
 `;
 
 export const ListProduct = styled.div`
-  border: 2px solid #df3b82;
-  border-radius: 10px;
+  border: 2px solid #ef9dc0;
+  border-radius: 8px;
   max-height: 250px;
   height: 250px;
   overflow-y: auto;
@@ -173,7 +173,6 @@ export const TableProduct = styled.table`
   }
 `;
 export const Footer = styled.footer`
-  /* margin-top: 5px; */
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 `;

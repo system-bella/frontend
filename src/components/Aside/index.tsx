@@ -3,17 +3,19 @@ import * as S from './styles';
 import {
   CiGrid42,
   CiUser,
-  // CiShoppingCart,
+  CiShoppingCart,
   CiSun,
   CiCircleInfo,
   CiLogout
 } from 'react-icons/ci';
+import Logout from '../Logout';
 
 export default function Aside() {
   const [clicked, setClicked] = useState(() => {
     const currentURL = window.location.pathname.slice(1);
     return currentURL || 'Orders';
   });
+  const [openModalLogout, setOpenModalLogout] = useState(false);
 
   useEffect(() => { }, [clicked]);
 
@@ -29,35 +31,31 @@ export default function Aside() {
           <img src={require('../../assets/logo.png')} alt="logo" />
         </a>
 
-        <span>Principal</span>
+        <S.Title>Principal</S.Title>
 
         <S.Menu>
-          {/* <S.MenuLink
+          <S.MenuLink
           href="/Orders"
           onClick={() => tootleMenu('Orders')}
-          style={
-            clicked === 'Orders'
-              ? { background: 'rgb(255, 255, 255, 0.3)' }
-              : { background: 'none' }
-          }
+          className={clicked === 'Orders' ? 'active' : ''}
         >
           <CiShoppingCart />
           <small>Vendas</small>
-        </S.MenuLink> */}
+        </S.MenuLink>
 
           <S.MenuLink
-            href="/produto"
-            onClick={() => tootleMenu('produto')}
-            className={clicked === 'produto' || clicked === 'produto/Create' ? 'active' : ''}
+            href="/Product"
+            onClick={() => tootleMenu('Product')}
+            className={clicked === 'Product' || clicked === 'Product/Create' ? 'active' : ''}
           >
             <CiGrid42 />
             <small>Produtos</small>
           </S.MenuLink>
 
           <S.MenuLink
-            href="/cliente"
-            onClick={() => tootleMenu('cliente')}
-            className={clicked === 'cliente' ? 'active' : ''}
+            href="/Client"
+            onClick={() => tootleMenu('Client')}
+            className={clicked === 'Client' ||  clicked === 'Client/Create'? 'active' : ''}
           >
             <CiUser />
             <small>Clientes</small>
@@ -77,7 +75,7 @@ export default function Aside() {
         </S.MenuLink> */}
         </S.Menu>
 
-        <span>Outros</span>
+        <S.Title>Outros</S.Title>
 
         <S.Menu>
           <S.MenuLink
@@ -96,20 +94,24 @@ export default function Aside() {
             <small>Manual</small>
           </S.MenuLink>
 
-          <S.MenuLink href="/">
-            <CiLogout />
-            <small>Sair</small>
-          </S.MenuLink>
+          <S.ButtonExit onClick={() => setOpenModalLogout(true)}>
+              <CiLogout />
+              <small>Sair</small>
+          </S.ButtonExit>
 
         </S.Menu>
       </div>
+
+      <Logout
+        isOpen={openModalLogout}
+        setModalOpen={() => setOpenModalLogout(false)} />
+
       <S.Footer>
         <S.Imagem>
-          <p>AS</p>
+          <p>SK</p>
         </S.Imagem>
-        <small>Admin</small>
+        <small>Sayury Kato</small>
       </S.Footer>
-
     </S.Container>
   );
 }

@@ -12,8 +12,9 @@ export const Content = styled.div`
 
 export const Header = styled.header`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  flex-direction: row;
+  gap: 20px;
   margin-bottom: 36px;
 
   div {
@@ -23,7 +24,9 @@ export const Header = styled.header`
 `;
 
 export const Title = styled.div`
-  margin-bottom: 32px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 
   span {
     font-size: 16px;
@@ -54,7 +57,6 @@ export const BodyTable = styled.table`
   }
 
   td > div {
-    //background-color: red;
     display: flex;
     justify-content: space-around;
   }
@@ -65,6 +67,11 @@ export const BodyTable = styled.table`
 
   td > div > button > svg {
     font-size: 20px;
+  }
+  a{
+    color: black;
+    font-size: 20px;
+
   }
 `;
 

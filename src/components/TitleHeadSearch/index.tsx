@@ -11,6 +11,8 @@ export default function TitleHeadSearch({
     title,
     restTitle
 }: ModalSearch) {
+
+    
     return (
         <Container>
             <Title>

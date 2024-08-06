@@ -1,8 +1,9 @@
 //import FieldSearch from '../FieldSearch';
 import * as S from './styles';
 import { BsArrowReturnLeft } from 'react-icons/bs';
-import ButtonAutolineCancel from '../ButtonAutolineCancel';
-import ButtonSave from '../ButtonSave';
+import ButtonAutolineCancel from '../../ButtonAutolineCancel';
+import ButtonSave from '../../ButtonSave';
+import { CiTrash } from 'react-icons/ci';
 
 export default function CreateOrders() {
   return (
@@ -16,14 +17,9 @@ export default function CreateOrders() {
         </S.Title>
         <S.Header>
           <div>
-            {/* <FieldSearch /> */}
+            <S.Input placeholder="Nome ou código do produto" />
             <S.InputSmall type="number" placeholder="QTD: 1" min={1} />
-            <S.Input placeholder="Digite o nome do cliente" />
           </div>
-          <S.Button onClick={() => console.log('test')}>
-            <BsArrowReturnLeft />
-            <span>Lançar</span>
-          </S.Button>
         </S.Header>
         <S.Fildset>
           <S.FormPagamento>
@@ -43,13 +39,13 @@ export default function CreateOrders() {
               <option value="opcao4">Parcela 4</option>
               <option value="opcao5">Parcela 5</option>
             </S.Filter>
-            <label>Vendedor</label>
+            <label>Cliente</label>
             <S.Filter id="selection" name="Filtro">
-              <option value="Filtos">Vendedor</option>
-              <option value="opcao2">Vendedor 2</option>
-              <option value="opcao3">Vendedor 3</option>
-              <option value="opcao4">Vendedor 4</option>
-              <option value="opcao5">Vendedor 5</option>
+              <option value="Filtos">Selecione</option>
+              <option value="opcao2">Cliente 2</option>
+              <option value="opcao3">Cliente 3</option>
+              <option value="opcao4">Cliente 4</option>
+              <option value="opcao5">Cliente 5</option>
             </S.Filter>
           </S.FormPagamento>
           <S.ListProduct>
@@ -62,6 +58,7 @@ export default function CreateOrders() {
                   <th>QTD</th>
                   <th>Vlr. UNITÁRIO</th>
                   <th>TOTAL</th>
+                  <th>REMOVER</th>
                 </tr>
               </thead>
               <tbody>
@@ -72,7 +69,9 @@ export default function CreateOrders() {
                   <td>1,000</td>
                   <td>298,98</td>
                   <td>298,98</td>
-                  <td>-</td>
+                  <td>
+                    <CiTrash />
+                  </td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -81,7 +80,9 @@ export default function CreateOrders() {
                   <td>1,000</td>
                   <td>298,98</td>
                   <td>298,98</td>
-                  <td>-</td>
+                  <td>
+                    <CiTrash />
+                  </td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -90,7 +91,9 @@ export default function CreateOrders() {
                   <td>1,000</td>
                   <td>298,98</td>
                   <td>298,98</td>
-                  <td>-</td>
+                  <td>
+                    <CiTrash />
+                  </td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -99,7 +102,9 @@ export default function CreateOrders() {
                   <td>1,000</td>
                   <td>298,98</td>
                   <td>298,98</td>
-                  <td>-</td>
+                  <td>
+                    <CiTrash />
+                  </td>
                 </tr>
                 <tr>
                   <td>1</td>
@@ -108,16 +113,9 @@ export default function CreateOrders() {
                   <td>1,000</td>
                   <td>298,98</td>
                   <td>298,98</td>
-                  <td>-</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>7878465957863</td>
-                  <td>Bolsa</td>
-                  <td>1,000</td>
-                  <td>298,98</td>
-                  <td>298,98</td>
-                  <td>-</td>
+                  <td>
+                    <CiTrash />
+                  </td>
                 </tr>
               </tbody>
             </S.TableProduct>
@@ -125,7 +123,6 @@ export default function CreateOrders() {
         </S.Fildset>
         <S.Fildset>
           <S.FormTotal>
-            <button>Excluir Item da venda</button>
             <div>
               <label>SUBTOTAL</label>
               <S.InputLarge type="number" placeholder="R$ 0,00" />

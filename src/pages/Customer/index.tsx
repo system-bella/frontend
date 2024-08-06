@@ -1,11 +1,10 @@
 import * as S from './styles';
 
 import FieldSearch from '../../components/FieldSearch';
-//import Filter from '../../components/Filter';
 import Modal from '../../components/ModalDelete';
 import NewItem from '../../components/NewItem';
-//import Pagination from '../../components/Pagination';
-import ModalDetails from '../../components/ModalProduct/ModalDetails';
+import Pagination from '../../components/Pagination';
+import Details from '../../components/ModalCustomer/Details';
 
 import { PiClipboardTextThin } from 'react-icons/pi';
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
@@ -48,18 +47,17 @@ export default function Orders() {
             Cliente{'>'}
             <small>Todos os Clientes</small>
           </span>
+          <S.Header>
+            <div>
+              <FieldSearch onSearch={() => console.log('ola')} />
+            </div>
+            <NewItem
+              url="/Client/Create"
+              icon={<CiCirclePlus fontSize={24} />}
+              title="Novo"
+            />
+          </S.Header>
         </S.Title>
-        <S.Header>
-          <div>
-            <FieldSearch onSearch={() => console.log('ola')}/>
-            {/* <Filter /> */}
-          </div>
-          <NewItem
-            url="/Client/Create"
-            icon={<CiCirclePlus fontSize={24} />}
-            title="Novo"
-          />
-        </S.Header>
         <S.BodyTable>
           <tr>
             <th>Código</th>
@@ -83,7 +81,9 @@ export default function Orders() {
                   />
                 </button>
                 <button>
-                  <CiEdit />
+                  <a href="/Client/Update">
+                    <CiEdit />
+                  </a>
                 </button>
                 <button onClick={() => setOpenModal(true)}>
                   <CiTrash />
@@ -99,8 +99,8 @@ export default function Orders() {
             }}
             url='customer'
           />
-          <ModalDetails
-            itemId={1}
+          <Details
+            // itemId={1}
             isOpen={openModalDetails}
             setModalOpen={() => setOpenModalDetails(false)}
           />
@@ -108,10 +108,13 @@ export default function Orders() {
       </S.Content>
 
       <S.Footer>
-        {/* <Pagination
-          nextPage={() => console.log(1)}
-          prevPage={() => console.log(1)}
-        /> */}
+        <Pagination
+          currentPage={1}
+          lastPage={undefined}
+          perPage={undefined}
+          prevPage={() => console.log('ola')}
+          nextPage={() => console.log('ola')}
+        />
       </S.Footer>
     </S.Container>
   );

@@ -1,17 +1,19 @@
 import * as S from './styles';
-import ButtonAutolineCancel from '../ButtonAutolineCancel';
-import ButtonSave from '../ButtonSave';
+import ButtonAutolineCancel from '../../ButtonAutolineCancel';
+import ButtonSave from '../../ButtonSave';
 
-export default function CreateClient() {
+export default function EditClient() {
   return (
     <S.Container>
       <S.Content>
+
         <S.Title>
           <span>
             Cliente{'>'}
-            <small>Cadastrar Clientes</small>
+            <small>Editar Clientes</small>
           </span>
         </S.Title>
+
         <S.Form>
           <S.FormContent>
             <label>Nome *</label>
@@ -26,6 +28,7 @@ export default function CreateClient() {
             <S.Input placeholder="(99) 99999-9999" />
           </S.FormContent>
         </S.Form>
+
         <S.Form>
           <S.FormContent>
             <label>Data de nascimento *</label>
@@ -40,6 +43,7 @@ export default function CreateClient() {
             <S.Input placeholder="0000000-0" />
           </S.FormContent>
         </S.Form>
+
         <S.Form>
           <S.FormContent>
             <label>CEP</label>
@@ -54,6 +58,7 @@ export default function CreateClient() {
             <S.Input placeholder="Número" />
           </S.FormContent>
         </S.Form>
+
         <S.Form>
           <S.FormContent>
             <label>Bairro</label>
@@ -69,10 +74,12 @@ export default function CreateClient() {
           </S.FormContent>
         </S.Form>
       </S.Content>
+
       <S.Footer>
         <ButtonAutolineCancel label="Cancelar" />
         <ButtonSave label="Salvar" />
       </S.Footer>
+      
     </S.Container>
   );
 }

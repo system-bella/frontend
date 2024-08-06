@@ -11,17 +11,17 @@ import { CiCircleAlert } from 'react-icons/ci';
 interface IModalProps {
   isOpen: boolean;
   setModalOpen: any;
-  itemId: number | null;
-  url: string;
+  // itemId: number | null;
+  // url: string;
 }
 
-export default function Modal({
+export default function Logout({
   isOpen,
   setModalOpen,
-  itemId,
-  url
+  // itemId,
+  // url
 }: IModalProps) {
-  console.log(itemId);
+  // console.log(itemId);
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
@@ -63,8 +63,8 @@ export default function Modal({
           </S.InfoModel>
           <S.Action>
             <S.Cancel onClick={setModalOpen}>Cancelar</S.Cancel>
-            <S.Delete onClick={handleDelete} disabled={loading}>
-              {loading ? 'Excluindo...' : 'Confirmar'}
+            <S.Delete disabled={loading}>
+              {loading ? 'Saindo...' : 'Confirmar'}
             </S.Delete>
           </S.Action>
         </S.ContentModel>

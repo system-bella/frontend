@@ -115,25 +115,25 @@ export default function Product() {
             Produtos{'>'}
             <small>Todos os produtos</small>
           </span>
-        </S.Title>
 
-        <S.Header>
-          <div>
-            <FieldSearch onSearch={handleSearch} />
-            <Filter
+          <S.Header>
+            <div>
+              <FieldSearch onSearch={handleSearch} />
+              {/* <Filter
               filter={filter}
               onChange={(value) => setSelectedCategory(value)}
-            />
-          </div>
-          <S.NewItem
-            onClick={() => {
-              setOpenModalCreate(true);
-            }}
-          >
-            <CiCirclePlus />
-            <span>Novo</span>
-          </S.NewItem>
-        </S.Header>
+              /> */}
+            </div>
+            <S.NewItem
+              onClick={() => {
+                setOpenModalCreate(true);
+              }}
+            >
+              <CiCirclePlus />
+              <span>Novo</span>
+            </S.NewItem>
+          </S.Header>
+        </S.Title>
 
         <S.BodyTable>
           <thead>
@@ -195,25 +195,25 @@ export default function Product() {
             }}
             itemId={selectedItemId}
           />
-          <ModalDetails
-            isOpen={openModalDetails}
-            setModalOpen={() => {
-              setOpenModalDetails(false);
-              setSelectedItemId(null);
-            }}
-            itemId={selectedItemId}
-          />
-          <ModalEdit
-            isOpen={openModalEdite}
-            setModalOpen={() => {
-              setOpenModalEdite(false);
-              setSelectedItemId(null);
-            }}
-            itemId={selectedItemId}
-          />
         </S.BodyTable>
       </S.Content>
 
+      <ModalDetails
+        isOpen={openModalDetails}
+        setModalOpen={() => {
+          setOpenModalDetails(false);
+          setSelectedItemId(null);
+        }}
+        itemId={selectedItemId}
+      />
+      <ModalEdit
+        isOpen={openModalEdite}
+        setModalOpen={() => {
+          setOpenModalEdite(false);
+          setSelectedItemId(null);
+        }}
+        itemId={selectedItemId}
+      />
       <ModalCreate
         isOpen={openModalCreate}
         setModalOpen={() => setOpenModalCreate(false)}
