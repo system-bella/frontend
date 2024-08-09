@@ -64,7 +64,8 @@ export const ContainerTop = styled.div`
   gap: 30px;
   margin-top: 30px;
   height: 280px;
-  `
+`
+
 export const DivLeft = styled.div`
   width: 70%;
   border: 1px solid #9D9D9D;
@@ -74,7 +75,7 @@ export const DivLeft = styled.div`
 
   display: flex;
   flex-direction: column;
-  `
+`
 
 export const DivRight = styled.div`
   width: 30%;

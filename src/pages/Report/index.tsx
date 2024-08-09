@@ -35,70 +35,19 @@ export default function Report() {
   });
 
   const data = [
-    {
-      name: 'Jan',
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: 'Fev',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: 'Mar',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: 'Abr',
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: 'Jun',
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: 'Jul',
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: 'Agos',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    }, {
-      name: 'Set',
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    }, {
-      name: 'Out',
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    }, {
-      name: 'Nov',
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    }, {
-      name: 'Dez',
-      uv: 3090,
-      pv: 4000,
-      amt: 2000,
-      fill: "#f7d186fa",
-    },
+    { name: 'Jan', uv: 4000, pv: 2400, amt: 2400 },
+    { name: 'Fev', uv: 3000, pv: 1398, amt: 2210 },
+    { name: 'Mar', uv: 2000, pv: 9800, amt: 2290 },
+    { name: 'Abr', uv: 2780, pv: 3908, amt: 2000 },
+    { name: 'Jun', uv: 1890, pv: 4800, amt: 2181 },
+    { name: 'Jul', uv: 2390, pv: 3800, amt: 2500 },
+    { name: 'Agos', uv: 3490, pv: 4300, amt: 2100 },
+    { name: 'Set', uv: 3000, pv: 1398, amt: 2210 },
+    { name: 'Out', uv: 2000, pv: 9800, amt: 2290 },
+    { name: 'Nov', uv: 3490, pv: 4300, amt: 2100 },
+    { name: 'Dez', uv: 3090, pv: 4000, amt: 2000, fill: "#DF3B82" },
   ];
+
   return (
     <S.Container>
       <S.Title>
@@ -118,7 +67,7 @@ export default function Report() {
 
       <S.ContainerVal>
         <DashboardValores
-          title="Total Produto Vendido"
+          title="Produtos Vendidos"
           icon={<MdOutlineShoppingCart />}
           valor="1.115"
         />
@@ -181,13 +130,13 @@ export default function Report() {
           dados={user} />
       </S.ContainerBottom>
 
-      <div
-        style={{ display: 'none' }}
-      >
-        <div ref={contentRef}>
-          <Relatorio />
+     <div
+          style={{ display: 'none' }}
+        >
+          <div ref={contentRef}>
+            <Relatorio />
+          </div>
         </div>
-      </div>
     </S.Container>
   )
 }
