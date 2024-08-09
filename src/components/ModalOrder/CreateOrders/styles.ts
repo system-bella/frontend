@@ -60,6 +60,7 @@ export const Fildset = styled.fieldset`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   label {
     color: #9d9d9d;
   }
@@ -67,17 +68,6 @@ export const Fildset = styled.fieldset`
 
 export const FormPagamento = styled.div``;
 
-export const FormTotal = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  width: 100%;
-
-  button {
-    background-color: white;
-    color: red;
-  }
-`;
 
 export const Filter = styled.select`
   margin-bottom: 15px;
@@ -103,19 +93,29 @@ export const InputFildset = styled.input`
   background-color: ${(props) => props.theme.colors.white};
 `;
 
-export const Input = styled.input`
-  margin-left: 10px;
-  width: 250px;
+export const DivInput = styled.div`
+  width: 300px;
   border: 1px solid ${(props) => props.theme.colors.black};
   padding: 12px 10px;
   border-radius: 10px;
   font-size: 1em;
-  &::placeholder {
-    font-size: 16px;
+  
+  input{
+    &::placeholder {
+      font-size: 16px;
+    }
+    
+  }
+  
+  button {
+    width: 20%;
+    font-size: 1em;
+    background-color: ${(props) => props.theme.colors.white};
+    border-radius: 10px;
   }
 `;
 export const InputSmall = styled.input`
-  margin-left: 10px;
+  margin-right: 30px;
   width: 120px;
   border: 1px solid ${(props) => props.theme.colors.black};
   padding: 12px 10px;
@@ -143,7 +143,6 @@ export const InputDesconto = styled.select`
   border-radius: 10px;
   padding: 12px;
   display: flex;
-  width: 120px;
   font-size: 1em;
 
   background-color: ${(props) => props.theme.colors.white};
@@ -151,7 +150,47 @@ export const InputDesconto = styled.select`
 
 export const DivLateral = styled.div`
   display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 10px;
 `;
+
+export const InputLeft =styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+`
+
+export const InputRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+
+`
+export const ValoresT = styled.p`
+  border: 2px solid #ef9dc0;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  font-size: 1em;
+  color: #9d9d9d;
+  background-color: ${(props) => props.theme.colors.white};
+`
+export const FormTotal = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+
+  button {
+    background-color: white;
+    color: red;
+  }
+  div{
+    width: 50%;
+  }
+`;
+
 
 export const ListProduct = styled.div`
   border: 2px solid #ef9dc0;
@@ -173,6 +212,8 @@ export const TableProduct = styled.table`
   }
 `;
 export const Footer = styled.footer`
+  margin-top: 30px;
   display: flex;
   justify-content: space-between;
 `;
+

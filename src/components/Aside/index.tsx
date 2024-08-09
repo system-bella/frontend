@@ -9,6 +9,7 @@ import {
   CiLogout
 } from 'react-icons/ci';
 import Logout from '../Logout';
+import { IoAnalytics } from "react-icons/io5";
 
 export default function Aside() {
   const [clicked, setClicked] = useState(() => {
@@ -33,15 +34,24 @@ export default function Aside() {
 
         <S.Title>Principal</S.Title>
 
+        <S.MenuLink
+            href="/Report"
+            onClick={() => tootleMenu('Report')}
+            className={clicked === 'Report' ? 'active' : ''}
+          >
+            <IoAnalytics />
+            <small>Relatórios</small>
+          </S.MenuLink>
+
         <S.Menu>
           <S.MenuLink
-          href="/Orders"
-          onClick={() => tootleMenu('Orders')}
-          className={clicked === 'Orders' ? 'active' : ''}
-        >
-          <CiShoppingCart />
-          <small>Vendas</small>
-        </S.MenuLink>
+            href="/Orders"
+            onClick={() => tootleMenu('Orders')}
+            className={clicked === 'Orders' || clicked === 'Orders/Create' ? 'active' : ''}
+          >
+            <CiShoppingCart />
+            <small>Vendas</small>
+          </S.MenuLink>
 
           <S.MenuLink
             href="/Product"
@@ -55,24 +65,11 @@ export default function Aside() {
           <S.MenuLink
             href="/Client"
             onClick={() => tootleMenu('Client')}
-            className={clicked === 'Client' ||  clicked === 'Client/Create'? 'active' : ''}
+            className={clicked === 'Client' || clicked === 'Client/Create' ? 'active' : ''}
           >
             <CiUser />
             <small>Clientes</small>
           </S.MenuLink>
-
-          {/* <S.MenuLink
-          href="/Report"
-          onClick={() => tootleMenu('Report')}
-          style={
-            clicked === 'Report'
-              ? { background: 'rgb(255, 255, 255, 0.3)' }
-              : { background: 'none' }
-          }
-        >
-          <IoAnalytics />
-          <small>Relatórios</small>
-        </S.MenuLink> */}
         </S.Menu>
 
         <S.Title>Outros</S.Title>
@@ -95,8 +92,8 @@ export default function Aside() {
           </S.MenuLink>
 
           <S.ButtonExit onClick={() => setOpenModalLogout(true)}>
-              <CiLogout />
-              <small>Sair</small>
+            <CiLogout />
+            <small>Sair</small>
           </S.ButtonExit>
 
         </S.Menu>
