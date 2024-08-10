@@ -11,7 +11,6 @@ import CreateOrders from '../components/ModalOrder/CreateOrders';
 import CreateClient from '../components/ModalCustomer/CreateClient';
 import User from '../pages/User';
 import EditClient from '../components/ModalCustomer/Update';
-import Relatorio from '../components/Relatorio';
 
 const AppRoutes = () => (
   <Switch>
@@ -26,7 +25,6 @@ const AppRoutes = () => (
       <Route path="/Client/Create" exact component={CreateClient} />
       <Route path="/Report" exact component={Report} />
       <Route path="/Client/Update" exact component={EditClient} />
-      <Route path="/Relatorio" exact component={Relatorio} />
     </Layout>
   </Switch>
 );

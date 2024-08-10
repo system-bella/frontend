@@ -104,3 +104,14 @@ export const Footer = styled.footer`
 
   padding: 10px 0;
 `;
+
+export const ContentModal = styled.div`
+ position: relative;
+ 
+`
+
+export const ModalOpt = styled.div`
+ position: absolute;
+ top: 50px;
+ width: 100%;
+`

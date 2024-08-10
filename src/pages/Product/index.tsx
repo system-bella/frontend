@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios_production from '../../api/axios_production';
-
+import ModalCreate from '../../components/ModalProduct/ModalCreate';
 // styles
 import * as S from './styles';
 
@@ -12,11 +12,11 @@ import Modal from '../../components/ModalDelete';
 import Pagination from '../../components/Pagination';
 import ModalDetails from '../../components/ModalProduct/ModalDetails';
 import ModalEdit from '../../components/ModalProduct/ModalEdite';
+import ModalOption from '../../components/ModalOption';
 
 // icons
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { PiClipboardTextThin } from 'react-icons/pi';
-import ModalCreate from '../../components/ModalProduct/ModalCreate';
 import axios from 'axios';
 
 interface IData {
@@ -26,7 +26,6 @@ interface IData {
   category_id: number;
   category: Categoria;
   price: string;
-  // reference: number;
 }
 
 interface Categoria {
@@ -47,6 +46,7 @@ export default function Product() {
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalEdite, setOpenModalEdite] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalOpt, setOpenModalOpt] = useState(false);
 
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -68,6 +68,10 @@ export default function Product() {
     setSearchTerm(term);
     setCurrentPage(1);
   };
+
+  const ModalsDecis = () => {
+
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -119,19 +123,25 @@ export default function Product() {
           <S.Header>
             <div>
               <FieldSearch onSearch={handleSearch} />
-              {/* <Filter
-              filter={filter}
-              onChange={(value) => setSelectedCategory(value)}
-              /> */}
             </div>
-            <S.NewItem
-              onClick={() => {
-                setOpenModalCreate(true);
-              }}
-            >
-              <CiCirclePlus />
-              <span>Novo</span>
-            </S.NewItem>
+
+            <S.ContentModal>
+              <S.NewItem
+                onClick={() => {
+                  setOpenModalOpt(true);
+                  // setOpenModalCreate(true);
+                }}
+              >
+                <CiCirclePlus />
+                <span>Novo</span>
+              </S.NewItem>
+              <S.ModalOpt>
+                <ModalOption
+                  isOpen={openModalOpt}
+                  setModalOpen={() => setOpenModalOpt(false)} />
+              </S.ModalOpt>
+            </S.ContentModal>
+
           </S.Header>
         </S.Title>
 
@@ -198,6 +208,11 @@ export default function Product() {
         </S.BodyTable>
       </S.Content>
 
+      <ModalCreate
+        isOpen={openModalCreate}
+        setModalOpen={() => setOpenModalCreate(false)}
+      />
+
       <ModalDetails
         isOpen={openModalDetails}
         setModalOpen={() => {
@@ -213,10 +228,6 @@ export default function Product() {
           setSelectedItemId(null);
         }}
         itemId={selectedItemId}
-      />
-      <ModalCreate
-        isOpen={openModalCreate}
-        setModalOpen={() => setOpenModalCreate(false)}
       />
 
       <S.Footer>

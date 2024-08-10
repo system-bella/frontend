@@ -1,49 +1,40 @@
 import * as Yup from 'yup';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios_production from '../../../api/axios_production';
 import { AxiosError } from 'axios';
-
+import { NumericFormat } from 'react-number-format';
 import React, { useState } from 'react';
 //styles
 import * as S from './styles';
-
+import axios from 'axios';
 interface IModalCreateProps {
   isOpen: boolean;
   setModalOpen: any;
 }
 
 interface IProductData {
-  reference: number;
-  category: string;
-  name_product: string;
-  description?: string;
-  price: number;
+  name: string;
   quantity: number;
+  category_id: number;
+  price: number;
+  description?: string;
 }
 
 // Validation
 const schema = Yup.object().shape({
-  reference: Yup.number()
-    .transform((value, originalValue) => {
-      if (originalValue === '' || isNaN(originalValue)) {
-        return undefined; // Retorna undefined para que o Yup não considere o campo
-      }
-      return Number(originalValue); // Converte o valor para número
-    })
-    .required('Campo obrigatório e único'),
-
   // begin error
-  category: Yup.string()
+  category_id: Yup.number()
     .transform((value, originalValue) => {
       if (originalValue === null || originalValue === undefined) {
         return undefined;
       }
-      return String(originalValue).trim();
+      // return String(originalValue).trim();
+      return Number(originalValue);
     })
     .required('Campo obrigatório'),
 
-  name_product: Yup.string()
+  name: Yup.string()
     .transform((value, originalValue) => {
       if (originalValue === null || originalValue === undefined) {
         return undefined;
@@ -84,7 +75,7 @@ export default function ModalCreate({
   setModalOpen
 }: IModalCreateProps) {
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, formState, reset } = useForm<IProductData>({
+  const { register, handleSubmit, formState, reset, control } = useForm<IProductData>({
     mode: 'onBlur',
     resolver: yupResolver(schema)
   });
@@ -95,14 +86,16 @@ export default function ModalCreate({
   const onSubmit: SubmitHandler<IProductData> = async (data) => {
     setLoading(true);
     try {
-      const response = await axios_production.post('/products', data);
+      // const response = await axios_production.post('/product', data);
+      const response = await axios.post('http://127.0.0.1:8000/api/product', {...data});
       const statusCode = response.status;
+      console.log(response);
 
       if (statusCode === 201) {
         alert('Produto salvo com sucesso!');
         reset();
         window.location.reload();
-        setLoading(false);
+      setLoading(false);
       }
     } catch (error) {
       if ((error as AxiosError).response) {
@@ -116,7 +109,7 @@ export default function ModalCreate({
           setLoading(false);
         }
       } else {
-        alert('Erro desconhecido');
+        alert('Erro desconhecido: '+ error);
         setLoading(false);
       }
     }
@@ -131,26 +124,26 @@ export default function ModalCreate({
               <strong>Produtos{'>'}</strong>Cadastrar produto
             </span>
             <S.Form onSubmit={handleSubmit(onSubmit)}>
-                <S.FormInput>
-                  <label>Referência *</label>
-                  <S.Input
-                    {...register('reference')}
-                    type="number"
-                    placeholder="Referência"
-                  />
-                  {errors.reference && (
-                    <small>{errors.reference.message}</small>
-                  )}
-                </S.FormInput>
+              <S.FormInput>
+                <label>Nome do Produto *</label>
+                <S.Input
+                  {...register('name')}
+                  type="text"
+                  placeholder="Informe o nome do produto"
+                />
+                {errors.name && (
+                  <small>{errors.name.message}</small>
+                )}
+              </S.FormInput>
               <div>
                 <S.FormInput>
                   <label>Categoria *</label>
                   <S.Input
-                    {...register('category')}
-                    type="text"
+                    {...register('category_id')}
+                    type="number"
                     placeholder="Informe a categoria"
                   />
-                  {errors.category && <small>{errors.category.message}</small>}
+                  {errors.category_id && <small>{errors.category_id.message}</small>}
                 </S.FormInput>
                 <S.FormInput>
                   <label>Quantidade *</label>
@@ -164,22 +157,43 @@ export default function ModalCreate({
               </div>
               <div>
                 <S.FormInput>
-                  <label>Nome do Produto *</label>
+                  <label>Fornecedor *</label>
                   <S.Input
-                    {...register('name_product')}
+                    // {...register('name_product')}
                     type="text"
-                    placeholder="Informe o nome do produto"
+                    placeholder="Informe o fornecedor"
                   />
-                  {errors.name_product && (
+                  {/* {errors.name_product && (
                     <small>{errors.name_product.message}</small>
-                  )}
+                  )} */}
                 </S.FormInput>
                 <S.FormInput>
                   <label>Preço *</label>
-                  <S.Input
+                  {/* <S.Input
                     {...register('price')}
                     type="text"
                     placeholder="Informe o preço"
+                  /> */}
+                  
+                  <Controller
+                    name="price"
+                    control={control}
+                    rules={{ required: "Este campo é obrigatório" }}
+                    render={({ field: { onChange, value, ref } }) => (
+                      <NumericFormat
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        decimalScale={2}
+                        fixedDecimalScale={true}
+                        placeholder="Informe o valor R$"
+                        prefix="R$ "
+                        value={value}
+                        onValueChange={(values) => {
+                          onChange(values.floatValue); // Use formattedValue to store the formatted string
+                        }}
+                        getInputRef={ref}
+                      />
+                    )}
                   />
                   {errors.price && <small>{errors.price.message}</small>}
                 </S.FormInput>

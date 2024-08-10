@@ -2,25 +2,32 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgb(0,0,0, 0.2);
-    z-index: 1000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(0,0,0, 0.2);
+  z-index: 1000;
 
   display: flex;
   justify-content: center;
   align-items: center;
+
+  input[type='text']{
+    border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
+    border-radius: 6px;
+    padding: 10px 16px;
+    &::placeholder {
+      font-size: 16px;
+    }
+    width: 100%;
+    height: 44px;
+    }
   `;
 export const ContentModel = styled.div`
   max-width: 500px;
   position: fixed;
   background-color: ${(props) => props.theme.colors.white};
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
   border-radius: 16px;
@@ -101,3 +108,4 @@ export const Save = styled.button`
   padding: 10px;
   border-radius: 10px;
 `;
+
