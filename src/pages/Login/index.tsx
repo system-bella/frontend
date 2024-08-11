@@ -47,10 +47,20 @@ export default function Login() {
     }
   };
 
+  const initializeCSRF = async () => {
+    await axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie');
+  };
+
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
     try {
       setLoading(!loading);
-      const response = await api.post('/login', data);
+
+      await initializeCSRF(); // Inicializa a proteção CSRF
+
+      const response = await api.post('login', data);
+
+      console.log(response.data);
+
       if (response.status === 201) {
         history.push('/Product');
         setLoading(false);
@@ -61,6 +71,8 @@ export default function Login() {
         handleLoginError(err);
         setLoading(false);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
