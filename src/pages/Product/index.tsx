@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import axios from '../../api/axios';
-
+import axios_production from '../../api/axios_production';
+import ModalCreate from '../../components/ModalProduct/ModalCreate';
 // styles
 import * as S from './styles';
 
@@ -10,22 +10,28 @@ import Filter from '../../components/Filter';
 import Modal from '../../components/ModalDelete';
 //import NewItem from '../../components/NewItem';
 import Pagination from '../../components/Pagination';
-import ModalDetails from '../../components/ModalDetails';
-import ModalEdit from '../../components/ModalEdite';
+import ModalDetails from '../../components/ModalProduct/ModalDetails';
+import ModalEdit from '../../components/ModalProduct/ModalEdite';
+import ModalOption from '../../components/ModalOption';
+
 
 // icons
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { PiClipboardTextThin } from 'react-icons/pi';
-import ModalCreate from '../../components/ModalCreate';
+import axios from 'axios';
 
 interface IData {
   id: number;
-  reference: number;
-  barcode: number;
-  category: string;
+  name: string;
   quantity: number;
-  name_product: number;
+  category_id: number;
+  category: Categoria;
   price: string;
+}
+
+interface Categoria {
+  id: number,
+  category: string,
 }
 
 export default function Product() {
@@ -41,6 +47,7 @@ export default function Product() {
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalEdite, setOpenModalEdite] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalOpt, setOpenModalOpt] = useState(false);
 
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -63,17 +70,22 @@ export default function Product() {
     setCurrentPage(1);
   };
 
+  const ModalsDecis = () => {
+
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = '/products?page=' + currentPage;
-        if (searchTerm) {
-          url = `/products/search?keyword=${searchTerm}`;
-        }
-        if (selectedCategory) {
-          url = `/products/filter?category=${selectedCategory}`;
-        }
-        const response = await axios.get(url);
+        // let url = '/product?page=' + currentPage;
+        let url = '/product';
+        // if (searchTerm) {
+        //   url = `/product/search?keyword=${searchTerm}`;
+        // }
+        // if (selectedCategory) {
+        //   url = `/product/filter?category=${selectedCategory}`;
+        // }
+        const response = await axios.get('http://127.0.0.1:8000/api/product');
         setItems(response.data.data);
         setTotalPages(response.data.last_page);
         setPerPage(response.data.per_page);
@@ -81,7 +93,7 @@ export default function Product() {
 
         //extract unique categories]
         const uniqueCategories: string[] = Array.from(
-          new Set(response.data.data.map((item: IData) => item.category))
+          new Set(response.data.data.map((item: IData) => item.category_id))
         );
 
         setFilter(uniqueCategories);
@@ -108,25 +120,31 @@ export default function Product() {
             Produtos{'>'}
             <small>Todos os produtos</small>
           </span>
-        </S.Title>
 
-        <S.Header>
-          <div>
-            <FieldSearch onSearch={handleSearch} />
-            <Filter
-              filter={filter}
-              onChange={(value) => setSelectedCategory(value)}
-            />
-          </div>
-          <S.NewItem
-            onClick={() => {
-              setOpenModalCreate(true);
-            }}
-          >
-            <CiCirclePlus />
-            <span>Novo</span>
-          </S.NewItem>
-        </S.Header>
+          <S.Header>
+            <div>
+              <FieldSearch onSearch={handleSearch} />
+            </div>
+
+            <S.ContentModal>
+              <S.NewItem
+                onClick={() => {
+                  setOpenModalOpt(true);
+                  // setOpenModalCreate(true);
+                }}
+              >
+                <CiCirclePlus />
+                <span>Novo</span>
+              </S.NewItem>
+
+            </S.ContentModal>
+          </S.Header>
+          <S.ModalOpt>
+            <ModalOption
+              isOpen={openModalOpt}
+              setModalOpen={() => setOpenModalOpt(false)} />
+          </S.ModalOpt>
+        </S.Title>
 
         <S.BodyTable>
           <thead>
@@ -142,10 +160,10 @@ export default function Product() {
           <tbody>
             {items?.map((item) => (
               <tr key={item.id}>
-                <td>{item.reference}</td>
-                <td>{item.category}</td>
+                <td>{item.name}</td>
+                <td>{item.category.category}</td>
                 <td>{item.quantity}</td>
-                <td>{item.name_product}</td>
+                <td>{item.name}</td>
                 <td>{currencyFormat(parseFloat(item.price))}</td>
                 <td>
                   <span>
@@ -180,6 +198,7 @@ export default function Product() {
           </tbody>
 
           <Modal
+            url='product'
             isOpen={openModal}
             setModalOpen={() => {
               setSelectedItemId(null);
@@ -187,29 +206,10 @@ export default function Product() {
             }}
             itemId={selectedItemId}
           />
-          <ModalDetails
-            isOpen={openModalDetails}
-            setModalOpen={() => {
-              setOpenModalDetails(false);
-              setSelectedItemId(null);
-            }}
-            itemId={selectedItemId}
-          />
-          <ModalEdit
-            isOpen={openModalEdite}
-            setModalOpen={() => {
-              setOpenModalEdite(false);
-              setSelectedItemId(null);
-            }}
-            itemId={selectedItemId}
-          />
         </S.BodyTable>
       </S.Content>
 
-      <ModalCreate
-        isOpen={openModalCreate}
-        setModalOpen={() => setOpenModalCreate(false)}
-      />
+
 
       <S.Footer>
         <Pagination
@@ -220,6 +220,32 @@ export default function Product() {
           nextPage={goToNextPage}
         />
       </S.Footer>
+      {/* Modals */}
+
+     
+
+      <ModalCreate
+        isOpen={openModalCreate}
+        setModalOpen={() => setOpenModalCreate(false)}
+      />
+
+      <ModalDetails
+        isOpen={openModalDetails}
+        setModalOpen={() => {
+          setOpenModalDetails(false);
+          setSelectedItemId(null);
+        }}
+        itemId={selectedItemId}
+      />
+      <ModalEdit
+        isOpen={openModalEdite}
+        setModalOpen={() => {
+          setOpenModalEdite(false);
+          setSelectedItemId(null);
+        }}
+        itemId={selectedItemId}
+      />
+
     </S.Container>
   );
 }

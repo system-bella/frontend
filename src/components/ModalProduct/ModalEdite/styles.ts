@@ -11,8 +11,9 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+  `;
 export const ContentModel = styled.div`
+  max-width: 500px;
   position: fixed;
   background-color: ${(props) => props.theme.colors.white};
 
@@ -54,8 +55,8 @@ export const Input = styled.input`
   &::placeholder {
     font-size: 16px;
   }
-  width: 250px;
-  height: 56px;
+  width: 100%;
+  height: 44px;
 `;
 
 export const TextArea = styled.textarea`

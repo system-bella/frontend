@@ -9,4 +9,8 @@ export const Container = styled.a`
 
   padding: 10px;
   border-radius: 10px;
+
+  &:hover{
+    background-color: #e976a8;
+  }
 `;

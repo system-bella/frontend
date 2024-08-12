@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AxiosError } from 'axios';
-import axios from '../../api/axios';
+import axios_production from '../../api/axios_production';
+import axios from 'axios';
 
 // styles
 import * as S from './styles';
@@ -11,15 +12,23 @@ interface IModalProps {
   isOpen: boolean;
   setModalOpen: any;
   itemId: number | null;
+  url: string;
 }
 
-export default function Modal({ isOpen, setModalOpen, itemId }: IModalProps) {
+export default function Modal({
+  isOpen,
+  setModalOpen,
+  itemId,
+  url
+}: IModalProps) {
+  console.log(itemId);
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
     setLoading(true);
     try {
-      const response = await axios.delete(`/products/${itemId}`);
+      const response = await axios_production.delete(`/${url}/${itemId}`);
+      // const response = await axios.delete(`http://127.0.0.1:8000/api/product/${itemId}`);
       const statusCode = response.status;
 
       if (statusCode === 200) {

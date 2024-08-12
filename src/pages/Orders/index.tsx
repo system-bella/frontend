@@ -1,12 +1,9 @@
 import * as S from './styles';
-
-// import FieldSearch from '../../components/FieldSearch';
-//import Filter from '../../components/Filter';
 import Modal from '../../components/ModalDelete';
 import NewItem from '../../components/NewItem';
-//import Pagination from '../../components/Pagination';
-import ModalDetails from '../../components/ModalDetails';
-
+import Pagination from '../../components/Pagination';
+import ModalDetails from '../../components/ModalProduct/ModalDetails';
+import FieldSearch from '../../components/FieldSearch';
 import { PiClipboardTextThin } from 'react-icons/pi';
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { useState } from 'react';
@@ -20,21 +17,20 @@ export default function Orders() {
       <S.Content>
         <S.Title>
           <span>
-            Cliente{'>'}
-            <small>Todos os Clientes</small>
+            Venda{'>'}
+            <small>Todos as vendas</small>
           </span>
+          <S.Header>
+            <div>
+              <FieldSearch onSearch={"ola"} />
+            </div>
+            <NewItem
+              url="/Orders/Create"
+              icon={<CiCirclePlus fontSize={24} />}
+              title="Novo"
+            />
+          </S.Header>
         </S.Title>
-        <S.Header>
-          <div>
-            {/* <FieldSearch /> */}
-            {/* <Filter /> */}
-          </div>
-          <NewItem
-            url="/Orders/Create"
-            icon={<CiCirclePlus fontSize={24} />}
-            title="Novo"
-          />
-        </S.Header>
         <S.BodyTable>
           <tr>
             <th>Resumo</th>
@@ -70,6 +66,7 @@ export default function Orders() {
             itemId={1}
             isOpen={openModal}
             setModalOpen={() => setOpenModal(false)}
+            url='order'
           />
           <ModalDetails
             itemId={1}
@@ -80,11 +77,13 @@ export default function Orders() {
       </S.Content>
 
       <S.Footer>
-        {/* <Pagination
-          perPage={'1'}
-          nextPage={() => console.log(1)}
-          prevPage={() => console.log(1)}
-        /> */}
+      <Pagination
+          currentPage={1}
+          lastPage={undefined}
+          perPage={undefined}
+          prevPage={() => console.log('ola')}
+          nextPage={() => console.log('ola')}
+        />
       </S.Footer>
     </S.Container>
   );

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import axios from '../../api/axios';
+import axios_production from '../../../api/axios_production';
+import axios from 'axios';
 
 import * as S from './styles';
 import { PiClipboardTextThin } from 'react-icons/pi';
 import { CiCircleRemove } from 'react-icons/ci';
-import QRCode from '../QRCode';
-//import Barcode from 'react-barcode'; remove library after
+import QRCode from '../../QRCode';
 
 interface IModalDetailsProps {
   isOpen: boolean;
@@ -14,13 +14,17 @@ interface IModalDetailsProps {
 }
 
 interface IData {
-  reference: number;
-  barcode: number;
-  category: string;
+  name: string;
   quantity: number;
-  name_product: string;
-  description: string;
+  category: Categoria;
   price: string;
+  description: string;
+  barcode: string;
+}
+
+interface Categoria {
+  id: number,
+  category: string,
 }
 
 export default function ModalDetails({
@@ -33,7 +37,8 @@ export default function ModalDetails({
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const response = await axios.get(`/products/${itemId}`);
+        const response = await axios.get(`http://127.0.0.1:8000/api/product/${itemId}`);
+        console.log(response);
         setItem(response.data); // Assuming your data is in the 'data' property of the response
       } catch (error) {
         console.error('Error fetching product details:', error);
@@ -45,9 +50,8 @@ export default function ModalDetails({
     }
   }, [itemId]);
 
-  const ref = item?.reference?.toString() ?? '';
 
-  if (isOpen) {
+  if (isOpen && item) {
     return (
       <S.Container>
         <S.Content>
@@ -55,7 +59,7 @@ export default function ModalDetails({
             <S.Title>
               <PiClipboardTextThin />
               <div>
-                <h4>Detalhes {item?.name_product}</h4>
+                <h4>Detalhes {item.name}</h4>
                 <span>Veja todos os detalhes sobre o produto</span>
               </div>
             </S.Title>
@@ -69,28 +73,28 @@ export default function ModalDetails({
               <S.Info>
                 <div>
                   <h5>Nome</h5>
-                  <span>{item?.name_product}</span>
+                  <span>{item.name}</span>
                 </div>
                 <div>
                   <h5>Quantidade</h5>
-                  <span>{item?.quantity}</span>
+                  <span>{item.quantity}</span>
                 </div>
               </S.Info>
               <S.Info>
                 <div>
                   <h5>Preço R$</h5>
-                  <span>{item?.price}</span>
+                  <span>{item.price}</span>
                 </div>
                 <div>
-                  <h5>Referência</h5>
-                  <span>{item?.reference}</span>
+                  <h5>Categoria</h5>
+                  <span>{item.category.category}</span>
                 </div>
               </S.Info>
 
               <S.InfoDescription>
                 <div>
                   <h5>Descrição</h5>
-                  <span>{item?.description}</span>
+                  <span>{item.description || "Dado não cadastrado!"}</span>
                 </div>
               </S.InfoDescription>
 
@@ -98,10 +102,9 @@ export default function ModalDetails({
                 <div>
                   <h5>Código QR</h5>
                   <QRCode
-                    category={item?.category}
-                    name={item?.name_product}
-                    price={item?.price}
-                    reference={ref}
+                    category={item.category.category}
+                    name={item.name}
+                    price={item.price}
                   />
                 </div>
               </S.InfoQr>

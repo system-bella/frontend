@@ -8,12 +8,13 @@ import * as Yup from 'yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // assets
-const logo = require('../../assets/logo.png');
-const imgLateral = require('../../assets/imgLateral.jpg');
-import { CiLock, CiUnlock } from 'react-icons/ci';
-
 // styles
 import * as S from './styles';
+import { CiLock, CiUnlock } from 'react-icons/ci';
+
+const logo = require('../../assets/logo.png');
+const imgLateral = require('../../assets/imgLateral.jpg');
+
 
 interface ILogin {
   email: string;
@@ -53,6 +54,7 @@ export default function Login() {
   };
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
+    setLoading(true);
     try {
       setLoading(!loading);
 
@@ -68,7 +70,8 @@ export default function Login() {
     } catch (err) {
       if (axios.isAxiosError(err)) {
         handleLoginError(err);
-        setLoading(false);
+      } else {
+        setError('Erro inesperado. Por favor, tente novamente.');
       }
     } finally {
       setLoading(false);

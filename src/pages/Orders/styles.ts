@@ -13,8 +13,9 @@ export const Content = styled.div`
 
 export const Header = styled.header`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  flex-direction: row;
+  gap: 20px;
   margin-bottom: 36px;
 
   div {
@@ -24,7 +25,9 @@ export const Header = styled.header`
 `;
 
 export const Title = styled.div`
-  margin-bottom: 32px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 
   span {
     font-size: 16px;

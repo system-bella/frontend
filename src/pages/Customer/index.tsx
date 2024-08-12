@@ -1,19 +1,43 @@
 import * as S from './styles';
 
-// import FieldSearch from '../../components/FieldSearch';
-//import Filter from '../../components/Filter';
+import FieldSearch from '../../components/FieldSearch';
 import Modal from '../../components/ModalDelete';
 import NewItem from '../../components/NewItem';
-//import Pagination from '../../components/Pagination';
-import ModalDetails from '../../components/ModalDetails';
+import Pagination from '../../components/Pagination';
+import Details from '../../components/ModalCustomer/Details';
 
 import { PiClipboardTextThin } from 'react-icons/pi';
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function Orders() {
   const [openModal, setOpenModal] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // let url = '/product?page=' + currentPage;
+        let url = '/product';
+        // if (searchTerm) {
+        //   url = `/product/search?keyword=${searchTerm}`;
+        // }
+        // if (selectedCategory) {
+        //   url = `/product/filter?category=${selectedCategory}`;
+        // }
+        const response = await axios.get('http://127.0.0.1:8000/api/product');
+        // setItems(response.data.data);
+        // setTotalPages(response.data.last_page);
+        // setPerPage(response.data.per_page);
+        // setLastPage(response.data.last_page);
+
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <S.Container>
@@ -23,18 +47,17 @@ export default function Orders() {
             Cliente{'>'}
             <small>Todos os Clientes</small>
           </span>
+          <S.Header>
+            <div>
+              <FieldSearch onSearch={() => console.log('ola')} />
+            </div>
+            <NewItem
+              url="/Client/Create"
+              icon={<CiCirclePlus fontSize={24} />}
+              title="Novo"
+            />
+          </S.Header>
         </S.Title>
-        <S.Header>
-          <div>
-            {/* <FieldSearch /> */}
-            {/* <Filter /> */}
-          </div>
-          <NewItem
-            url="/Client/Create"
-            icon={<CiCirclePlus fontSize={24} />}
-            title="Novo"
-          />
-        </S.Header>
         <S.BodyTable>
           <tr>
             <th>Código</th>
@@ -46,7 +69,7 @@ export default function Orders() {
           </tr>
           <tr>
             <td>1</td>
-            <td>Fabine Luiza</td>
+            <td>Sayury Luiza</td>
             <td>5588967-2</td>
             <td>666.555.777-88</td>
             <td>27/07/2001</td>
@@ -58,7 +81,9 @@ export default function Orders() {
                   />
                 </button>
                 <button>
-                  <CiEdit />
+                  <a href="/Client/Update">
+                    <CiEdit />
+                  </a>
                 </button>
                 <button onClick={() => setOpenModal(true)}>
                   <CiTrash />
@@ -72,9 +97,10 @@ export default function Orders() {
             setModalOpen={() => {
               setOpenModal(false);
             }}
+            url='customer'
           />
-          <ModalDetails
-            itemId={1}
+          <Details
+            // itemId={1}
             isOpen={openModalDetails}
             setModalOpen={() => setOpenModalDetails(false)}
           />
@@ -82,10 +108,13 @@ export default function Orders() {
       </S.Content>
 
       <S.Footer>
-        {/* <Pagination
-          nextPage={() => console.log(1)}
-          prevPage={() => console.log(1)}
-        /> */}
+        <Pagination
+          currentPage={1}
+          lastPage={undefined}
+          perPage={undefined}
+          prevPage={() => console.log('ola')}
+          nextPage={() => console.log('ola')}
+        />
       </S.Footer>
     </S.Container>
   );
