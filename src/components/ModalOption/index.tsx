@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ModalCreate from '../../components/ModalProduct/ModalCreate';
+import CreateCategoria from '../../components/ModalCategoria/Create';
+import CreateFornecedor from "../ModalFonecedor/Create";
 
 interface Modal {
     isOpen: boolean;
@@ -14,6 +16,8 @@ export default function ModalOption({
 
     const modalRef = useRef<HTMLDivElement>(null);
     const [openModalCreate, setOpenModalCreate] = useState(false);
+    const [openModalCat, setOpenModalCat] = useState(false);
+    const [openModalForn, setOpenModalForn] = useState(false);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -43,17 +47,26 @@ export default function ModalOption({
 
                 <ul>
                     <li>
-                        <button onClick={() => {
-                            setOpenModalCreate(true);
-                        }}>
+                        <button
+                            onClick={() => {
+                                setOpenModalCreate(true);
+                            }}>
                             Produto
                         </button>
                     </li>
                     <li>
-                        <button>Categoria</button>
+                        <button
+                            onClick={() => {
+                                setOpenModalCat(true);
+                            }}>
+                            Categoria</button>
                     </li>
                     <li>
-                        <button>Fornecedor</button>
+                        <button
+                            onClick={() => {
+                                setOpenModalForn(true);
+                            }}
+                        >Fornecedor</button>
                     </li>
                 </ul>
             </Content>
@@ -62,19 +75,25 @@ export default function ModalOption({
                 isOpen={openModalCreate}
                 setModalOpen={() => setOpenModalCreate(false)}
             />
+
+            <CreateCategoria
+                isOpen={openModalCat}
+                setModalOpen={() => setOpenModalCat(false)} />
+            <CreateFornecedor
+                isOpen={openModalForn}
+                setModalOpen={() => setOpenModalForn(false)} />
         </Container>
     );
 }
 
 
 export const Container = styled.div`
-    
 `
 
 export const Content = styled.div`
     border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
     border-radius: 16px;
-    width: 100%;
+    width: 100px;
     font-size: 15px;
     padding: 8px;
     background-color: ${(props) => props.theme.colors.white};

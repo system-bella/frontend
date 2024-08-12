@@ -5,9 +5,11 @@ import axios_production from '../../../api/axios_production';
 import { AxiosError } from 'axios';
 import { NumericFormat } from 'react-number-format';
 import React, { useState } from 'react';
+import ListagemCategoria from '../../ModalCategoria/Listagem';
 //styles
 import * as S from './styles';
 import axios from 'axios';
+
 interface IModalCreateProps {
   isOpen: boolean;
   setModalOpen: any;
@@ -75,6 +77,7 @@ export default function ModalCreate({
   setModalOpen
 }: IModalCreateProps) {
   const [loading, setLoading] = useState(false);
+  const [categoria, setCategoria] = useState(false);
   const { register, handleSubmit, formState, reset, control } = useForm<IProductData>({
     mode: 'onBlur',
     resolver: yupResolver(schema)
@@ -87,7 +90,7 @@ export default function ModalCreate({
     setLoading(true);
     try {
       // const response = await axios_production.post('/product', data);
-      const response = await axios.post('http://127.0.0.1:8000/api/product', {...data});
+      const response = await axios.post('http://127.0.0.1:8000/api/product', { ...data });
       const statusCode = response.status;
       console.log(response);
 
@@ -95,7 +98,7 @@ export default function ModalCreate({
         alert('Produto salvo com sucesso!');
         reset();
         window.location.reload();
-      setLoading(false);
+        setLoading(false);
       }
     } catch (error) {
       if ((error as AxiosError).response) {
@@ -109,9 +112,25 @@ export default function ModalCreate({
           setLoading(false);
         }
       } else {
-        alert('Erro desconhecido: '+ error);
+        alert('Erro desconhecido: ' + error);
         setLoading(false);
       }
+    }
+  };
+
+  const handleSearchChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = event.target.value;
+    const id = event.target.id;
+
+    if (value.trim() === "") {
+      setCategoria(false);
+      return;
+    }
+
+    if (id === 'categoria') {
+      setCategoria(true);
     }
   };
 
@@ -121,7 +140,7 @@ export default function ModalCreate({
         <S.ContentModel>
           <S.ContentForm>
             <span>
-              <strong>Produtos{'>'}</strong>Cadastrar produto
+              <strong>Produtos{'>'}</strong>Cadastrar
             </span>
             <S.Form onSubmit={handleSubmit(onSubmit)}>
               <S.FormInput>
@@ -137,44 +156,56 @@ export default function ModalCreate({
               </S.FormInput>
               <div>
                 <S.FormInput>
-                  <label>Categoria *</label>
-                  <S.Input
-                    {...register('category_id')}
-                    type="number"
-                    placeholder="Informe a categoria"
-                  />
-                  {errors.category_id && <small>{errors.category_id.message}</small>}
+                  <label>Fornecedor *</label>
+                  <S.Filter id="fornecedor">
+                    <option
+                      disabled
+                      selected hidden
+                      value="">
+                      Nenhum
+                    </option>
+                    <option value="fornecedor 1">fornecedor1</option>
+                    <option value="fornecedor 2">fornecedor 1 2</option>
+                    <option value="fornecedor 3">fornecedor 1 2</option>
+                    <option value="fornecedor 4">fornecedor 1 4</option>
+                    <option value="fornecedor 5">fornecedor 1 5</option>
+                  </S.Filter>
                 </S.FormInput>
+
                 <S.FormInput>
                   <label>Quantidade *</label>
                   <S.Input
                     {...register('quantity')}
                     type="number"
-                    placeholder="Informe a quantidade"
+                    placeholder="1"
                   />
                   {errors.quantity && <small>{errors.quantity.message}</small>}
                 </S.FormInput>
               </div>
               <div>
                 <S.FormInput>
-                  <label>Fornecedor *</label>
-                  <S.Input
-                    // {...register('name_product')}
-                    type="text"
-                    placeholder="Informe o fornecedor"
-                  />
-                  {/* {errors.name_product && (
-                    <small>{errors.name_product.message}</small>
-                  )} */}
+                  <label>Categoria *</label>
+                  <S.ListModal>
+                    <S.Input
+                      id='categoria'
+                      {...register('category_id')}
+                      type="number"
+                      placeholder="Informe a categoria"
+                      onChange={handleSearchChange} />
+
+                    <S.ListDados>
+                      {
+                        categoria &&
+                        <ListagemCategoria />
+                      }
+                    </S.ListDados>
+                  </S.ListModal>
+                  {errors.name && <small>{errors.name.message}</small>}
                 </S.FormInput>
+
                 <S.FormInput>
                   <label>Preço *</label>
-                  {/* <S.Input
-                    {...register('price')}
-                    type="text"
-                    placeholder="Informe o preço"
-                  /> */}
-                  
+
                   <Controller
                     name="price"
                     control={control}
@@ -185,7 +216,7 @@ export default function ModalCreate({
                         decimalSeparator=","
                         decimalScale={2}
                         fixedDecimalScale={true}
-                        placeholder="Informe o valor R$"
+                        placeholder="R$ 0,00"
                         prefix="R$ "
                         value={value}
                         onValueChange={(values) => {

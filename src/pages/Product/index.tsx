@@ -14,6 +14,7 @@ import ModalDetails from '../../components/ModalProduct/ModalDetails';
 import ModalEdit from '../../components/ModalProduct/ModalEdite';
 import ModalOption from '../../components/ModalOption';
 
+
 // icons
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { PiClipboardTextThin } from 'react-icons/pi';
@@ -135,14 +136,14 @@ export default function Product() {
                 <CiCirclePlus />
                 <span>Novo</span>
               </S.NewItem>
-              <S.ModalOpt>
-                <ModalOption
-                  isOpen={openModalOpt}
-                  setModalOpen={() => setOpenModalOpt(false)} />
-              </S.ModalOpt>
-            </S.ContentModal>
 
+            </S.ContentModal>
           </S.Header>
+          <S.ModalOpt>
+            <ModalOption
+              isOpen={openModalOpt}
+              setModalOpen={() => setOpenModalOpt(false)} />
+          </S.ModalOpt>
         </S.Title>
 
         <S.BodyTable>
@@ -208,6 +209,21 @@ export default function Product() {
         </S.BodyTable>
       </S.Content>
 
+
+
+      <S.Footer>
+        <Pagination
+          currentPage={currentPage}
+          lastPage={lastPage}
+          perPage={perPage}
+          prevPage={goToPrevPage}
+          nextPage={goToNextPage}
+        />
+      </S.Footer>
+      {/* Modals */}
+
+     
+
       <ModalCreate
         isOpen={openModalCreate}
         setModalOpen={() => setOpenModalCreate(false)}
@@ -230,15 +246,6 @@ export default function Product() {
         itemId={selectedItemId}
       />
 
-      <S.Footer>
-        <Pagination
-          currentPage={currentPage}
-          lastPage={lastPage}
-          perPage={perPage}
-          prevPage={goToPrevPage}
-          nextPage={goToNextPage}
-        />
-      </S.Footer>
     </S.Container>
   );
 }

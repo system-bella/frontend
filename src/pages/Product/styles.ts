@@ -48,6 +48,7 @@ export const NewItem = styled.button`
 `;
 
 export const Title = styled.div`
+  position: relative;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -113,5 +114,5 @@ export const ContentModal = styled.div`
 export const ModalOpt = styled.div`
  position: absolute;
  top: 50px;
- width: 100%;
+ right: 0;
 `

@@ -71,6 +71,20 @@ export const Input = styled.input`
   height: 44px;
 `;
 
+export const Filter = styled.select`
+  border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
+  background-color: ${(props) => props.theme.colors.white};
+  border-radius: 6px;
+  padding: 10px 16px;
+  width: 210px;
+  height: 44px;
+  max-width: 100%; // Garante que o select não ultrapasse o limite da div
+  /* width: 210px;
+  max-width: 210px; */
+  /* height: 44px; */
+
+`;
+
 export const TextArea = styled.textarea`
   border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
   border-radius: 6px;
@@ -108,4 +122,14 @@ export const Save = styled.button`
   padding: 10px;
   border-radius: 10px;
 `;
+
+export const ListModal = styled.div`
+  position: relative;
+`
+
+export const ListDados = styled.div`
+  position: absolute;
+  top: 45px;
+  width: 100%;
+`
 
