@@ -9,10 +9,12 @@ import Report from '../pages/Report';
 import CreateProduct from '../components/CreateProduct';
 import CreateOrders from '../components/CreateOrders';
 import CreateClient from '../components/CreateClient';
+import PageTest from '../pages/PageTest';
 
 const AppRoutes = () => (
   <Switch>
     <Route path="/" exact component={Login} />
+    <Route path="/PageTest" exact component={PageTest} />
     <Layout>
       <Route path="/Orders" exact component={Orders} />
       <Route path="/Customer" exact component={Customer} />

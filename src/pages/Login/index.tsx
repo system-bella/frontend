@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 //api
-import api from '../../api/axios';
+import api from '../../api/login';
 import axios, { AxiosError } from 'axios';
 // form validation
 import * as Yup from 'yup';
@@ -29,6 +29,7 @@ export default function Login() {
   const [locked, setLocked] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [redirect, setRedirect] = useState(false);
   const history = useHistory();
 
   const { register, handleSubmit, formState } = useForm<ILogin>({
@@ -42,7 +43,7 @@ export default function Login() {
     if (axios.isAxiosError(err)) {
       const axiosError = err as AxiosError;
 
-      if (axiosError.response?.status === 422)
+      if (axiosError.response?.status === 401)
         setError('Credenciais inválidas!');
     }
   };
@@ -59,13 +60,11 @@ export default function Login() {
 
       const response = await api.post('login', data);
 
-      console.log(response.data);
+      const token = response.data.token;
 
-      if (response.status === 201) {
-        history.push('/Product');
-        setLoading(false);
-        window.location.reload();
-      }
+      localStorage.setItem('authToken', token);
+
+      setRedirect(true);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         handleLoginError(err);
@@ -75,6 +74,11 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  if (redirect) {
+    history.push('/Product');
+    window.location.reload();
+  }
 
   return (
     <S.Container>
