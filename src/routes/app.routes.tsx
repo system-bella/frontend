@@ -9,12 +9,14 @@ import Report from '../pages/Report';
 import CreateProduct from '../components/CreateProduct';
 import CreateOrders from '../components/ModalOrder/CreateOrders';
 import CreateClient from '../components/ModalCustomer/CreateClient';
+import PageTest from '../pages/PageTest';
 import User from '../pages/User';
 import EditClient from '../components/ModalCustomer/Update';
 
 const AppRoutes = () => (
   <Switch>
     <Route path="/" exact component={Login} />
+    <Route path="/PageTest" exact component={PageTest} />
     <Layout>
       <Route path="/Orders" exact component={Orders} />
       <Route path="/Client" exact component={Customer} />

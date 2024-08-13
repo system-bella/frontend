@@ -3,7 +3,8 @@ import * as S from './style'
 import { CiInboxOut } from "react-icons/ci";
 import TabelaDashboard from "../../components/TabelaDashboard";
 import { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
+import axios_api from '../../api/axios'
 import { MdOutlineAttachMoney, MdOutlineShoppingCart } from "react-icons/md";
 import DashboardValores from "../../components/DashboardValores";
 import { LineChart, Line, BarChart, Bar, Tooltip, Legend, ResponsiveContainer, XAxis, YAxis } from 'recharts';
@@ -23,10 +24,13 @@ export default function Report() {
   const [user, setUser] = useState<User[]>([]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/user').then(response => {
-      console.log(response.data.data);
-      setUser(response.data.data);
-    })
+    try{
+      axios_api.get('v1/user').then(response => {
+        setUser(response.data.data);
+      })
+    }catch(e){
+      console.log(e);
+    }
   }, []);
 
   const contentRef = useRef<HTMLDivElement>(null);

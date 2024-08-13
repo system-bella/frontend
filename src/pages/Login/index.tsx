@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 //api
-import api from '../../api/axios_production';
+import api from '../../api/login';
 import axios, { AxiosError } from 'axios';
 // form validation
 import * as Yup from 'yup';
@@ -30,6 +30,7 @@ export default function Login() {
   const [locked, setLocked] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [redirect, setRedirect] = useState(false);
   const history = useHistory();
 
   const { register, handleSubmit, formState } = useForm<ILogin>({
@@ -43,33 +44,29 @@ export default function Login() {
     if (axios.isAxiosError(err)) {
       const axiosError = err as AxiosError;
 
-      if (axiosError.response?.status === 422)
+      if (axiosError.response?.status === 401)
         setError('Credenciais inválidas!');
     }
+  };
+
+  const initializeCSRF = async () => {
+    await axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie');
   };
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        'http://127.0.0.1:8000/api/login',
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          withCredentials: true, // Inclui cookies na requisição
-        }
-      );
+      setLoading(!loading);
 
-      if (response.status === 200) {
-        const { token } = response.data;
-        localStorage.setItem('token', token);
-        history.push('/Product');
-        window.location.reload();
-      } else {
-        setError('Credenciais inválidas!');
-      }
+      await initializeCSRF(); // Inicializa a proteção CSRF
+
+      const response = await api.post('login', data);
+
+      const token = response.data.token;
+
+      localStorage.setItem('authToken', token);
+
+      setRedirect(true);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         handleLoginError(err);
@@ -80,6 +77,11 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  if (redirect) {
+    history.push('/Product');
+    window.location.reload();
+  }
 
   return (
     <S.Container>
