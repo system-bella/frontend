@@ -1,5 +1,5 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import axios from '../../../api/axios_production';
+import axios_product from '../../../api/axios';
 import { AxiosError } from 'axios';
 
 //styles
@@ -40,7 +40,7 @@ export default function ModalEdit({
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const response = await axios.get(`/products/${itemId}`);
+        const response = await axios_product.get(`/products/${itemId}`);
         setFormData(response.data);
       } catch (error) {
         console.error('Error fetching product details:', error);
@@ -66,7 +66,7 @@ export default function ModalEdit({
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.put(`/products/${itemId}`, formData);
+      const response = await axios_product.put(`/products/${itemId}`, formData);
       const statusCode = response.status;
 
       if (statusCode === 200) {

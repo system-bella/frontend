@@ -6,7 +6,6 @@ import Product from '../pages/Product';
 import Orders from '../pages/Orders';
 import Customer from '../pages/Customer';
 import Report from '../pages/Report';
-import CreateProduct from '../components/CreateProduct';
 import CreateOrders from '../components/ModalOrder/CreateOrders';
 import CreateClient from '../components/ModalCustomer/CreateClient';
 import PageTest from '../pages/PageTest';
@@ -23,7 +22,6 @@ const AppRoutes = () => (
       <Route path="/Product" exact component={Product} />
       <Route path="/usuario" exact component={User} />
       <Route path="/Orders/Create" exact component={CreateOrders} />
-      <Route path="/Product/Create" exact component={CreateProduct} />
       <Route path="/Client/Create" exact component={CreateClient} />
       <Route path="/Report" exact component={Report} />
       <Route path="/Client/Update" exact component={EditClient} />

@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
-import axios_production from '../../api/axios_production';
 import ModalCreate from '../../components/ModalProduct/ModalCreate';
+import axios_product from '../../api/axios';
 // styles
 import * as S from './styles';
 
 // components
 import FieldSearch from '../../components/FieldSearch';
-import Filter from '../../components/Filter';
-import Modal from '../../components/ModalDelete';
+import ModalDel from '../../components/ModalDelete';
 //import NewItem from '../../components/NewItem';
 import Pagination from '../../components/Pagination';
 import ModalDetails from '../../components/ModalProduct/ModalDetails';
@@ -18,7 +17,6 @@ import ModalOption from '../../components/ModalOption';
 // icons
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { PiClipboardTextThin } from 'react-icons/pi';
-import axios from 'axios';
 
 interface IData {
   id: number;
@@ -27,6 +25,7 @@ interface IData {
   category_id: number;
   category: Categoria;
   price: string;
+  barcode: string;
 }
 
 interface Categoria {
@@ -46,11 +45,10 @@ export default function Product() {
   const [openModalCreate, setOpenModalCreate] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalEdite, setOpenModalEdite] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModalDell, setOpenModalDell] = useState(false);
   const [openModalOpt, setOpenModalOpt] = useState(false);
 
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   function currencyFormat(value: number): string {
     //configura as opções para o formato de moeda brasileira
@@ -65,27 +63,19 @@ export default function Product() {
     return formatoMoeda;
   }
 
-  const handleSearch = (term: string) => {
-    setSearchTerm(term);
-    setCurrentPage(1);
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
   };
-
-  const ModalsDecis = () => {
-
-  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // let url = '/product?page=' + currentPage;
-        let url = '/product';
-        // if (searchTerm) {
-        //   url = `/product/search?keyword=${searchTerm}`;
-        // }
-        // if (selectedCategory) {
-        //   url = `/product/filter?category=${selectedCategory}`;
-        // }
-        const response = await axios.get('http://127.0.0.1:8000/api/product');
+        let url = 'product?page=' + currentPage;
+        if (searchTerm) {
+          url = `product?search=${searchTerm}`;
+        }
+        const response = await axios_product.get(`v1/${url}`);
         setItems(response.data.data);
         setTotalPages(response.data.last_page);
         setPerPage(response.data.per_page);
@@ -102,7 +92,7 @@ export default function Product() {
       }
     };
     fetchData();
-  }, [currentPage, searchTerm, selectedCategory]);
+  }, [currentPage, searchTerm]);
 
   const goToNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -123,7 +113,7 @@ export default function Product() {
 
           <S.Header>
             <div>
-              <FieldSearch onSearch={handleSearch} />
+              <FieldSearch onSearch={handleSearchChange} />
             </div>
 
             <S.ContentModal>
@@ -160,7 +150,7 @@ export default function Product() {
           <tbody>
             {items?.map((item) => (
               <tr key={item.id}>
-                <td>{item.name}</td>
+                <td>{item.barcode}</td>
                 <td>{item.category.category}</td>
                 <td>{item.quantity}</td>
                 <td>{item.name}</td>
@@ -186,7 +176,7 @@ export default function Product() {
                     <button
                       onClick={() => {
                         setSelectedItemId(item.id);
-                        setOpenModal(true);
+                        setOpenModalDell(true);
                       }}
                     >
                       <CiTrash />
@@ -196,21 +186,8 @@ export default function Product() {
               </tr>
             ))}
           </tbody>
-
-          <Modal
-            url='product'
-            isOpen={openModal}
-            setModalOpen={() => {
-              setSelectedItemId(null);
-              setOpenModal(false);
-            }}
-            itemId={selectedItemId}
-          />
         </S.BodyTable>
       </S.Content>
-
-
-
       <S.Footer>
         <Pagination
           currentPage={currentPage}
@@ -220,9 +197,18 @@ export default function Product() {
           nextPage={goToNextPage}
         />
       </S.Footer>
+
       {/* Modals */}
 
-     
+      <ModalDel
+        url='product'
+        isOpen={openModalDell}
+        setModalOpen={() => {
+          setSelectedItemId(null);
+          setOpenModalDell(false);
+        }}
+        itemId={selectedItemId}
+      />
 
       <ModalCreate
         isOpen={openModalCreate}

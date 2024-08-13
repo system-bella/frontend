@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from './style'
 
 interface ModalProp {
@@ -6,6 +6,7 @@ interface ModalProp {
     titleRestName: string;
     children: React.ReactNode;
     setModalClose: () => void;
+    setModalFunctionRight: any;
     loading?: boolean;
 }
 
@@ -14,8 +15,22 @@ export default function ({
     titleName,
     titleRestName,
     setModalClose,
+    setModalFunctionRight,
     loading
 }: ModalProp) {
+    const [isLoading, setIsLoading] = useState(loading);
+
+    const handleSaveClick = async () => {
+        setIsLoading(true);
+        try {
+            await setModalFunctionRight();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <S.Container>
             <S.Content>
@@ -24,12 +39,15 @@ export default function ({
                 </S.Title>
                 {children}
 
-            <S.Actions>
-                <S.Cancel onClick={setModalClose}>Cancelar</S.Cancel>
-                <S.Save type="submit" disabled={loading}>
-                    {loading ? 'Salvando...' : 'Salvar'}
-                </S.Save>
-            </S.Actions>
+                <S.Actions>
+                    <S.Cancel onClick={setModalClose}>Cancelar</S.Cancel>
+                    <S.Save
+                        onClick={handleSaveClick}
+                        type="submit"
+                        disabled={loading}>
+                        {loading ? 'Salvando...' : 'Salvar'}
+                    </S.Save>
+                </S.Actions>
             </S.Content>
         </S.Container>
     )

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { AxiosError } from 'axios';
-import axios_production from '../../api/axios_production';
-import axios from 'axios';
+import axios_production from '../../api/axios';
 
 // styles
 import * as S from './styles';
@@ -21,26 +20,24 @@ export default function Modal({
   itemId,
   url
 }: IModalProps) {
-  console.log(itemId);
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
     setLoading(true);
     try {
-      const response = await axios_production.delete(`/${url}/${itemId}`);
-      // const response = await axios.delete(`http://127.0.0.1:8000/api/product/${itemId}`);
+      const response = await axios_production.delete(`v1/${url}/${itemId}`);
+      console.log(response);
       const statusCode = response.status;
 
-      if (statusCode === 200) {
+      if (statusCode === 204) {
         setModalOpen(false);
-        setLoading(false);
         window.location.reload();
       }
     } catch (error) {
       setLoading(false);
       if ((error as AxiosError).response) {
         const statusCode = (error as AxiosError).response?.status;
-
+        
         if (statusCode === 404) {
           alert('Produto não encontrado');
         } else {
@@ -49,6 +46,8 @@ export default function Modal({
       } else {
         alert('Erro desconhecido');
       }
+    }finally{
+      setLoading(false);
     }
   };
   if (isOpen) {

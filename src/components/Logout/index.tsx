@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { AxiosError } from 'axios';
-import axios_production from '../../api/axios_production';
-import axios from 'axios';
+import axios_product from '../../api/axios';
 
 // styles
 import * as S from './style';

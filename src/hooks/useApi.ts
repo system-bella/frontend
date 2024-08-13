@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from '../api/axios_production';
+import axios from '../api/axios';
 
 export function useApi<T = unknown>(url: string) {
   const [data, setData] = useState<T | null>(null);

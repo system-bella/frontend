@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import IlayoutModal from "../../IlayoutModal";
+
+import * as Yup from 'yup';
+import { useForm, SubmitHandler} from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { AxiosError } from "axios";
+
 interface IModalCreateProps {
     isOpen: boolean;
     setModalOpen: any;
@@ -13,10 +19,16 @@ export default function CreateFornecedor(
 
     const [loading, setLoading] = useState(false);
 
+    // const { register, handleSubmit, formState, reset} = useForm<Input>({
+    //     mode: 'onBlur',
+    //     resolver: yupResolver(schema)
+    //   });
+
     if (isOpen) {
         return (
             <Container>
-                <IlayoutModal
+                {/* <IlayoutModal
+                setModalFunctionRight={handleSubmit(onSubmit)}
                     titleName="Fornecedor"
                     titleRestName="Cadastrar"
                     setModalClose={setModalOpen}
@@ -28,7 +40,7 @@ export default function CreateFornecedor(
                             placeholder="Informe o nome do fornecedor"
                         />
                     </DivInput>
-                </IlayoutModal>
+                </IlayoutModal> */}
             </Container>
         )
 

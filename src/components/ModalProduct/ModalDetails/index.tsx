@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios_production from '../../../api/axios_production';
-import axios from 'axios';
+import axios_product from '../../../api/axios';
 
 import * as S from './styles';
 import { PiClipboardTextThin } from 'react-icons/pi';
@@ -37,8 +36,7 @@ export default function ModalDetails({
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/product/${itemId}`);
-        console.log(response);
+        const response = await axios_product.get(`v1/product/${itemId}`);
         setItem(response.data); // Assuming your data is in the 'data' property of the response
       } catch (error) {
         console.error('Error fetching product details:', error);
@@ -76,8 +74,8 @@ export default function ModalDetails({
                   <span>{item.name}</span>
                 </div>
                 <div>
-                  <h5>Quantidade</h5>
-                  <span>{item.quantity}</span>
+                  <h5>Referência</h5>
+                  <span>{item.barcode}</span>
                 </div>
               </S.Info>
               <S.Info>
@@ -95,6 +93,10 @@ export default function ModalDetails({
                 <div>
                   <h5>Descrição</h5>
                   <span>{item.description || "Dado não cadastrado!"}</span>
+                </div>
+                <div>
+                  <h5>Quantidade</h5>
+                  <span>{item.quantity}</span>
                 </div>
               </S.InfoDescription>
 

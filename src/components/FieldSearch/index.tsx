@@ -3,27 +3,19 @@ import * as S from './styles';
 import { CiSearch } from 'react-icons/ci';
 
 interface IFildeSearch {
-  // onSearch: (searchTerm: string) => void;
-  onSearch: any;
+  onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function FieldSearch({ onSearch }: IFildeSearch) {
-  const [inputValue, setInputValue] = useState('');
-
-  const handleSearch = (event: React.FormEvent) => {
-    event.preventDefault();
-    onSearch(inputValue.trim()); // Trim the search term to remove leading/trailing spaces
-  };
   return (
     <S.Container>
-      <button onClick={handleSearch}>
+      <button>
         <CiSearch />
       </button>
       <input
         type="text"
         placeholder="Digite um item buscado"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={onSearch}
       />
     </S.Container>
   );

@@ -84,6 +84,7 @@ export const Info = styled.div`
   div > span {
     font-size: 16px;
     color: ${(props) => props.theme.colors.secondary.gray_100};
+    
   }
 
   div {
@@ -93,18 +94,24 @@ export const Info = styled.div`
 
 export const InfoDescription = styled.div`
   display: flex;
+  gap: 8px;
+
+  div {
+    width: 60%;
+    margin-bottom: 40px;
+  }
+
   div > h5 {
     font-weight: 600;
     color: ${(props) => props.theme.colors.black};
     font-size: 16px;
   }
+
   div > span {
     font-size: 16px;
     color: ${(props) => props.theme.colors.secondary.gray_100};
-  }
-
-  div {
-    margin-bottom: 40px;
+    word-break: break-word; /* Garante que palavras longas sejam quebradas */
+    overflow-wrap: break-word; /* Garante que a quebra aconteça corretamente */
   }
 `;
 

@@ -1,14 +1,13 @@
 import * as Yup from 'yup';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import axios_production from '../../../api/axios_production';
+import axios_product from '../../../api/axios';
 import { AxiosError } from 'axios';
 import { NumericFormat } from 'react-number-format';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ListagemCategoria from '../../ModalCategoria/Listagem';
 //styles
 import * as S from './styles';
-import axios from 'axios';
 
 interface IModalCreateProps {
   isOpen: boolean;
@@ -18,24 +17,20 @@ interface IModalCreateProps {
 interface IProductData {
   name: string;
   quantity: number;
-  category_id: number;
+  category_id: string;
+  supplier_id: number;
   price: number;
   description?: string;
+}
+
+interface Fornecedor {
+  id: number,
+  name: string,
 }
 
 // Validation
 const schema = Yup.object().shape({
   // begin error
-  category_id: Yup.number()
-    .transform((value, originalValue) => {
-      if (originalValue === null || originalValue === undefined) {
-        return undefined;
-      }
-      // return String(originalValue).trim();
-      return Number(originalValue);
-    })
-    .required('Campo obrigatório'),
-
   name: Yup.string()
     .transform((value, originalValue) => {
       if (originalValue === null || originalValue === undefined) {
@@ -44,6 +39,31 @@ const schema = Yup.object().shape({
       return String(originalValue).trim(); // Remova espaços em branco extras
     })
     .required('Campo obrigatório'),
+
+  quantity: Yup.number()
+    .transform((value, originalValue) => {
+      if (originalValue === '' || isNaN(originalValue)) {
+        return undefined;
+      }
+      return Number(originalValue); //
+    })
+    .required('Campo obrigatório'),
+
+  category_id: Yup.string()
+    .transform((value, originalValue) => {
+      if (originalValue === null || originalValue === undefined) {
+        return undefined;
+      }
+      // return String(originalValue).trim();
+      return String(originalValue);
+    })
+    .required('Campo obrigatório'),
+
+  supplier_id: Yup.number()
+  .transform((value, originalValue) => {
+    return originalValue === "" ? undefined : Number(originalValue);
+  }).required('Campo obrigatório'),
+
 
   description: Yup.string()
     .transform((value, originalValue) => {
@@ -62,14 +82,6 @@ const schema = Yup.object().shape({
     })
     .required('Campo obrigatório'),
 
-  quantity: Yup.number()
-    .transform((value, originalValue) => {
-      if (originalValue === '' || isNaN(originalValue)) {
-        return undefined;
-      }
-      return Number(originalValue); //
-    })
-    .required('Campo obrigatório')
 });
 
 export default function ModalCreate({
@@ -78,27 +90,43 @@ export default function ModalCreate({
 }: IModalCreateProps) {
   const [loading, setLoading] = useState(false);
   const [categoria, setCategoria] = useState(false);
-  const { register, handleSubmit, formState, reset, control } = useForm<IProductData>({
+  const [fornecedor, setFornecedor] = useState<Fornecedor[] | null>(null);
+  const [searchCat, setSearchCat] = useState("");
+  const [categoryId, setCategoryId] = useState<number | null>(null);
+  const { register, handleSubmit, formState, reset, control, setValue } = useForm<IProductData>({
     mode: 'onBlur',
     resolver: yupResolver(schema)
   });
 
   const { errors } = formState;
-  // console.log('erros: ', errors);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios_product.get('v1/supplier-find-all');
+        setFornecedor(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData();
+  }, []);
 
   const onSubmit: SubmitHandler<IProductData> = async (data) => {
     setLoading(true);
     try {
-      // const response = await axios_production.post('/product', data);
-      const response = await axios.post('http://127.0.0.1:8000/api/product', { ...data });
+      const payload = {
+        ...data,
+        category_id: categoryId, // Substitui pelo ID
+    };
+      console.log(payload);
+      const response = await axios_product.post('v1/product', payload);
       const statusCode = response.status;
-      console.log(response);
 
       if (statusCode === 201) {
         alert('Produto salvo com sucesso!');
         reset();
         window.location.reload();
-        setLoading(false);
       }
     } catch (error) {
       if ((error as AxiosError).response) {
@@ -106,15 +134,14 @@ export default function ModalCreate({
 
         if (statusCode === 409) {
           alert('Já existe referência e/ou código de barras cadastrados');
-          setLoading(false);
         } else {
           alert(`Error with status code: ${statusCode}`);
-          setLoading(false);
         }
       } else {
         alert('Erro desconhecido: ' + error);
-        setLoading(false);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -122,16 +149,20 @@ export default function ModalCreate({
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event.target.value;
-    const id = event.target.id;
-
     if (value.trim() === "") {
       setCategoria(false);
       return;
     }
+    
+    setSearchCat(value);
+    setCategoria(true);
+    console.log(searchCat);
+  }
 
-    if (id === 'categoria') {
-      setCategoria(true);
-    }
+  const handleSelectCategory = (category: string, id: number) => {
+    setCategoryId(id);
+    setValue("category_id", category); // Atualiza o valor do input
+    setCategoria(false); // Fecha a lista de categorias
   };
 
   if (isOpen) {
@@ -157,21 +188,50 @@ export default function ModalCreate({
               <div>
                 <S.FormInput>
                   <label>Fornecedor *</label>
-                  <S.Filter id="fornecedor">
+                  <S.Filter
+                    id='fornecedor'
+                    {...register('supplier_id')}>
                     <option
-                      disabled
-                      selected hidden
-                      value="">
-                      Nenhum
+                      value="" disabled selected hidden>
+                      Selecione
                     </option>
-                    <option value="fornecedor 1">fornecedor1</option>
-                    <option value="fornecedor 2">fornecedor 1 2</option>
-                    <option value="fornecedor 3">fornecedor 1 2</option>
-                    <option value="fornecedor 4">fornecedor 1 4</option>
-                    <option value="fornecedor 5">fornecedor 1 5</option>
+                    {
+                      fornecedor?.map((val) => {
+                        return (
+                          <option key={val.id} value={val.id}>{val.name}</option>
+                        )
+                      })
+                    }
                   </S.Filter>
+                  {errors.supplier_id && (
+                    <small>{errors.supplier_id.message}</small>
+                  )}
                 </S.FormInput>
 
+                <S.FormInput>
+                  <label>Categoria *</label>
+                  <S.ListModal>
+                    <S.Input
+                      id='categoria'
+                      {...register('category_id')}
+                      type="text"
+                      placeholder="Informe a categoria"
+                      onChange={handleSearchChange}
+                      onFocus={() => setCategoria(true)} />
+
+                    <S.ListDados>
+                      {
+                        categoria &&
+                        <ListagemCategoria
+                          searchTerm={searchCat}
+                          onSelectCategory={handleSelectCategory} />
+                      }
+                    </S.ListDados>
+                  </S.ListModal>
+                  {errors.category_id && <small>{errors.category_id.message}</small>}
+                </S.FormInput>
+              </div>
+              <div>
                 <S.FormInput>
                   <label>Quantidade *</label>
                   <S.Input
@@ -180,27 +240,6 @@ export default function ModalCreate({
                     placeholder="1"
                   />
                   {errors.quantity && <small>{errors.quantity.message}</small>}
-                </S.FormInput>
-              </div>
-              <div>
-                <S.FormInput>
-                  <label>Categoria *</label>
-                  <S.ListModal>
-                    <S.Input
-                      id='categoria'
-                      {...register('category_id')}
-                      type="number"
-                      placeholder="Informe a categoria"
-                      onChange={handleSearchChange} />
-
-                    <S.ListDados>
-                      {
-                        categoria &&
-                        <ListagemCategoria />
-                      }
-                    </S.ListDados>
-                  </S.ListModal>
-                  {errors.name && <small>{errors.name.message}</small>}
                 </S.FormInput>
 
                 <S.FormInput>

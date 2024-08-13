@@ -1,48 +1,81 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import axios_product from "../../../api/axios"
+import ModalDel from '../../../components/ModalDelete';
 // icons
 import { CiTrash } from 'react-icons/ci';
 
-interface Modal {
-    isOpen: boolean;
-    setModalOpen: any;
+interface Categoria {
+    id: number,
+    category: string,
 }
 
-export default function ListagemCategoria() {
+interface ModalCat {
+    // onSelectCategory: (category: string) => void
+    onSelectCategory: any
+    searchTerm: string
+}
+
+export default function ListagemCategoria(
+    {
+        onSelectCategory, 
+        searchTerm
+    }: ModalCat) {
+
+    const [categoria, setCategoria] = useState<Categoria[] | null>(null);
+    const [openModalDel, setOpenModalDel] = useState(false);
+    const [categoriaId, setCategoriaId] = useState<number | null>(null);
+
+    const handleOpenModal = (productId: number) => {
+        setCategoriaId(productId);
+        setOpenModalDel(true);
+    };
+console.log(searchTerm);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                let url = 'v1/category';
+                if (searchTerm.trim() !== "") {
+                    url = `v1/category?search=${searchTerm}`;
+                }
+                const response = await axios_product.get(url);
+                setCategoria(response.data);
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        fetchData();
+    }, [searchTerm]);
 
     return (
         <Container>
             <Content>
 
                 <ul>
-                    <li>
-                        <button>
-                            Categoria 1
-                        </button>
-                        <button>
-                            <CiTrash />
-                        </button>
-                    </li>
-                    <li>
-                        <button>
-                            Categoria 2
-                        </button>
-
-                        <button>
-                            <CiTrash />
-                        </button>
-                    </li>
-                    <li>
-                        <button>
-                            Categoria 3
-                        </button>
-                        <button>
-                            <CiTrash />
-                        </button>
-                    </li>
+                    {
+                        categoria?.map((val) => {
+                            return (
+                                <li key={val.id}>
+                                    <button onClick={() => onSelectCategory(val.category, val.id)}>
+                                        {val.category}
+                                    </button>
+                                    <button onClick={() => handleOpenModal(val.id)}>
+                                        <CiTrash />
+                                    </button>
+                                </li>
+                            )
+                        })
+                    }
                 </ul>
             </Content>
+            <ModalDel
+                url='category'
+                isOpen={openModalDel}
+                setModalOpen={() => {
+                    setOpenModalDel(false);
+                }}
+                itemId={categoriaId}
+            />
         </Container>
     );
 }
