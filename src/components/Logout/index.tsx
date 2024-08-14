@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { AxiosError } from 'axios';
 import axios_product from '../../api/axios';
-
 // styles
 import * as S from './style';
 // icons
@@ -23,30 +22,16 @@ export default function Logout({
   // console.log(itemId);
   const [loading, setLoading] = useState(false);
 
-  const handleDelete = async () => {
+  const handleLogout = async () => {
     setLoading(true);
     try {
-    //   const response = await axios_production.delete(`/${url}/${itemId}`);
-    //   const statusCode = response.status;
-
-    //   if (statusCode === 200) {
-    //     setModalOpen(false);
-    //     setLoading(false);
-    //     window.location.reload();
-    //   }
+      await axios_product.post('v1/logout'); // Chama a API de logout
+      // Limpar o estado do usuário, tokens, etc.
+      window.location.href = "/"; // Redireciona para a página de login
     } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    } finally {
       setLoading(false);
-      if ((error as AxiosError).response) {
-        const statusCode = (error as AxiosError).response?.status;
-
-        if (statusCode === 404) {
-          alert('Produto não encontrado');
-        } else {
-          alert(`Error with status code: ${statusCode}`);
-        }
-      } else {
-        alert('Erro desconhecido');
-      }
     }
   };
   if (isOpen) {
@@ -62,9 +47,9 @@ export default function Logout({
           </S.InfoModel>
           <S.Action>
             <S.Cancel onClick={setModalOpen}>Cancelar</S.Cancel>
-            <S.Delete disabled={loading}>
+            <S.Confirm disabled={loading} onClick={handleLogout}>
               {loading ? 'Saindo...' : 'Confirmar'}
-            </S.Delete>
+            </S.Confirm>
           </S.Action>
         </S.ContentModel>
       </S.Container>

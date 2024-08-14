@@ -82,7 +82,7 @@ export const Cancel = styled.button`
   border: 1px solid ${(props) => props.theme.colors.black};
 `;
 
-export const Delete = styled.button`
+export const Confirm = styled.button`
   background-color: ${(props) => props.theme.colors.danger};
   color: ${(props) => props.theme.colors.white};
   margin-left: 16px;

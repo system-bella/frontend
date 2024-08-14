@@ -4,7 +4,8 @@ import {
     CiTrash,
     CiEdit
 } from 'react-icons/ci';
-import ModalDell from '../../components/ModalDelete';
+import ModalDell from '../ModalDelete';
+import UpdateUser from '../ModalUser/Update';
 
 interface TabelaProps {
     linhaHead: string[];
@@ -13,11 +14,12 @@ interface TabelaProps {
 
 export default function Tabela({
     linhaHead,
-    dados
+    dados,
 }: TabelaProps) {
     const [openModalDell, setOpenModalDell] = useState(false);
     const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-
+    const [openModalEdite, setOpenModalEdite] = useState(false);
+    
     return (
         <S.Container>
             <S.BodyTable>
@@ -48,7 +50,11 @@ export default function Tabela({
                             </td>
                             <td>
                                 <span>
-                                    <button>
+                                    <button
+                                        onClick={() => {
+                                            setSelectedItemId(val.id);
+                                            setOpenModalEdite(true);
+                                        }}>
                                         <CiEdit />
                                     </button>
                                     <button
@@ -64,6 +70,13 @@ export default function Tabela({
                     ))}
                 </tbody>
             </S.BodyTable>
+            <UpdateUser
+                isOpen={openModalEdite}
+                setModalOpen={() => {
+                    setOpenModalEdite(false);
+                }}
+                itemId={selectedItemId} 
+                />
             <ModalDell
                 url='user'
                 isOpen={openModalDell}

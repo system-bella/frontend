@@ -119,7 +119,7 @@ export default function EditCustomer({
         <S.ContentModel>
           <S.ContentForm>
             <span>
-              <strong>Cliente{'>'}</strong>Cadastrar
+              <strong>Cliente{'>'}</strong>Editar
             </span>
             <S.Form onSubmit={handleSubmit(onSubmit)}>
               <S.FormInput>
