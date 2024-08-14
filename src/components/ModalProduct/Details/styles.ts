@@ -19,12 +19,12 @@ export const Content = styled.div`
   width: 35%;
   height: 100vh;
   background-color: ${(props) => props.theme.colors.white};
-
+  
   padding: 32px;
-
+  
   border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
   border-radius: 32px 0 0 32px;
-`;
+  `;
 
 export const Header = styled.header`
   display: flex;
@@ -34,17 +34,17 @@ export const Header = styled.header`
   button {
     background-color: transparent;
   }
-
+  
   button > svg {
     font-size: 24px;
     margin-right: 10px;
   }
-`;
+  `;
 
 export const Title = styled.div`
   display: flex;
   align-items: center;
-
+  
   svg {
     font-size: 24px;
     margin-right: 10px;
@@ -55,21 +55,21 @@ export const Title = styled.div`
     font-weight: 400;
     color: ${(props) => props.theme.colors.secondary.gray_100};
   }
-`;
+  `;
 
 export const MainInformation = styled.div`
-  margin-top: 40px;
+  margin-top: 30px;
   width: 100%;
   h4 {
     margin-bottom: 30px;
   }
-`;
+  `;
 
 export const DivideInfo = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-`;
+  `;
 
 export const Info = styled.div`
   display: flex;
@@ -86,34 +86,34 @@ export const Info = styled.div`
     color: ${(props) => props.theme.colors.secondary.gray_100};
     
   }
-
+  
   div {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
-`;
+  `;
 
 export const InfoDescription = styled.div`
   display: flex;
   gap: 8px;
-
+  
   div {
     width: 60%;
-    margin-bottom: 40px;
+    margin-bottom: 35px;
   }
-
+  
   div > h5 {
     font-weight: 600;
     color: ${(props) => props.theme.colors.black};
     font-size: 16px;
   }
-
+  
   div > span {
     font-size: 16px;
     color: ${(props) => props.theme.colors.secondary.gray_100};
     word-break: break-word; /* Garante que palavras longas sejam quebradas */
     overflow-wrap: break-word; /* Garante que a quebra aconteça corretamente */
   }
-`;
+  `;
 
 export const InfoQr = styled.div`
   display: flex;
@@ -126,13 +126,4 @@ export const InfoQr = styled.div`
     font-size: 16px;
     color: ${(props) => props.theme.colors.secondary.gray_100};
   }
-`;
-
-export const RightInfo = styled.div`
-  width: 50%;
-`;
-
-export const Footer = styled.footer`
-  position: absolute;
-  margin-bottom: 32px;
-`;
+  `;

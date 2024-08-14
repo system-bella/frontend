@@ -57,19 +57,6 @@ export const FormInput = styled.div`
   small {
     color: ${(props) => props.theme.colors.warning};
   }
-
-  .imask{
-    border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
-    border-radius: 6px;
-    padding: 10px 16px;
-
-    &::placeholder {
-      font-size: 16px;
-    }
-
-    width: 100%;
-    height: 44px;
-  }
 `;
 
 //input

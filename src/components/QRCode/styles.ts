@@ -6,17 +6,17 @@ export const PrintQrcode = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
+  
   padding: 20px;
-`;
+  `;
 
 export const Label = styled.div`
   margin-left: 20px;
-
+  
   img {
-    height: 65px;
+    height: 60px;
   }
-
+  
   p {
     font-size: 16px;
     color: ${(props) => props.theme.colors.black};
@@ -25,11 +25,11 @@ export const Label = styled.div`
     font-size: 24px;
     color: ${(props) => props.theme.colors.black};
   }
-`;
+  `;
 
 export const CaputureQrcode = styled.button`
   border-radius: 12px;
-  padding: 12px 12px;
+  padding: 10px;
   background-color: ${(props) => props.theme.colors.primary};
 
   color: ${(props) => props.theme.colors.white};

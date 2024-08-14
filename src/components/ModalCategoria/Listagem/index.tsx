@@ -30,7 +30,6 @@ export default function ListagemCategoria(
         setCategoriaId(productId);
         setOpenModalDel(true);
     };
-console.log(searchTerm);
     useEffect(() => {
         const fetchData = async () => {
             try {

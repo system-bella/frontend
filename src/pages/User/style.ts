@@ -9,6 +9,57 @@ export const Container = styled.div`
 export const Content = styled.div`
     flex: 1;
 `
+export const Title = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+
+  span {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  span > small {
+    font-weight: 300;
+  }
+`;
+
+export const Header = styled.header`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 36px;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
+export const NewItem = styled.button`
+  width: 100px;
+  padding: 10px 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: ${(props) => props.theme.colors.white};
+
+  background-color: ${(props) => props.theme.colors.primary};
+
+  border-radius: 12px;
+
+  svg {
+    font-size: 24px;
+  }
+
+  span {
+    font-size: 16px;
+    margin-left: 8px;
+  }
+`;
 
 export const InforUser = styled.div`
   display: flex;
@@ -16,6 +67,7 @@ export const InforUser = styled.div`
 `
 
 export const Imagem = styled.div`
+  background-color: ${(props) => props.theme.colors.primary};
   width: 100px; /* Defina o tamanho do círculo */
   height: 100px; /* Defina o tamanho do círculo */
   border-radius: 50%; /* Faz com que o contêiner seja um círculo */
@@ -23,7 +75,12 @@ export const Imagem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 1px 1px 4px 1px black;
+  box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.4);
+
+  p{
+    font-size: 44px;
+    color: ${(props) => props.theme.colors.white};
+  }
     
   img {
     width: 100%;

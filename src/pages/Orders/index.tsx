@@ -2,7 +2,7 @@ import * as S from './styles';
 import Modal from '../../components/ModalDelete';
 import NewItem from '../../components/NewItem';
 import Pagination from '../../components/Pagination';
-import ModalDetails from '../../components/ModalProduct/ModalDetails';
+import ModalDetails from '../../components/ModalProduct/Details';
 import FieldSearch from '../../components/FieldSearch';
 import { PiClipboardTextThin } from 'react-icons/pi';
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';

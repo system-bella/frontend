@@ -37,7 +37,7 @@ export default function QRCode(
     <div>
       <S.Container>
         <S.PrintQrcode ref={targetRef}>
-          <Qrcode value={name} size={150} />
+          <Qrcode value={name} size={130} />
           <S.Label>
             <img src={require('../../assets/logo.png')} />
             <p>
@@ -52,7 +52,7 @@ export default function QRCode(
           </S.Label>
         </S.PrintQrcode>
         <S.CaputureQrcode onClick={handleCapture}>
-          Exportar QR Code
+          Exportar QRCode
         </S.CaputureQrcode>
       </S.Container>
     </div>

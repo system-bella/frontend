@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import ModalCreate from '../../components/ModalProduct/ModalCreate';
+import ModalCreate from '../../components/ModalProduct/Create';
 import axios_product from '../../api/axios';
 // styles
 import * as S from './styles';
@@ -7,12 +7,10 @@ import * as S from './styles';
 // components
 import FieldSearch from '../../components/FieldSearch';
 import ModalDel from '../../components/ModalDelete';
-//import NewItem from '../../components/NewItem';
 import Pagination from '../../components/Pagination';
-import ModalDetails from '../../components/ModalProduct/ModalDetails';
-import ModalEdit from '../../components/ModalProduct/ModalEdite';
+import ModalDetails from '../../components/ModalProduct/Details';
+import ModalEdit from '../../components/ModalProduct/Update';
 import ModalOption from '../../components/ModalOption';
-
 
 // icons
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
@@ -42,7 +40,6 @@ export default function Product() {
   const [perPage, setPerPage] = useState();
   const [lastPage, setLastPage] = useState();
 
-  const [openModalCreate, setOpenModalCreate] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [openModalEdite, setOpenModalEdite] = useState(false);
   const [openModalDell, setOpenModalDell] = useState(false);
@@ -81,12 +78,6 @@ export default function Product() {
         setPerPage(response.data.per_page);
         setLastPage(response.data.last_page);
 
-        //extract unique categories]
-        const uniqueCategories: string[] = Array.from(
-          new Set(response.data.data.map((item: IData) => item.category_id))
-        );
-
-        setFilter(uniqueCategories);
       } catch (e) {
         console.error(e);
       }
@@ -120,7 +111,6 @@ export default function Product() {
               <S.NewItem
                 onClick={() => {
                   setOpenModalOpt(true);
-                  // setOpenModalCreate(true);
                 }}
               >
                 <CiCirclePlus />
@@ -140,9 +130,9 @@ export default function Product() {
           <thead>
             <tr>
               <th>Referência</th>
+              <th>Produto</th>
               <th>Categoria</th>
               <th>QTD</th>
-              <th>Produto</th>
               <th>Valor R$</th>
               <th>Ações</th>
             </tr>
@@ -151,9 +141,9 @@ export default function Product() {
             {items?.map((item) => (
               <tr key={item.id}>
                 <td>{item.barcode}</td>
+                <td>{item.name}</td>
                 <td>{item.category.category}</td>
                 <td>{item.quantity}</td>
-                <td>{item.name}</td>
                 <td>{currencyFormat(parseFloat(item.price))}</td>
                 <td>
                   <span>
@@ -208,11 +198,6 @@ export default function Product() {
           setOpenModalDell(false);
         }}
         itemId={selectedItemId}
-      />
-
-      <ModalCreate
-        isOpen={openModalCreate}
-        setModalOpen={() => setOpenModalCreate(false)}
       />
 
       <ModalDetails

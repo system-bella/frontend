@@ -45,15 +45,18 @@ export const BodyTable = styled.table`
   td,
   th {
     text-align: center;
-    padding: 12px 0;
+    padding: 10px 0;
+  }
+
+  thead > tr > th {
+    background-color: ${(props) => props.theme.colors.white};
   }
 
   tr:nth-child(odd) {
-    background-color: ${(props) => props.theme.colors.white};
+    background-color: ${(props) => props.theme.colors.secondary.gray_50};
   }
   tr:nth-child(even) {
-    background-color: ${(props) => props.theme.colors.secondary.gray_50};
-    border-color: red;
+    background-color: ${(props) => props.theme.colors.white};
   }
 
   td > div {
@@ -61,17 +64,13 @@ export const BodyTable = styled.table`
     justify-content: space-around;
   }
 
-  td > div > button {
+  td > span > button {
     background-color: transparent;
+    margin: 0 10px;
   }
 
-  td > div > button > svg {
+  td > span > button > svg {
     font-size: 20px;
-  }
-  a{
-    color: black;
-    font-size: 20px;
-
   }
 `;
 
@@ -80,4 +79,28 @@ export const Footer = styled.footer`
   margin-top: 50px;
 
   padding: 10px 0;
+`;
+
+export const NewItem = styled.button`
+  width: 100px;
+  padding: 10px 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: ${(props) => props.theme.colors.white};
+
+  background-color: ${(props) => props.theme.colors.primary};
+
+  border-radius: 12px;
+
+  svg {
+    font-size: 24px;
+  }
+
+  span {
+    font-size: 16px;
+    margin-left: 8px;
+  }
 `;

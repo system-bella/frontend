@@ -1,43 +1,67 @@
 import * as S from './styles';
-
+import axios_product from '../../api/axios';
 import FieldSearch from '../../components/FieldSearch';
-import Modal from '../../components/ModalDelete';
-import NewItem from '../../components/NewItem';
+import ModalDell from '../../components/ModalDelete';
 import Pagination from '../../components/Pagination';
-import Details from '../../components/ModalCustomer/Details';
-
-import { PiClipboardTextThin } from 'react-icons/pi';
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+//Modal
+import CreateCustomer from '../../components/ModalCustomer/Create';
+import EditCustomer from '../../components/ModalCustomer/Update';
+
+interface IData {
+  id: number;
+  name: string;
+  cpf: string;
+  contact: string;
+}
 
 export default function Orders() {
-  const [openModal, setOpenModal] = useState(false);
-  const [openModalDetails, setOpenModalDetails] = useState(false);
+  const [items, setItems] = useState<IData[] | null>(null);
+  const [openModalDell, setOpenModalDell] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
+  const [openModalCreate, setOpenModalCreate] = useState(false);
+  const [openModalEdite, setOpenModalEdite] = useState(false);
+
+  //Paginas
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [perPage, setPerPage] = useState();
+  const [lastPage, setLastPage] = useState();
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // let url = '/product?page=' + currentPage;
-        let url = '/product';
-        // if (searchTerm) {
-        //   url = `/product/search?keyword=${searchTerm}`;
-        // }
-        // if (selectedCategory) {
-        //   url = `/product/filter?category=${selectedCategory}`;
-        // }
-        const response = await axios.get('http://127.0.0.1:8000/api/product');
-        // setItems(response.data.data);
-        // setTotalPages(response.data.last_page);
-        // setPerPage(response.data.per_page);
-        // setLastPage(response.data.last_page);
+        let url = 'customer?page=' + currentPage;
+        if (searchTerm) {
+          url = `customer?search=${searchTerm}`;
+        }
+        const response = await axios_product.get(`v1/${url}`);
+        setItems(response.data.data);
+        setTotalPages(response.data.last_page);
+        setPerPage(response.data.per_page);
+        setLastPage(response.data.last_page);
 
       } catch (e) {
         console.error(e);
       }
     };
     fetchData();
-  }, []);
+  }, [currentPage, searchTerm]);
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const goToPrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   return (
     <S.Container>
@@ -49,73 +73,97 @@ export default function Orders() {
           </span>
           <S.Header>
             <div>
-              <FieldSearch onSearch={() => console.log('ola')} />
+              <FieldSearch onSearch={handleSearchChange} />
             </div>
-            <NewItem
-              url="/Client/Create"
-              icon={<CiCirclePlus fontSize={24} />}
-              title="Novo"
-            />
+            <S.NewItem
+              onClick={() => {
+                setOpenModalCreate(true);
+              }}
+            >
+              <CiCirclePlus />
+              <span>Novo</span>
+            </S.NewItem>
           </S.Header>
         </S.Title>
         <S.BodyTable>
-          <tr>
-            <th>Código</th>
-            <th>Nome</th>
-            <th>RG</th>
-            <th>CPF</th>
-            <th>Data Nascimento</th>
-            <th>Ações</th>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Sayury Luiza</td>
-            <td>5588967-2</td>
-            <td>666.555.777-88</td>
-            <td>27/07/2001</td>
-            <td>
-              <div>
-                <button>
-                  <PiClipboardTextThin
-                    onClick={() => setOpenModalDetails(true)}
-                  />
-                </button>
-                <button>
-                  <a href="/Client/Update">
-                    <CiEdit />
-                  </a>
-                </button>
-                <button onClick={() => setOpenModal(true)}>
-                  <CiTrash />
-                </button>
-              </div>
-            </td>
-          </tr>
-          <Modal
-            isOpen={openModal}
-            itemId={1}
-            setModalOpen={() => {
-              setOpenModal(false);
-            }}
-            url='customer'
-          />
-          <Details
-            // itemId={1}
-            isOpen={openModalDetails}
-            setModalOpen={() => setOpenModalDetails(false)}
-          />
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Contato</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              items?.map((val, index) => {
+                return (
+                  <tr>
+                    <td>{index + 1}</td>
+                    <td>{val.name}</td>
+                    <td>{val.cpf}</td>
+                    <td>{val.contact || "-"}</td>
+                    <td>
+                      <span>
+                        <button
+                        onClick={() => {
+                          setSelectedItemId(val.id);
+                          setOpenModalEdite(true);
+                        }}
+                        >
+                          <CiEdit />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedItemId(val.id);
+                            setOpenModalDell(true);
+                          }}
+                        >
+                          <CiTrash />
+                        </button>
+                      </span>
+                    </td>
+                  </tr>
+
+                )
+              })
+            }
+
+          </tbody>
         </S.BodyTable>
       </S.Content>
 
       <S.Footer>
         <Pagination
-          currentPage={1}
-          lastPage={undefined}
-          perPage={undefined}
-          prevPage={() => console.log('ola')}
-          nextPage={() => console.log('ola')}
+          currentPage={currentPage}
+          lastPage={lastPage}
+          perPage={perPage}
+          prevPage={goToPrevPage}
+          nextPage={goToNextPage}
         />
       </S.Footer>
+
+      {/* Modal */}
+
+      <CreateCustomer
+        isOpen={openModalCreate}
+        setModalOpen={() => setOpenModalCreate(false)} />
+
+      <EditCustomer
+        isOpen={openModalEdite}
+        setModalOpen={() => {
+          setOpenModalEdite(false);
+        }}
+        itemId={selectedItemId} />
+
+      <ModalDell
+        url='customer'
+        isOpen={openModalDell}
+        itemId={selectedItemId}
+        setModalOpen={() => {
+          setOpenModalDell(false);
+        }} />
     </S.Container>
   );
 }

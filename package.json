@@ -18,6 +18,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.3",
     "react-icons": "^5.0.1",
+    "react-imask": "^7.6.1",
+    "react-native-mask-input": "^1.2.3",
     "react-number-format": "^5.4.0",
     "react-qr-code": "^2.0.12",
     "react-router-dom": "5.2.0",

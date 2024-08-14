@@ -5,11 +5,13 @@ import { CiSearch, CiCirclePlus } from 'react-icons/ci';
 interface ModalSearch {
     title: string,
     restTitle: string,
+    onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function TitleHeadSearch({
     title,
-    restTitle
+    restTitle,
+    onSearch
 }: ModalSearch) {
 
     
@@ -28,6 +30,7 @@ export default function TitleHeadSearch({
                     <input
                         type="text"
                         placeholder="Digite um item buscado"
+                        onChange={onSearch}
                     />
                 </Search>
 

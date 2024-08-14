@@ -19,11 +19,17 @@ interface IData {
   price: string;
   description: string;
   barcode: string;
+  supplier: Fornecedor;
 }
 
 interface Categoria {
   id: number,
   category: string,
+}
+
+interface Fornecedor {
+  id: number,
+  name: string,
 }
 
 export default function ModalDetails({
@@ -88,15 +94,21 @@ export default function ModalDetails({
                   <span>{item.category.category}</span>
                 </div>
               </S.Info>
+              <S.Info>
+                <div>
+                  <h5>Fornecedor</h5>
+                  <span>{item.supplier.name}</span>
+                </div>
+                <div>
+                  <h5>Quantidade</h5>
+                  <span>{item.quantity}</span>
+                </div>
+              </S.Info>
 
               <S.InfoDescription>
                 <div>
                   <h5>Descrição</h5>
                   <span>{item.description || "Dado não cadastrado!"}</span>
-                </div>
-                <div>
-                  <h5>Quantidade</h5>
-                  <span>{item.quantity}</span>
                 </div>
               </S.InfoDescription>
 

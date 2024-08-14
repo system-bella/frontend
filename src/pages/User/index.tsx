@@ -1,40 +1,84 @@
 import * as S from './style'
-import TitleHeadSearch from '../../components/TitleHeadSearch'
+import { CiCirclePlus } from 'react-icons/ci';
 import Tabela from '../../components/Tabela'
 import Pagination from '../../components/Pagination';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios_product from '../../api/axios';
+import CreateUser from '../../components/ModalUser/Create';
 
 interface User {
     id: 1,
     first_name: string,
     last_name: string,
-    is_admin: number,
     email: string,
+    is_admin: number,
 }
 
 export default function User() {
     const headers = ['#', 'Chave', 'Nome', 'E-mail', 'Usuário', 'Ações'];
     const [user, setUser] = useState<User[]>([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [openModalCreate, setOpenModalCreate] = useState(false);
+
+    //Paginas
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [perPage, setPerPage] = useState();
+    const [lastPage, setLastPage] = useState();
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/user').then(response => {
-            console.log(response.data.data);
-            setUser(response.data.data);
-        })
-    }, []);
+        const fetchData = async () => {
+            try {
+                let url = 'user?page=' + currentPage;
+                if (searchTerm) {
+                    url = `user?search=${searchTerm}`;
+                }
+                const response = await axios_product.get(`v1/${url}`);
+                setUser(response.data.data);
+                setTotalPages(response.data.last_page);
+                setPerPage(response.data.per_page);
+                setLastPage(response.data.last_page);
+
+            } catch (e) {
+                console.error(e);
+            }
+        };
+        fetchData();
+    }, [currentPage, searchTerm]);
+
+    const goToNextPage = () => {
+        if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    };
+
+    const goToPrevPage = () => {
+        if (currentPage > 1) setCurrentPage(currentPage - 1);
+    };
 
     return (
         <S.Container>
             <S.Content>
-                <TitleHeadSearch
-                    title='Usuários'
-                    restTitle='Todos os usuários'
-                />
+                <S.Title>
+                    <span>
+                        Usuários{'>'}
+                        <small>Todos os Usuários</small>
+                    </span>
+                    <S.Header>
+                        <S.NewItem
+                            onClick={() => {
+                                setOpenModalCreate(true);
+                            }}
+                        >
+                            <CiCirclePlus />
+                            <span>Novo</span>
+                        </S.NewItem>
+                    </S.Header>
+                </S.Title>
 
                 <S.InforUser>
                     <S.Imagem>
-                        <img src={require('../../assets/imgLateral.jpg')} alt="foto-perfil" />
+                        <p>
+                            SK
+                        </p>
                     </S.Imagem>
                     <S.Infor>
                         <h2>Sayury Kato</h2>
@@ -42,21 +86,27 @@ export default function User() {
                         <p>admin@admin.com</p>
                     </S.Infor>
                 </S.InforUser>
-                
+
                 <Tabela
                     linhaHead={headers}
-                    dados={user}/>
+                    dados={user} />
             </S.Content>
 
             <S.Footer>
                 <Pagination
-                    currentPage={1}
-                    lastPage={undefined}
-                    perPage={undefined}
-                    prevPage={() => console.log('ola')}
-                    nextPage={() => console.log('ola')}
+                    currentPage={currentPage}
+                    lastPage={lastPage}
+                    perPage={perPage}
+                    prevPage={goToPrevPage}
+                    nextPage={goToNextPage}
                 />
             </S.Footer>
+
+            {/* Modal */}
+
+            <CreateUser
+                isOpen={openModalCreate}
+                setModalOpen={() => setOpenModalCreate(false)} />
         </S.Container>
     )
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import ModalCreate from '../../components/ModalProduct/ModalCreate';
+import ModalCreate from '../ModalProduct/Create';
 import CreateCategoria from '../../components/ModalCategoria/Create';
 import CreateFornecedor from "../ModalFonecedor/Create";
 
@@ -73,9 +73,7 @@ export default function ModalOption({
 
             <ModalCreate
                 isOpen={openModalCreate}
-                setModalOpen={() => setOpenModalCreate(false)}
-            />
-
+                setModalOpen={() => setOpenModalCreate(false)}/>
             <CreateCategoria
                 isOpen={openModalCat}
                 setModalOpen={() => setOpenModalCat(false)} />
