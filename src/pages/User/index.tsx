@@ -23,7 +23,6 @@ export default function User() {
 
     const { user } = useUser();
     const isAdmin = user?.is_admin === 1 || user?.is_admin === true;
-    console.log(isAdmin);
     //Paginas
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -85,13 +84,13 @@ export default function User() {
                     <S.InforUser>
                         <S.Imagem>
                             <p>
-                                SK
+                                {(user.first_name[0] + user.last_name[0]).toLocaleUpperCase()}
                             </p>
                         </S.Imagem>
                         <S.Infor>
-                            <h2>Sayury Kato</h2>
-                            <p>Administrador</p>
-                            <p>admin@admin.com</p>
+                            <h2>{user.first_name + " " + user.last_name}</h2>
+                            <p>{user.is_admin === 1 ? 'Administrador' : 'Atendente'}</p>
+                            <p>{user.email}</p>
                         </S.Infor>
                     </S.InforUser>
 

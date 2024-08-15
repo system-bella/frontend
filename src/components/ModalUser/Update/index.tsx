@@ -18,8 +18,8 @@ interface IUserData {
   first_name: string,
   last_name: string,
   email: string,
-  password: string,
-  password_confirmation: string,
+  password?: string,
+  password_confirmation?: string,
   is_admin: number,
 }
 
@@ -66,8 +66,7 @@ const schema = Yup.object().shape({
         return undefined;
       }
       return String(originalValue).trim(); // Remova espaços em branco extras
-    })
-    .required('Campo obrigatório'),
+    }),
 
   password_confirmation: Yup.string()
     .transform((value, originalValue) => {
@@ -75,8 +74,7 @@ const schema = Yup.object().shape({
         return undefined;
       }
       return String(originalValue).trim(); // Remova espaços em branco extras
-    })
-    .required('Campo obrigatório'),
+    }),
 
   is_admin: Yup.number()
     .transform((value, originalValue) => {
@@ -110,7 +108,6 @@ export default function UpdateUser({
 
         const response = await axios_product.get(`v1/user/${itemId}`);
         const customerData = response.data;
-        console.log(response.data);
 
         for (const key in customerData) {
           setValue(key as keyof IUserData, customerData[key]);
@@ -128,14 +125,13 @@ export default function UpdateUser({
   const onSubmit: SubmitHandler<IUserData> = async (data) => {
     setLoading(true);
     try {
-      console.log(data);
-      // const response = await axios_product.post('v1/user', data);
-      // const statusCode = response.status;
+      const response = await axios_product.put(`v1/user/${itemId}`, data);
+      const statusCode = response.status;
 
-      // if (statusCode === 201) {
-      //   alert('Cliente salvo com sucesso!');
-      //   window.location.reload();
-      // }
+      if (statusCode === 200) {
+        alert('Atualizado com sucesso!');
+        window.location.reload();
+      } 
     } catch (error) {
       if ((error as AxiosError).response) {
         const statusCode = (error as AxiosError).response?.status;
@@ -196,7 +192,7 @@ export default function UpdateUser({
                   <S.Input
                     {...register('last_name')}
                     type="text"
-                    placeholder="Sobrenome do usuário"
+                    placeholder="Sobrenome"
                     maxLength={30}
                   />
                   {errors.last_name && <small>{errors.last_name.message}</small>}
@@ -222,7 +218,7 @@ export default function UpdateUser({
                   <S.Input
                     {...register('email')}
                     type="email"
-                    placeholder="Informe o nome do produto"
+                    placeholder="e-mail"
                     autoComplete="off"
                   />
                   {errors.email && <small>{errors.email.message}</small>}
@@ -231,7 +227,7 @@ export default function UpdateUser({
 
               <div>
                 <S.FormInput>
-                  <label>Senha *</label>
+                  <label>Senha</label>
                   <S.Input
                     autoComplete='off'
                     {...register('password')}
@@ -240,10 +236,10 @@ export default function UpdateUser({
                     minLength={6}
                   />
 
-                  {errors.password && <small>{errors.password.message}</small>}
+                  {/* {errors.password && <small>{errors.password.message}</small>} */}
                 </S.FormInput>
                 <S.FormInput>
-                  <label>Confirmar Senha *</label>
+                  <label>Confirmar Senha</label>
                   <S.Input
                     autoComplete='off'
                     {...register('password_confirmation')}
@@ -251,7 +247,7 @@ export default function UpdateUser({
                     placeholder="Confirme a senha"
                     minLength={6}
                   />
-                  {errors.password_confirmation && <small>{errors.password_confirmation.message}</small>}
+                  {/* {errors.password_confirmation && <small>{errors.password_confirmation.message}</small>} */}
                 </S.FormInput>
               </div>
               <S.ButtonLook type="button" onClick={() => setLocked(!locked)}>

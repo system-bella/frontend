@@ -4,25 +4,27 @@ import FieldSearch from '../../components/FieldSearch';
 import ModalDell from '../../components/ModalDelete';
 import Pagination from '../../components/Pagination';
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
+import { PiClipboardTextThin } from 'react-icons/pi';
 import { useEffect, useState } from 'react';
 //Modal
-import CreateCustomer from '../../components/ModalCustomer/Create';
-import EditCustomer from '../../components/ModalCustomer/Update';
+import CreateFornecedor from "../../components/ModalFonecedor/Create";
+import UpdateFornecedor from '../../components/ModalFonecedor/Update';
+import DetailsFornecedor from '../../components/ModalFonecedor/Details';
 
 interface IData {
   id: number;
   name: string;
-  cpf: string;
   contact: string;
+  email: string;
 }
 
-export default function Customer() {
+export default function Supplier() {
   const [items, setItems] = useState<IData[] | null>(null);
   const [openModalDell, setOpenModalDell] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
-  const [openModalCreate, setOpenModalCreate] = useState(false);
+  const [openModalForn, setOpenModalForn] = useState(false);
   const [openModalEdite, setOpenModalEdite] = useState(false);
+  const [openModalDetails, setOpenModalDetails] = useState(false);
 
   //Paginas
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,18 +32,10 @@ export default function Customer() {
   const [perPage, setPerPage] = useState();
   const [lastPage, setLastPage] = useState();
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchTerm(value);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = 'customer?page=' + currentPage;
-        if (searchTerm) {
-          url = `customer?search=${searchTerm}`;
-        }
+        let url = 'supplier?page=' + currentPage;
         const response = await axios_product.get(`v1/${url}`);
         setItems(response.data.data);
         setTotalPages(response.data.last_page);
@@ -53,7 +47,7 @@ export default function Customer() {
       }
     };
     fetchData();
-  }, [currentPage, searchTerm]);
+  }, [currentPage]);
 
   const goToNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -68,16 +62,13 @@ export default function Customer() {
       <S.Content>
         <S.Title>
           <span>
-            Cliente{'>'}
-            <small>Todos os Clientes</small>
+            Fornecedor{'>'}
+            <small>Todos os Fornecedores</small>
           </span>
           <S.Header>
-            <div>
-              <FieldSearch onSearch={handleSearchChange} />
-            </div>
             <S.NewItem
               onClick={() => {
-                setOpenModalCreate(true);
+                setOpenModalForn(true);
               }}
             >
               <CiCirclePlus />
@@ -90,8 +81,8 @@ export default function Customer() {
             <tr>
               <th>#</th>
               <th>Nome</th>
-              <th>CPF</th>
               <th>Contato</th>
+              <th>E-mail</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -102,15 +93,23 @@ export default function Customer() {
                   <tr>
                     <td>{index + 1}</td>
                     <td>{val.name}</td>
-                    <td>{val.cpf}</td>
                     <td>{val.contact || "-"}</td>
+                    <td>{val.email || "-"}</td>
                     <td>
                       <span>
+                        <button>
+                          <PiClipboardTextThin
+                            onClick={() => {
+                              setSelectedItemId(val.id);
+                              setOpenModalDetails(true);
+                            }}
+                          />
+                        </button>
                         <button
-                        onClick={() => {
-                          setSelectedItemId(val.id);
-                          setOpenModalEdite(true);
-                        }}
+                          onClick={() => {
+                            setSelectedItemId(val.id);
+                            setOpenModalEdite(true);
+                          }}
                         >
                           <CiEdit />
                         </button>
@@ -146,11 +145,20 @@ export default function Customer() {
 
       {/* Modal */}
 
-      <CreateCustomer
-        isOpen={openModalCreate}
-        setModalOpen={() => setOpenModalCreate(false)} />
+      <CreateFornecedor
+        isOpen={openModalForn}
+        setModalOpen={() => setOpenModalForn(false)} />
 
-      <EditCustomer
+      <DetailsFornecedor
+        isOpen={openModalDetails}
+        setModalOpen={() => {
+          setOpenModalDetails(false);
+          setSelectedItemId(null);
+        }}
+        itemId={selectedItemId}
+      />
+
+      <UpdateFornecedor
         isOpen={openModalEdite}
         setModalOpen={() => {
           setOpenModalEdite(false);
@@ -158,7 +166,7 @@ export default function Customer() {
         itemId={selectedItemId} />
 
       <ModalDell
-        url='customer'
+        url='supplier'
         isOpen={openModalDell}
         itemId={selectedItemId}
         setModalOpen={() => {

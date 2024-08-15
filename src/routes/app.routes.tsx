@@ -9,6 +9,7 @@ import Report from '../pages/Report';
 import CreateOrders from '../components/ModalOrder/CreateOrders';
 import PageTest from '../pages/PageTest';
 import User from '../pages/User';
+import Supplier from '../pages/Supplier';
 
 const AppRoutes = () => (
   <Switch>
@@ -21,6 +22,7 @@ const AppRoutes = () => (
       <Route path="/usuario" exact component={User} />
       <Route path="/Orders/Create" exact component={CreateOrders} />
       <Route path="/Report" exact component={Report} />
+      <Route path="/Supplier" exact component={Supplier} />
     </Layout>
   </Switch>
 );

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ModalCreate from '../ModalProduct/Create';
 import CreateCategoria from '../../components/ModalCategoria/Create';
-import CreateFornecedor from "../ModalFonecedor/Create";
 
 interface Modal {
     isOpen: boolean;
@@ -17,7 +16,6 @@ export default function ModalOption({
     const modalRef = useRef<HTMLDivElement>(null);
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [openModalCat, setOpenModalCat] = useState(false);
-    const [openModalForn, setOpenModalForn] = useState(false);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -61,13 +59,6 @@ export default function ModalOption({
                             }}>
                             Categoria</button>
                     </li>
-                    <li>
-                        <button
-                            onClick={() => {
-                                setOpenModalForn(true);
-                            }}
-                        >Fornecedor</button>
-                    </li>
                 </ul>
             </Content>
 
@@ -77,9 +68,7 @@ export default function ModalOption({
             <CreateCategoria
                 isOpen={openModalCat}
                 setModalOpen={() => setOpenModalCat(false)} />
-            <CreateFornecedor
-                isOpen={openModalForn}
-                setModalOpen={() => setOpenModalForn(false)} />
+            
         </Container>
     );
 }

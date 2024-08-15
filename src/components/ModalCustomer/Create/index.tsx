@@ -3,7 +3,7 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import axios_product from '../../../api/axios';
 import { AxiosError } from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { IMaskInput } from 'react-imask';
 //styles
 import * as S from './styles';

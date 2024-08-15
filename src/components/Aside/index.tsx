@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import * as S from './styles';
+import { useUser } from '../../api/contextApi/userContext';
 import {
   CiGrid42,
   CiUser,
   CiShoppingCart,
   CiSun,
   CiCircleInfo,
-  CiLogout
+  CiLogout,
+  CiBoxes
 } from 'react-icons/ci';
 import Logout from '../Logout';
 import { IoAnalytics } from "react-icons/io5";
@@ -17,6 +19,7 @@ export default function Aside() {
     return currentURL || 'Orders';
   });
   const [openModalLogout, setOpenModalLogout] = useState(false);
+  const { user } = useUser();
 
   useEffect(() => { }, [clicked]);
 
@@ -35,13 +38,13 @@ export default function Aside() {
         <S.Title>Principal</S.Title>
 
         <S.MenuLink
-            href="/Report"
-            onClick={() => tootleMenu('Report')}
-            className={clicked === 'Report' ? 'active' : ''}
-          >
-            <IoAnalytics />
-            <small>Relatórios</small>
-          </S.MenuLink>
+          href="/Report"
+          onClick={() => tootleMenu('Report')}
+          className={clicked === 'Report' ? 'active' : ''}
+        >
+          <IoAnalytics />
+          <small>Relatórios</small>
+        </S.MenuLink>
 
         <S.Menu>
           <S.MenuLink
@@ -65,10 +68,18 @@ export default function Aside() {
           <S.MenuLink
             href="/Client"
             onClick={() => tootleMenu('Client')}
-            className={clicked === 'Client' || clicked === 'Client/Create' ? 'active' : ''}
+            className={clicked === 'Client' ? 'active' : ''}
           >
             <CiUser />
             <small>Clientes</small>
+          </S.MenuLink>
+
+          <S.MenuLink
+            href="/Supplier"
+            onClick={() => tootleMenu('Supplier')}
+            className={clicked === 'Supplier' ? 'active' : ''}>
+            <CiBoxes />
+            <small>Fornecedores</small>
           </S.MenuLink>
         </S.Menu>
 
@@ -105,9 +116,13 @@ export default function Aside() {
 
       <S.Footer>
         <S.Imagem>
-          <p>SK</p>
+          <p>
+            {(user?.first_name[0] +
+              ""
+              + user?.last_name[0]).toLocaleUpperCase()}
+          </p>
         </S.Imagem>
-        <small>Sayury Kato</small>
+        <small>{user?.first_name}</small>
       </S.Footer>
     </S.Container>
   );

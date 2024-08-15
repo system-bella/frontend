@@ -108,7 +108,7 @@ export default function CreateUser({
       const statusCode = response.status;
 
       if (statusCode === 201) {
-        alert('Cliente salvo com sucesso!');
+        alert('Usuário salvo com sucesso!');
         window.location.reload();
       }
     } catch (error) {

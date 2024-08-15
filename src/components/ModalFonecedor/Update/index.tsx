@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import IlayoutModal from "../../IlayoutModal";
 import { IMaskInput } from 'react-imask';
@@ -11,6 +11,7 @@ import axios_product from '../../../api/axios';
 interface IModalCreateProps {
     isOpen: boolean;
     setModalOpen: any;
+    itemId: number | null;
 }
 
 interface IData {
@@ -61,28 +62,49 @@ const schema = Yup.object().shape({
 
 });
 
-export default function CreateFornecedor(
+export default function UpdateFornecedor(
     { isOpen,
-        setModalOpen
+        setModalOpen,
+        itemId
     }: IModalCreateProps) {
 
     const [loading, setLoading] = useState(false);
 
-    const { register, handleSubmit, formState, reset, control } = useForm<IData>({
+    const { register, handleSubmit, formState, reset, control, setValue } = useForm<IData>({
         mode: 'onBlur',
         resolver: yupResolver(schema)
     });
     const { errors } = formState;
 
+    useEffect(() => {
+        const fetchProductDetails = async () => {
+          try {
+    
+            const response = await axios_product.get(`v1/supplier/${itemId}`);
+            const customerData = response.data;
+    
+            for (const key in customerData) {
+              setValue(key as keyof IData, customerData[key]);
+            }
+          } catch (error) {
+            console.error('Error fetching product details:', error);
+          }
+        };
+    
+        if (itemId) {
+          fetchProductDetails();
+        }
+      }, [itemId]);
+
     const onSubmit: SubmitHandler<IData> = async (data) => {
         setLoading(true);
         try {
             console.log(data);
-            const response = await axios_product.post('v1/supplier', data);
+            const response = await axios_product.put(`v1/supplier/${itemId}`, data);
             const statusCode = response.status;
 
-            if (statusCode === 201) {
-                alert('Fornecedor salvo com sucesso!');
+            if (statusCode === 200) {
+                alert('Atualizado com sucesso!');
                 reset();
                 window.location.reload();
             }

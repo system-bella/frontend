@@ -22,15 +22,24 @@ export default function Report() {
 
   const headers = ['#', 'Chave', 'Nome', 'E-mail', 'Usuário', 'Ações'];
   const [user, setUser] = useState<User[]>([]);
+  const [totalProduct, setTotalProduct] = useState('');
 
   useEffect(() => {
-    try{
-      axios_api.get('v1/user').then(response => {
-        setUser(response.data.data);
-      })
-    }catch(e){
-      console.log(e);
-    }
+    const fetchData = async () => {
+      try {
+        const [
+          userResponse,
+          productResponse] = await Promise.all([
+            axios_api.get(`v1/user`),
+            axios_api.get('v1/product'),
+          ]);
+          setUser(userResponse.data.data);
+          setTotalProduct(productResponse.data.total);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData();
   }, []);
 
   const contentRef = useRef<HTMLDivElement>(null);
@@ -73,7 +82,7 @@ export default function Report() {
         <DashboardValores
           title="Produtos Vendidos"
           icon={<MdOutlineShoppingCart />}
-          valor="1.115"
+          valor={totalProduct}
         />
         <DashboardValores
           title="Total Entrada"
@@ -134,13 +143,13 @@ export default function Report() {
           dados={user} />
       </S.ContainerBottom>
 
-     <div
-          style={{ display: 'none' }}
-        >
-          <div ref={contentRef}>
-            <Relatorio />
-          </div>
+      <div
+        style={{ display: 'none' }}
+      >
+        <div ref={contentRef}>
+          <Relatorio />
         </div>
+      </div>
     </S.Container>
   )
 }
