@@ -6,6 +6,8 @@ import { AxiosError } from 'axios';
 import { NumericFormat } from 'react-number-format';
 import React, { useEffect, useState } from 'react';
 import ListagemCategoria from '../../ModalCategoria/Listagem';
+import ModalConfirm from '../../../components/ModalConfirm'
+import { CiCirclePlus, CiTrash, CiEdit, CiCircleInfo } from 'react-icons/ci';
 //styles
 import * as S from './styles';
 
@@ -60,9 +62,9 @@ const schema = Yup.object().shape({
     .required('Campo obrigatório'),
 
   supplier_id: Yup.number()
-  .transform((value, originalValue) => {
-    return originalValue === "" ? undefined : Number(originalValue);
-  }).required('Campo obrigatório'),
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : Number(originalValue);
+    }).required('Campo obrigatório'),
 
 
   description: Yup.string()
@@ -97,6 +99,7 @@ export default function ModalCreate({
     mode: 'onBlur',
     resolver: yupResolver(schema)
   });
+  const [openModalConfirm, setOpenModalConfirm] = useState(true);
 
   const { errors } = formState;
 
@@ -118,7 +121,7 @@ export default function ModalCreate({
       const payload = {
         ...data,
         category_id: categoryId, // Substitui pelo ID
-    };
+      };
       console.log(payload);
       const response = await axios_product.post('v1/product', payload);
       const statusCode = response.status;
@@ -153,7 +156,7 @@ export default function ModalCreate({
       setCategoria(false);
       return;
     }
-    
+
     setSearchCat(value);
     setCategoria(true);
     console.log(searchCat);
@@ -168,6 +171,13 @@ export default function ModalCreate({
   if (isOpen) {
     return (
       <S.Container>
+        <ModalConfirm
+          icon={<CiCircleInfo />}
+          title='Confirmado'
+          restTitle='Você aceitou'
+          isOpen={openModalConfirm}
+          setModalOpen={() => setOpenModalConfirm(false)}
+        />
         <S.ContentModel>
           <S.ContentForm>
             <span>

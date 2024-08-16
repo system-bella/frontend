@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import CreateFornecedor from "../../components/ModalFonecedor/Create";
 import UpdateFornecedor from '../../components/ModalFonecedor/Update';
 import DetailsFornecedor from '../../components/ModalFonecedor/Details';
+import Loading from '../../components/Loading';
 
 interface IData {
   id: number;
@@ -25,6 +26,7 @@ export default function Supplier() {
   const [openModalForn, setOpenModalForn] = useState(false);
   const [openModalEdite, setOpenModalEdite] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
+  const [loadingModal, setLoadingModal] = useState(false);
 
   //Paginas
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,6 +36,7 @@ export default function Supplier() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingModal(true);
       try {
         let url = 'supplier?page=' + currentPage;
         const response = await axios_product.get(`v1/${url}`);
@@ -44,6 +47,8 @@ export default function Supplier() {
 
       } catch (e) {
         console.error(e);
+      } finally {
+        setLoadingModal(false);
       }
     };
     fetchData();
@@ -59,6 +64,8 @@ export default function Supplier() {
 
   return (
     <S.Container>
+      {loadingModal && (<Loading />)}
+      
       <S.Content>
         <S.Title>
           <span>

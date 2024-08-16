@@ -8,26 +8,25 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   flex: 1;
-  //flex-direction:
 `;
 
 export const Header = styled.header`
-  display: flex;
+  /* display: flex;
   align-items: center;
   flex-direction: row;
-  gap: 20px;
-  margin-bottom: 36px;
-
+  gap: 20px; */
+  
   div {
     display: flex;
     justify-content: space-between;
   }
-`;
+  `;
 
 export const Title = styled.div`
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 36px;
 
   span {
     font-size: 16px;

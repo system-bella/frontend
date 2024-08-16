@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import ModalCreate from '../../components/ModalProduct/Create';
 import axios_product from '../../api/axios';
 // styles
 import * as S from './styles';
@@ -11,7 +10,7 @@ import Pagination from '../../components/Pagination';
 import ModalDetails from '../../components/ModalProduct/Details';
 import ModalEdit from '../../components/ModalProduct/Update';
 import ModalOption from '../../components/ModalOption';
-
+import Loading from '../../components/Loading';
 // icons
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { PiClipboardTextThin } from 'react-icons/pi';
@@ -34,7 +33,7 @@ interface Categoria {
 export default function Product() {
   const [items, setItems] = useState<IData[] | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState<string[]>([]);
+  const [loadingModal, setLoadingModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [perPage, setPerPage] = useState();
@@ -67,6 +66,7 @@ export default function Product() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingModal(true);
       try {
         let url = 'product?page=' + currentPage;
         if (searchTerm) {
@@ -80,6 +80,8 @@ export default function Product() {
 
       } catch (e) {
         console.error(e);
+      } finally {
+        setLoadingModal(false);
       }
     };
     fetchData();
@@ -95,6 +97,7 @@ export default function Product() {
 
   return (
     <S.Container>
+      {loadingModal && (<Loading />)}
       <S.Content>
         <S.Title>
           <span>

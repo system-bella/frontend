@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 //Modal
 import CreateCustomer from '../../components/ModalCustomer/Create';
 import EditCustomer from '../../components/ModalCustomer/Update';
+import Loading from '../../components/Loading';
 
 interface IData {
   id: number;
@@ -23,6 +24,7 @@ export default function Customer() {
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
   const [openModalCreate, setOpenModalCreate] = useState(false);
   const [openModalEdite, setOpenModalEdite] = useState(false);
+  const [loadingModal, setLoadingModal] = useState(false);
 
   //Paginas
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,6 +39,7 @@ export default function Customer() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingModal(true);
       try {
         let url = 'customer?page=' + currentPage;
         if (searchTerm) {
@@ -50,6 +53,8 @@ export default function Customer() {
 
       } catch (e) {
         console.error(e);
+      }finally {
+        setLoadingModal(false);
       }
     };
     fetchData();
@@ -65,6 +70,7 @@ export default function Customer() {
 
   return (
     <S.Container>
+      {loadingModal && (<Loading />)}
       <S.Content>
         <S.Title>
           <span>

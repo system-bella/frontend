@@ -3,14 +3,15 @@ import Modal from '../../components/ModalDelete';
 import NewItem from '../../components/NewItem';
 import Pagination from '../../components/Pagination';
 import ModalDetails from '../../components/ModalProduct/Details';
-import FieldSearch from '../../components/FieldSearch';
 import { PiClipboardTextThin } from 'react-icons/pi';
-import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
+import { CiCirclePlus, CiTrash, CiEdit, CiCircleInfo } from 'react-icons/ci';
 import { useState } from 'react';
+import ModalConfirm from '../../components/ModalConfirm';
 
 export default function Orders() {
   const [openModal, setOpenModal] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
+  const [openModalConfirm, setOpenModalConfirm] = useState(false);
 
   return (
     <S.Container>
@@ -21,9 +22,6 @@ export default function Orders() {
             <small>Todos as vendas</small>
           </span>
           <S.Header>
-            <div>
-              {/* <FieldSearch onSearch={"ola"} /> */}
-            </div>
             <NewItem
               url="/Orders/Create"
               icon={<CiCirclePlus fontSize={24} />}
@@ -62,22 +60,11 @@ export default function Orders() {
               </div>
             </td>
           </tr>
-          <Modal
-            itemId={1}
-            isOpen={openModal}
-            setModalOpen={() => setOpenModal(false)}
-            url='order'
-          />
-          <ModalDetails
-            itemId={1}
-            isOpen={openModalDetails}
-            setModalOpen={() => setOpenModalDetails(false)}
-          />
         </S.BodyTable>
       </S.Content>
 
       <S.Footer>
-      <Pagination
+        <Pagination
           currentPage={1}
           lastPage={undefined}
           perPage={undefined}
@@ -85,6 +72,26 @@ export default function Orders() {
           nextPage={() => console.log('ola')}
         />
       </S.Footer>
+      {/* Modals */}
+      <Modal
+        itemId={1}
+        isOpen={openModal}
+        setModalOpen={() => setOpenModal(false)}
+        url='order'
+      />
+      <ModalDetails
+        itemId={1}
+        isOpen={openModalDetails}
+        setModalOpen={() => setOpenModalDetails(false)}
+      />
+
+      <ModalConfirm
+        icon={<CiCircleInfo />}
+        title='Confirmado'
+        restTitle='Você aceitou'
+        isOpen={openModalConfirm}
+        setModalOpen={() => setOpenModalConfirm(false)}
+      />
     </S.Container>
   );
 }

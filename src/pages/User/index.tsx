@@ -7,7 +7,7 @@ import axios_product from '../../api/axios';
 import CreateUser from '../../components/ModalUser/Create';
 import { useUser } from '../../api/contextApi/userContext';
 import Erro403 from '../../components/Error/Erro403';
-
+import Loading from '../../components/Loading';
 interface User {
     id: 1,
     first_name: string,
@@ -28,7 +28,7 @@ export default function User() {
     const [totalPages, setTotalPages] = useState(1);
     const [perPage, setPerPage] = useState();
     const [lastPage, setLastPage] = useState();
-
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -41,6 +41,8 @@ export default function User() {
 
             } catch (e) {
                 console.error(e);
+            } finally {
+                setIsLoading(false); // Define o estado de carregamento como concluído
             }
         };
         fetchData();
@@ -53,10 +55,12 @@ export default function User() {
     const goToPrevPage = () => {
         if (currentPage > 1) setCurrentPage(currentPage - 1);
     };
-
+    if (isLoading) {
+        return <Loading />; // Exibe um componente de carregamento enquanto os dados estão sendo carregados
+    }
     if (!isAdmin) {
         return (
-            <Erro403/>
+            <Erro403 />
         );
     }
 
