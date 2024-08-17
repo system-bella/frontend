@@ -99,7 +99,9 @@ export default function ModalCreate({
     mode: 'onBlur',
     resolver: yupResolver(schema)
   });
-  const [openModalConfirm, setOpenModalConfirm] = useState(true);
+  const [openModalConfirm, setOpenModalConfirm] = useState(false);
+  const [successText, setSuccessText] = useState<boolean | null>(null);
+  const [errorMessage, setErrorMessage] = useState<boolean | null>(null);
 
   const { errors } = formState;
 
@@ -127,18 +129,21 @@ export default function ModalCreate({
       const statusCode = response.status;
 
       if (statusCode === 201) {
-        alert('Produto salvo com sucesso!');
-        reset();
-        window.location.reload();
+        setErrorMessage(false);
+        setSuccessText(true);
+        setOpenModalConfirm(true);
       }
     } catch (error) {
+      setSuccessText(false);
+      setErrorMessage(true);
+      setOpenModalConfirm(true);
       if ((error as AxiosError).response) {
         const statusCode = (error as AxiosError).response?.status;
-
+        
         if (statusCode === 409) {
           alert('Já existe referência e/ou código de barras cadastrados');
         } else {
-          alert(`Error with status code: ${statusCode}`);
+          // alert(`Error with status code: ${statusCode}`);
         }
       } else {
         alert('Erro desconhecido: ' + error);
@@ -159,7 +164,6 @@ export default function ModalCreate({
 
     setSearchCat(value);
     setCategoria(true);
-    console.log(searchCat);
   }
 
   const handleSelectCategory = (category: string, id: number) => {
@@ -167,14 +171,21 @@ export default function ModalCreate({
     setValue("category_id", category); // Atualiza o valor do input
     setCategoria(false); // Fecha a lista de categorias
   };
-
+  const handleCloseModal = () => {
+    setSearchCat("");
+    setModalOpen();
+    reset();
+    setOpenModalConfirm(false);
+    setCategoria(false);
+};
   if (isOpen) {
     return (
       <S.Container>
         <ModalConfirm
+          msgError={errorMessage}
+          msgSuccess={successText}
           icon={<CiCircleInfo />}
           title='Confirmado'
-          restTitle='Você aceitou'
           isOpen={openModalConfirm}
           setModalOpen={() => setOpenModalConfirm(false)}
         />
@@ -222,12 +233,14 @@ export default function ModalCreate({
                   <label>Categoria *</label>
                   <S.ListModal>
                     <S.Input
+                    autoComplete='off'
                       id='categoria'
                       {...register('category_id')}
                       type="text"
                       placeholder="Informe a categoria"
+                      onFocus={() => setCategoria(true)} 
                       onChange={handleSearchChange}
-                      onFocus={() => setCategoria(true)} />
+                      />
 
                     <S.ListDados>
                       {
@@ -247,7 +260,7 @@ export default function ModalCreate({
                   <S.Input
                     {...register('quantity')}
                     type="number"
-                    placeholder="1"
+                    placeholder="0"
                   />
                   {errors.quantity && <small>{errors.quantity.message}</small>}
                 </S.FormInput>
@@ -288,7 +301,7 @@ export default function ModalCreate({
                 />
               </S.FormInput>
               <S.Actions>
-                <S.Cancel onClick={setModalOpen}>Cancelar</S.Cancel>
+                <S.Cancel onClick={handleCloseModal}>Cancelar</S.Cancel>
                 <S.Save type="submit" disabled={loading}>
                   {loading ? 'Salvando...' : 'Salvar'}
                 </S.Save>

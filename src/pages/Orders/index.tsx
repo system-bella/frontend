@@ -11,7 +11,7 @@ import ModalConfirm from '../../components/ModalConfirm';
 export default function Orders() {
   const [openModal, setOpenModal] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
-  const [openModalConfirm, setOpenModalConfirm] = useState(false);
+  const [openModalConfirm, setOpenModalConfirm] = useState(true);
 
   return (
     <S.Container>
@@ -85,13 +85,12 @@ export default function Orders() {
         setModalOpen={() => setOpenModalDetails(false)}
       />
 
-      <ModalConfirm
+      {/* <ModalConfirm
         icon={<CiCircleInfo />}
         title='Confirmado'
-        restTitle='Você aceitou'
         isOpen={openModalConfirm}
         setModalOpen={() => setOpenModalConfirm(false)}
-      />
+      /> */}
     </S.Container>
   );
 }
