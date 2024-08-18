@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { CiCircleRemove, CiCircleInfo, CiCircleAlert } from "react-icons/ci";
 interface Props {
-    title: string;
+    titleErr: string;
     icon: any;
     isOpen: boolean;
     setModalOpen: any;
@@ -10,44 +10,35 @@ interface Props {
     msgError: any;
 }
 export default function ModalConfirm({
-    title,
+    titleErr,
     isOpen,
     setModalOpen,
     msgSuccess = null,
     msgError = null,
 }: Props) {
-    const handleCloseModal = () => {
-        // setModalOpen();
-        window.location.reload();
-    };
 
     if (isOpen) {
         return (
             <Container>
                 <Content className={msgSuccess ? 'corSucess bordarSucss' : 'corErr bordarErr'}>
                     {msgSuccess &&
-                        <DivInfor>
-                            <CiCircleInfo />
-                            <Infor>
-                                <h4>Confirmado</h4>
-                                <p>Você aceitou</p>
-                            </Infor>
-                        </DivInfor>
+                            <DivInfor>
+                                <CiCircleInfo />
+                                <Infor>
+                                    <h4>Confirmado</h4>
+                                    <p>Salvo com sucesso</p>
+                                </Infor>
+                            </DivInfor>
                     }
                     {msgError &&
                         <DivInfor>
                             <CiCircleAlert />
                             <Infor>
                                 <h4>Error</h4>
-                                <p>Deu error</p>
+                                <p>{titleErr}</p>
                             </Infor>
                         </DivInfor>
                     }
-                    <Button onClick={handleCloseModal}>
-                        <span className={msgSuccess ? 'corSucess' : 'corErr'}>
-                            {<CiCircleRemove />}
-                        </span>
-                    </Button>
                 </Content>
             </Container >
         )
@@ -63,26 +54,25 @@ export const Container = styled.div`
   bottom: 0;
   z-index: 1000;
 
-  .infor{
-    p{
-        font-size: 14px;
+  .infor {
+    p {
+      font-size: 14px;
     }
   }
-    .corSucess{
-        color: #3b82f6;
-    }
-    .corErr{
-        color: #FF3B30;
-    }
-    
-    .bordarSucss{
-        border-left: 6px solid #3b82f6;
-    }
-    .bordarErr{
-        border-left: 6px solid #FF3B30;
-    }
-    
-`
+  .corSucess {
+    color: #3b82f6;
+  }
+  .corErr {
+    color: #ff3b30;
+  }
+
+  .bordarSucss {
+    border-left: 6px solid #3b82f6;
+  }
+  .bordarErr {
+    border-left: 6px solid #ff3b30;
+  }
+`;
 
 export const Content = styled.div`
     display: flex;

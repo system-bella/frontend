@@ -7,7 +7,7 @@ import { NumericFormat } from 'react-number-format';
 import React, { useEffect, useState } from 'react';
 import ListagemCategoria from '../../ModalCategoria/Listagem';
 import ModalConfirm from '../../../components/ModalConfirm'
-import { CiCirclePlus, CiTrash, CiEdit, CiCircleInfo } from 'react-icons/ci';
+import { CiCircleInfo } from 'react-icons/ci';
 //styles
 import * as S from './styles';
 
@@ -102,6 +102,7 @@ export default function ModalCreate({
   const [openModalConfirm, setOpenModalConfirm] = useState(false);
   const [successText, setSuccessText] = useState<boolean | null>(null);
   const [errorMessage, setErrorMessage] = useState<boolean | null>(null);
+  const [errorMsgTxt, setErrorMsgTxt] = useState('');
 
   const { errors } = formState;
 
@@ -122,9 +123,8 @@ export default function ModalCreate({
     try {
       const payload = {
         ...data,
-        category_id: categoryId, // Substitui pelo ID
+        category_id: categoryId,
       };
-      console.log(payload);
       const response = await axios_product.post('v1/product', payload);
       const statusCode = response.status;
 
@@ -132,21 +132,23 @@ export default function ModalCreate({
         setErrorMessage(false);
         setSuccessText(true);
         setOpenModalConfirm(true);
+        window.location.reload();
       }
     } catch (error) {
       setSuccessText(false);
       setErrorMessage(true);
       setOpenModalConfirm(true);
+      console.group(error);
       if ((error as AxiosError).response) {
         const statusCode = (error as AxiosError).response?.status;
         
         if (statusCode === 409) {
-          alert('Já existe referência e/ou código de barras cadastrados');
+          setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
         } else {
-          // alert(`Error with status code: ${statusCode}`);
+          setErrorMsgTxt(`Error: ${statusCode}`);
         }
       } else {
-        alert('Erro desconhecido: ' + error);
+        setErrorMsgTxt('Erro desconhecido: ' + error);
       }
     } finally {
       setLoading(false);
@@ -185,7 +187,7 @@ export default function ModalCreate({
           msgError={errorMessage}
           msgSuccess={successText}
           icon={<CiCircleInfo />}
-          title='Confirmado'
+          titleErr={errorMsgTxt}
           isOpen={openModalConfirm}
           setModalOpen={() => setOpenModalConfirm(false)}
         />
@@ -202,27 +204,22 @@ export default function ModalCreate({
                   type="text"
                   placeholder="Informe o nome do produto"
                 />
-                {errors.name && (
-                  <small>{errors.name.message}</small>
-                )}
+                {errors.name && <small>{errors.name.message}</small>}
               </S.FormInput>
               <div>
                 <S.FormInput>
                   <label>Fornecedor *</label>
-                  <S.Filter
-                    id='fornecedor'
-                    {...register('supplier_id')}>
-                    <option
-                      value="" disabled selected hidden>
+                  <S.Filter id="fornecedor" {...register('supplier_id')}>
+                    <option value="" disabled selected hidden>
                       Selecione
                     </option>
-                    {
-                      fornecedor?.map((val) => {
-                        return (
-                          <option key={val.id} value={val.id}>{val.name}</option>
-                        )
-                      })
-                    }
+                    {fornecedor?.map((val) => {
+                      return (
+                        <option key={val.id} value={val.id}>
+                          {val.name}
+                        </option>
+                      );
+                    })}
                   </S.Filter>
                   {errors.supplier_id && (
                     <small>{errors.supplier_id.message}</small>
@@ -233,25 +230,27 @@ export default function ModalCreate({
                   <label>Categoria *</label>
                   <S.ListModal>
                     <S.Input
-                    autoComplete='off'
-                      id='categoria'
+                      autoComplete="off"
+                      id="categoria"
                       {...register('category_id')}
                       type="text"
                       placeholder="Informe a categoria"
-                      onFocus={() => setCategoria(true)} 
+                      onFocus={() => setCategoria(true)}
                       onChange={handleSearchChange}
-                      />
+                    />
 
                     <S.ListDados>
-                      {
-                        categoria &&
+                      {categoria && (
                         <ListagemCategoria
                           searchTerm={searchCat}
-                          onSelectCategory={handleSelectCategory} />
-                      }
+                          onSelectCategory={handleSelectCategory}
+                        />
+                      )}
                     </S.ListDados>
                   </S.ListModal>
-                  {errors.category_id && <small>{errors.category_id.message}</small>}
+                  {errors.category_id && (
+                    <small>{errors.category_id.message}</small>
+                  )}
                 </S.FormInput>
               </div>
               <div>
@@ -271,7 +270,7 @@ export default function ModalCreate({
                   <Controller
                     name="price"
                     control={control}
-                    rules={{ required: "Este campo é obrigatório" }}
+                    rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field: { onChange, value, ref } }) => (
                       <NumericFormat
                         thousandSeparator="."
