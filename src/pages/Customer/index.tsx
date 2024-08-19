@@ -32,9 +32,8 @@ export default function Customer() {
   const [perPage, setPerPage] = useState();
   const [lastPage, setLastPage] = useState();
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchTerm(value);
+  const handleSearchChange = (term: string) => {
+    setSearchTerm(term);
   };
 
   useEffect(() => {

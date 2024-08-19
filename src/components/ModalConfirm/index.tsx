@@ -17,18 +17,22 @@ export default function ModalConfirm({
     msgError = null,
 }: Props) {
 
+    const handleCloseModal = () => {
+        setModalOpen();
+    };
+
     if (isOpen) {
         return (
             <Container>
                 <Content className={msgSuccess ? 'corSucess bordarSucss' : 'corErr bordarErr'}>
                     {msgSuccess &&
-                            <DivInfor>
-                                <CiCircleInfo />
-                                <Infor>
-                                    <h4>Confirmado</h4>
-                                    <p>Salvo com sucesso</p>
-                                </Infor>
-                            </DivInfor>
+                        <DivInfor>
+                            <CiCircleInfo />
+                            <Infor>
+                                <h4>Confirmado</h4>
+                                <p>Salvo com sucesso</p>
+                            </Infor>
+                        </DivInfor>
                     }
                     {msgError &&
                         <DivInfor>
@@ -39,6 +43,11 @@ export default function ModalConfirm({
                             </Infor>
                         </DivInfor>
                     }
+                    <Button onClick={handleCloseModal}>
+                        <span className={msgSuccess ? 'corSucess' : 'corErr'}>
+                            {<CiCircleRemove />}
+                        </span>
+                    </Button>
                 </Content>
             </Container >
         )
@@ -117,8 +126,6 @@ export const Infor = styled.div`
     }
 `
 export const Button = styled.button`
-    /* color: #FF3B30; */
-    color: #3b82f6;
     background-color: transparent;
     display: flex;
 `

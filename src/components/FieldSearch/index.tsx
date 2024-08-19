@@ -21,7 +21,6 @@ export default function FieldSearch({ onSearch }: IFildeSearch) {
     event.preventDefault();
     onSearch(inputValue.trim());
   };
-  console.log(onSearch);
   return (
     <S.Container>
       <input

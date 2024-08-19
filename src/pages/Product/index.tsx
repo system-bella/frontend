@@ -59,11 +59,6 @@ export default function Product() {
     return formatoMoeda;
   }
 
-  // const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = event.target.value;
-  //   setSearchTerm(value);
-  // };
-
   const handleSearchChange = (term: string) => {
     setSearchTerm(term);
   };
@@ -77,6 +72,7 @@ export default function Product() {
           url = `product?search=${searchTerm}`;
         }
         const response = await axios_product.get(`v1/${url}`);
+        console.log(response.data.data);
         setItems(response.data.data);
         setTotalPages(response.data.last_page);
         setPerPage(response.data.per_page);
