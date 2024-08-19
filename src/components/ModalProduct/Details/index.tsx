@@ -20,6 +20,7 @@ interface IData {
   description: string;
   barcode: string;
   supplier: Fornecedor;
+  purchase_value: number;
 }
 
 interface Categoria {
@@ -85,13 +86,13 @@ export default function ModalDetails({
                 </div>
               </S.Info>
               <S.Info>
-                <div>
-                  <h5>Preço R$</h5>
-                  <span>{item.price}</span>
+              <div>
+                  <h5>Preço de Compra</h5>
+                  <span>{item.purchase_value || '-'}</span>
                 </div>
                 <div>
-                  <h5>Categoria</h5>
-                  <span>{item.category.category}</span>
+                  <h5>Preço Final R$</h5>
+                  <span>{item.price}</span>
                 </div>
               </S.Info>
               <S.Info>
@@ -104,11 +105,16 @@ export default function ModalDetails({
                   <span>{item.quantity}</span>
                 </div>
               </S.Info>
+              
 
               <S.InfoDescription>
                 <div>
                   <h5>Descrição</h5>
                   <span>{item.description || "Dado não cadastrado!"}</span>
+                </div>
+                <div>
+                  <h5>Categoria</h5>
+                  <span>{item.category.category}</span>
                 </div>
               </S.InfoDescription>
 

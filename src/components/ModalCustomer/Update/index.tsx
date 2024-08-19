@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { IMaskInput } from 'react-imask';
 //styles
 import * as S from './styles';
+import ModalConfirm from '../../../components/ModalConfirm'
 
 interface IModalEditProps {
   isOpen: boolean;
@@ -64,6 +65,12 @@ export default function EditCustomer({
     resolver: yupResolver(schema)
   });
 
+  // ModalConfirm
+  const [openModalConfirm, setOpenModalConfirm] = useState(false);
+  const [successText, setSuccessText] = useState<boolean | null>(null);
+  const [errorMessage, setErrorMessage] = useState<boolean | null>(null);
+  const [errorMsgTxt, setErrorMsgTxt] = useState('');
+
   const { errors } = formState;
 
   useEffect(() => {
@@ -93,20 +100,25 @@ export default function EditCustomer({
       const statusCode = response.status;
 
       if (statusCode === 200) {
-        alert('Atualizado com sucesso!');
+        setErrorMessage(false);
+        setSuccessText(true);
+        setOpenModalConfirm(true);
         window.location.reload();
       }
     } catch (error) {
+      setSuccessText(false);
+      setErrorMessage(true);
+      setOpenModalConfirm(true);
       if ((error as AxiosError).response) {
         const statusCode = (error as AxiosError).response?.status;
 
         if (statusCode === 409) {
-          alert('Já existe referência e/ou código de barras cadastrados');
+          setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
         } else {
-          alert(`Error with status code: ${statusCode}`);
+          setErrorMsgTxt(`Error with status code: ${statusCode}`);
         }
       } else {
-        alert('Erro desconhecido: ' + error);
+        setErrorMsgTxt('Erro desconhecido: ' + error);
       }
     } finally {
       setLoading(false);
@@ -116,6 +128,13 @@ export default function EditCustomer({
   if (isOpen) {
     return (
       <S.Container>
+        <ModalConfirm
+          msgError={errorMessage}
+          msgSuccess={successText}
+          titleErr={errorMsgTxt}
+          isOpen={openModalConfirm}
+          setModalOpen={() => setOpenModalConfirm(false)}
+        />
         <S.ContentModel>
           <S.ContentForm>
             <span>

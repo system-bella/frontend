@@ -5,9 +5,7 @@ import axios_product from '../../../api/axios';
 import { AxiosError } from 'axios';
 import { NumericFormat } from 'react-number-format';
 import React, { useEffect, useState } from 'react';
-import ListagemCategoria from '../../ModalCategoria/Listagem';
 import ModalConfirm from '../../../components/ModalConfirm'
-import { CiCircleInfo } from 'react-icons/ci';
 //styles
 import * as S from './styles';
 
@@ -19,15 +17,21 @@ interface IModalCreateProps {
 interface IProductData {
   name: string;
   quantity: number;
-  category_id: string;
+  category_id: number;
   supplier_id: number;
   price: number;
   description?: string;
+  purchase_value: number;
 }
 
 interface Fornecedor {
   id: number,
   name: string,
+}
+
+interface Categoria {
+  id: number,
+  category: string,
 }
 
 // Validation
@@ -51,15 +55,10 @@ const schema = Yup.object().shape({
     })
     .required('Campo obrigatório'),
 
-  category_id: Yup.string()
+  category_id: Yup.number()
     .transform((value, originalValue) => {
-      if (originalValue === null || originalValue === undefined) {
-        return undefined;
-      }
-      // return String(originalValue).trim();
-      return String(originalValue);
-    })
-    .required('Campo obrigatório'),
+      return originalValue === "" ? undefined : Number(originalValue);
+    }).required('Campo obrigatório'),
 
   supplier_id: Yup.number()
     .transform((value, originalValue) => {
@@ -84,6 +83,15 @@ const schema = Yup.object().shape({
     })
     .required('Campo obrigatório'),
 
+  purchase_value: Yup.number()
+    .transform((value, originalValue) => {
+      if (originalValue === '' || isNaN(originalValue)) {
+        return undefined;
+      }
+      return Number(originalValue); //
+    })
+    .required('Campo obrigatório'),
+
 });
 
 export default function ModalCreate({
@@ -91,14 +99,14 @@ export default function ModalCreate({
   setModalOpen
 }: IModalCreateProps) {
   const [loading, setLoading] = useState(false);
-  const [categoria, setCategoria] = useState(false);
+  const [categoria, setCategoria] = useState<Categoria[] | null>(null);
   const [fornecedor, setFornecedor] = useState<Fornecedor[] | null>(null);
-  const [searchCat, setSearchCat] = useState("");
-  const [categoryId, setCategoryId] = useState<number | null>(null);
   const { register, handleSubmit, formState, reset, control, setValue } = useForm<IProductData>({
     mode: 'onBlur',
     resolver: yupResolver(schema)
   });
+
+  // ModalConfirm
   const [openModalConfirm, setOpenModalConfirm] = useState(false);
   const [successText, setSuccessText] = useState<boolean | null>(null);
   const [errorMessage, setErrorMessage] = useState<boolean | null>(null);
@@ -109,8 +117,13 @@ export default function ModalCreate({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios_product.get('v1/supplier-find-all');
-        setFornecedor(response.data);
+        // const response = await axios_product.get('v1/supplier-find-all');
+        const [responseForn, resposeCat] = await Promise.all([
+          axios_product.get('v1/supplier-find-all'),
+          axios_product.get('v1/category')
+        ])
+        setFornecedor(responseForn.data);
+        setCategoria(resposeCat.data);
       } catch (e) {
         console.log(e);
       }
@@ -120,12 +133,9 @@ export default function ModalCreate({
 
   const onSubmit: SubmitHandler<IProductData> = async (data) => {
     setLoading(true);
+    console.log(data);
     try {
-      const payload = {
-        ...data,
-        category_id: categoryId,
-      };
-      const response = await axios_product.post('v1/product', payload);
+      const response = await axios_product.post('v1/product', data);
       const statusCode = response.status;
 
       if (statusCode === 201) {
@@ -138,10 +148,9 @@ export default function ModalCreate({
       setSuccessText(false);
       setErrorMessage(true);
       setOpenModalConfirm(true);
-      console.group(error);
       if ((error as AxiosError).response) {
         const statusCode = (error as AxiosError).response?.status;
-        
+
         if (statusCode === 409) {
           setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
         } else {
@@ -155,38 +164,17 @@ export default function ModalCreate({
     }
   };
 
-  const handleSearchChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const value = event.target.value;
-    if (value.trim() === "") {
-      setCategoria(false);
-      return;
-    }
-
-    setSearchCat(value);
-    setCategoria(true);
-  }
-
-  const handleSelectCategory = (category: string, id: number) => {
-    setCategoryId(id);
-    setValue("category_id", category); // Atualiza o valor do input
-    setCategoria(false); // Fecha a lista de categorias
-  };
   const handleCloseModal = () => {
-    setSearchCat("");
     setModalOpen();
     reset();
-    setOpenModalConfirm(false);
-    setCategoria(false);
-};
+  };
+
   if (isOpen) {
     return (
       <S.Container>
         <ModalConfirm
           msgError={errorMessage}
           msgSuccess={successText}
-          icon={<CiCircleInfo />}
           titleErr={errorMsgTxt}
           isOpen={openModalConfirm}
           setModalOpen={() => setOpenModalConfirm(false)}
@@ -197,16 +185,17 @@ export default function ModalCreate({
               <strong>Produtos{'>'}</strong>Cadastrar
             </span>
             <S.Form onSubmit={handleSubmit(onSubmit)}>
-              <S.FormInput>
-                <label>Nome do Produto *</label>
-                <S.Input
-                  {...register('name')}
-                  type="text"
-                  placeholder="Informe o nome do produto"
-                />
-                {errors.name && <small>{errors.name.message}</small>}
-              </S.FormInput>
               <div>
+
+                <S.FormInput>
+                  <label>Nome do Produto *</label>
+                  <S.Input
+                    {...register('name')}
+                    type="text"
+                    placeholder="Nome do produto"
+                  />
+                  {errors.name && <small>{errors.name.message}</small>}
+                </S.FormInput>
                 <S.FormInput>
                   <label>Fornecedor *</label>
                   <S.Filter id="fornecedor" {...register('supplier_id')}>
@@ -225,33 +214,6 @@ export default function ModalCreate({
                     <small>{errors.supplier_id.message}</small>
                   )}
                 </S.FormInput>
-
-                <S.FormInput>
-                  <label>Categoria *</label>
-                  <S.ListModal>
-                    <S.Input
-                      autoComplete="off"
-                      id="categoria"
-                      {...register('category_id')}
-                      type="text"
-                      placeholder="Informe a categoria"
-                      onFocus={() => setCategoria(true)}
-                      onChange={handleSearchChange}
-                    />
-
-                    <S.ListDados>
-                      {categoria && (
-                        <ListagemCategoria
-                          searchTerm={searchCat}
-                          onSelectCategory={handleSelectCategory}
-                        />
-                      )}
-                    </S.ListDados>
-                  </S.ListModal>
-                  {errors.category_id && (
-                    <small>{errors.category_id.message}</small>
-                  )}
-                </S.FormInput>
               </div>
               <div>
                 <S.FormInput>
@@ -265,7 +227,53 @@ export default function ModalCreate({
                 </S.FormInput>
 
                 <S.FormInput>
-                  <label>Preço *</label>
+                  <label>Categoria *</label>
+                  <S.Filter id="categoria" {...register('category_id')}>
+                    <option value="" disabled selected hidden>
+                      Selecione
+                    </option>
+                    {categoria?.map((val) => {
+                      return (
+                        <option key={val.id} value={val.id}>
+                          {val.category}
+                        </option>
+                      );
+                    })}
+                  </S.Filter>
+                  {errors.category_id && (
+                    <small>{errors.category_id.message}</small>
+                  )}
+                </S.FormInput>
+              </div>
+              <div>
+                <S.FormInput>
+                  <label>Preço da Compra *</label>
+
+                  <Controller
+                    name="purchase_value"
+                    control={control}
+                    rules={{ required: 'Este campo é obrigatório' }}
+                    render={({ field: { onChange, value, ref } }) => (
+                      <NumericFormat
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        decimalScale={2}
+                        fixedDecimalScale={true}
+                        placeholder="R$ 0,00"
+                        prefix="R$ "
+                        value={value}
+                        onValueChange={(values) => {
+                          onChange(values.floatValue); // Use formattedValue to store the formatted string
+                        }}
+                        getInputRef={ref}
+                      />
+                    )}
+                  />
+                  {errors.purchase_value && <small>{errors.purchase_value.message}</small>}
+                </S.FormInput>
+
+                <S.FormInput>
+                  <label>Preço Final *</label>
 
                   <Controller
                     name="price"

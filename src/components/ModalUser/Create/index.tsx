@@ -144,6 +144,11 @@ export default function CreateUser({
     }
   };
 
+  const handleCloseModal = () => {
+    setModalOpen();
+    reset();
+  };
+
   if (isOpen) {
     return (
       <S.Container>
@@ -234,7 +239,7 @@ export default function CreateUser({
                 <span>Mostrar Senha</span>
               </S.ButtonLook>
               <S.Actions>
-                <S.Cancel onClick={setModalOpen}>Cancelar</S.Cancel>
+                <S.Cancel onClick={handleCloseModal}>Cancelar</S.Cancel>
                 <S.Save type="submit" disabled={loading}>
                   {loading ? 'Salvando...' : 'Salvar'}
                 </S.Save>

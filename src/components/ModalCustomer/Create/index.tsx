@@ -5,6 +5,8 @@ import axios_product from '../../../api/axios';
 import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { IMaskInput } from 'react-imask';
+import ModalConfirm from '../../../components/ModalConfirm'
+
 //styles
 import * as S from './styles';
 
@@ -56,12 +58,17 @@ export default function CreateCustomer({
   setModalOpen
 }: IModalCreateProps) {
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, formState, reset, control, setValue } = useForm<IProductData>({
+  const { register, handleSubmit, formState, reset, control } = useForm<IProductData>({
     mode: 'onBlur',
     resolver: yupResolver(schema)
   });
-
   const { errors } = formState;
+
+  // ModalConfirm
+  const [openModalConfirm, setOpenModalConfirm] = useState(false);
+  const [successText, setSuccessText] = useState<boolean | null>(null);
+  const [errorMessage, setErrorMessage] = useState<boolean | null>(null);
+  const [errorMsgTxt, setErrorMsgTxt] = useState('');
 
   const onSubmit: SubmitHandler<IProductData> = async (data) => {
     setLoading(true);
@@ -70,29 +77,46 @@ export default function CreateCustomer({
       const statusCode = response.status;
 
       if (statusCode === 201) {
-        alert('Cliente salvo com sucesso!');
+        setErrorMessage(false);
+        setSuccessText(true);
+        setOpenModalConfirm(true);
         window.location.reload();
       }
     } catch (error) {
+      setSuccessText(false);
+      setErrorMessage(true);
+      setOpenModalConfirm(true);
       if ((error as AxiosError).response) {
         const statusCode = (error as AxiosError).response?.status;
 
         if (statusCode === 409) {
-          alert('Já existe referência e/ou código de barras cadastrados');
+          setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
         } else {
-          alert(`Error with status code: ${statusCode}`);
+          setErrorMsgTxt(`Error with status code: ${statusCode}`);
         }
       } else {
-        alert('Erro desconhecido: ' + error);
+        setErrorMsgTxt('Erro desconhecido: ' + error);
       }
     } finally {
       setLoading(false);
     }
   };
 
+  const handleCloseModal = () => {
+    setModalOpen();
+    reset();
+  };
+
   if (isOpen) {
     return (
       <S.Container>
+        <ModalConfirm
+          msgError={errorMessage}
+          msgSuccess={successText}
+          titleErr={errorMsgTxt}
+          isOpen={openModalConfirm}
+          setModalOpen={() => setOpenModalConfirm(false)}
+        />
         <S.ContentModel>
           <S.ContentForm>
             <span>
@@ -149,7 +173,7 @@ export default function CreateCustomer({
               </div>
 
               <S.Actions>
-                <S.Cancel onClick={setModalOpen}>Cancelar</S.Cancel>
+                <S.Cancel onClick={handleCloseModal}>Cancelar</S.Cancel>
                 <S.Save type="submit" disabled={loading}>
                   {loading ? 'Salvando...' : 'Salvar'}
                 </S.Save>

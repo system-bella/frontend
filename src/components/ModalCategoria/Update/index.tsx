@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import IlayoutModal from "../../IlayoutModal";
 import axios_product from "../../../api/axios"
-import { IoIosArrowForward, IoIosArrowDown } from "react-icons/io";
-import ListagemCategoria from '../../ModalCategoria/Listagem';
 
 import * as Yup from 'yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -13,6 +11,9 @@ import { AxiosError } from "axios";
 interface IModalCreateProps {
   isOpen: boolean;
   setModalOpen: any;
+  itemId: number | null;
+  // onClose: (newCategory: Input | null) => void;
+  onClose: any;
 }
 
 interface Input {
@@ -33,30 +34,51 @@ const schema = Yup.object().shape({
 });
 
 
-export default function CreateCategoria(
+export default function EditCategoria(
   { isOpen,
-    setModalOpen
+    setModalOpen,
+    itemId, 
+    onClose
   }: IModalCreateProps) {
-  const [locked, setLocked] = useState(false);
 
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, formState, reset } = useForm<Input>({
+  const { register, handleSubmit, formState, reset, setValue } = useForm<Input>({
     mode: 'onBlur',
     resolver: yupResolver(schema)
   });
 
   const { errors } = formState;
 
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+
+        const response = await axios_product.get(`v1/category/${itemId}`);
+        const customerData = response.data;
+
+        for (const key in customerData) {
+          setValue(key as keyof Input, customerData[key]);
+        }
+      } catch (error) {
+        console.error('Error fetching product details:', error);
+      }
+    };
+
+    if (itemId) {
+      fetchProductDetails();
+    }
+  }, [itemId]);
+
   const onSubmit: SubmitHandler<Input> = async (data) => {
     setLoading(true);
     try {
-      const response = await axios_product.post('v1/category', { ...data });
-      console.log(response);
+      const response = await axios_product.put(`v1/category/${itemId}`, { ...data });
       const statusCode = response.status;
-
-      if (statusCode === 201) {
+      
+      if (statusCode === 200) {
         alert('Categoria salvo com sucesso!');
-        window.location.reload();
+        const createdCategory = response.data;
+        onClose(createdCategory);
       }
     } catch (error) {
       if ((error as AxiosError).response) {
@@ -75,22 +97,15 @@ export default function CreateCategoria(
     }
   };
 
-  const handleCloseModal = () => {
-    setModalOpen();
-    reset();
-  };
-
   if (isOpen) {
     return (
       <Container>
         <IlayoutModal
           titleName="Categoria"
-          titleRestName="Cadastrar"
-          setModalClose={handleCloseModal}
+          titleRestName="Editar"
+          setModalClose={setModalOpen}
           loading={loading}
           setModalFunctionRight={handleSubmit(onSubmit)}>
-          <Content>
-
             <DivInput>
               <label>Nome da Categoria *</label>
               <Input
@@ -102,19 +117,6 @@ export default function CreateCategoria(
                 <small>{errors.category.message}</small>
               )}
             </DivInput>
-          </Content>
-          <ListModal>
-            <Button onClick={() => setLocked(!locked)}>
-              <p>Visualizar Categorias
-                {locked ? <IoIosArrowDown /> : <IoIosArrowForward />}
-              </p>
-            </Button>
-            <ListDados>
-              {locked && (
-                <ListagemCategoria />
-              )}
-            </ListDados>
-          </ListModal>
         </IlayoutModal>
       </Container>
     )
@@ -134,16 +136,11 @@ export const Container = styled.div`
   }
 `
 
-export const Content = styled.div`
-  border-bottom: 1.5px dashed ${(props) => props.theme.colors.secondary.gray_50};
-  margin-bottom: 10px;
-`
-
 // conten label+input
 export const DivInput = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 10px 0px 20px 0px;
+  margin: 10px 0px;
   gap: 5px;
 
   small {

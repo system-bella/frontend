@@ -56,9 +56,6 @@ const schema = Yup.object().shape({
             }
             return String(originalValue); //
         }),
-
-
-
 });
 
 export default function CreateFornecedor(
@@ -103,6 +100,11 @@ export default function CreateFornecedor(
         }
     };
 
+    const handleCloseModal = () => {
+        setModalOpen();
+        reset();
+    };
+
     if (isOpen) {
         return (
             <Container>
@@ -110,7 +112,7 @@ export default function CreateFornecedor(
                     setModalFunctionRight={handleSubmit(onSubmit)}
                     titleName="Fornecedor"
                     titleRestName="Cadastrar"
-                    setModalClose={setModalOpen}
+                    setModalClose={handleCloseModal}
                     loading={loading}>
                     <div>
                         <FormInput>

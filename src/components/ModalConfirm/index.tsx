@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { CiCircleRemove, CiCircleInfo, CiCircleAlert } from "react-icons/ci";
 interface Props {
     titleErr: string;
-    icon: any;
     isOpen: boolean;
     setModalOpen: any;
     msgSuccess: any;
