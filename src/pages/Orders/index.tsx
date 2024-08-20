@@ -18,7 +18,8 @@ interface IData {
   customer: Customer,
   user: User,
   products: Produto[],
-  discount: string
+  discount: string, 
+  total_price: string;
 }
 
 interface Customer {
@@ -103,7 +104,6 @@ export default function Orders() {
     fetchData();
   }, [currentPage]);
 
-  if (items) {
     return (
       <S.Container>
         {loadingModal && (<Loading />)}
@@ -131,7 +131,7 @@ export default function Orders() {
               <th>Ações</th>
             </tr>
             {
-              items.map((val, index) => {
+              items?.map((val, index) => {
                 const totalVenda = calcularTotalVenda(val);
                 console.log(val);
                 return (
@@ -194,6 +194,4 @@ export default function Orders() {
       /> */}
       </S.Container>
     );
-  }
-  return null;
 }
