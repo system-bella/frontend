@@ -56,11 +56,10 @@ export default function ModalConfirm({
 
 export const Container = styled.div`
   position: fixed;
-  right: 0;
-  left: 1;
-  top: 0;
-  bottom: 0;
+  right: 20px;  /* Ajuste para posicionar no canto superior direito */
+  top: 20px;    /* Ajuste para posicionar no canto superior direito */
   z-index: 1000;
+  
 
   .infor {
     p {
@@ -85,20 +84,10 @@ export const Container = styled.div`
 export const Content = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: stretch;
-    margin: 20px;
-    padding: 5px;
+    padding: 10px;
     width: 350px;
     min-height: 80px;
-    background: #ffffff88;
-    
-
-    
-    
-
-    /* background: #ff3a3032; */
-    /* background: #478dfc36; */
-    
+    background: #ffffff88;   
 
     box-shadow: 0 8px 32px 0 rgba( 0, 0, 0, 0.2 );
     backdrop-filter: blur( 18.5px );
@@ -114,6 +103,7 @@ export const DivInfor = styled.div`
     display: flex;
     align-items: center;
     gap: 20px;
+    
     svg{
         font-size: 34px;
     }

@@ -76,7 +76,7 @@ export default function ListagemCategoria() {
                     autoComplete="off"
                     id="categoria"
                     type="text"
-                    placeholder="Informe a categoria"
+                    placeholder="Pesquise a categoria"
                     onChange={handleInputChange}
                 />
 

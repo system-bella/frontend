@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { CiLock, CiUnlock } from 'react-icons/ci';
 //styles
 import * as S from './styles';
+import ModalConfirm from '../../../components/ModalConfirm'
 
 interface IModalCreateProps {
   isOpen: boolean;
@@ -101,6 +102,11 @@ export default function UpdateUser({
   });
   const [locked, setLocked] = useState(true);
   const { errors } = formState;
+  // ModalConfirm
+  const [openModalConfirm, setOpenModalConfirm] = useState(false);
+  const [successText, setSuccessText] = useState<boolean | null>(null);
+  const [errorMessage, setErrorMessage] = useState<boolean | null>(null);
+  const [errorMsgTxt, setErrorMsgTxt] = useState('');
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -129,10 +135,15 @@ export default function UpdateUser({
       const statusCode = response.status;
 
       if (statusCode === 200) {
-        alert('Atualizado com sucesso!');
+        setErrorMessage(false);
+        setSuccessText(true);
+        setOpenModalConfirm(true);
         window.location.reload();
-      } 
+      }
     } catch (error) {
+      setSuccessText(false);
+      setErrorMessage(true);
+      setOpenModalConfirm(true);
       if ((error as AxiosError).response) {
         const statusCode = (error as AxiosError).response?.status;
         const errorData = (error as AxiosError).response?.data as ApiError;
@@ -148,17 +159,17 @@ export default function UpdateUser({
           }
 
           // Exibir todas as mensagens de erro em um único alert
-          alert(errorMessages || 'Erro de validação desconhecido.');
+          setErrorMsgTxt(errorMessages || 'Erro de validação desconhecido.');
         }
 
         if (statusCode === 409) {
-          alert('Já existe referência e/ou código de barras cadastrados');
+          setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
         }
         // else {
-        //   alert(`Error with status code: ${statusCode}`);
+        //   setErrorMsgTxt(`Error with status code: ${statusCode}`);
         // }
       } else {
-        alert('Erro desconhecido: ' + error);
+        setErrorMsgTxt('Erro desconhecido: ' + error);
       }
     } finally {
       setLoading(false);
@@ -168,6 +179,13 @@ export default function UpdateUser({
   if (isOpen) {
     return (
       <S.Container>
+        <ModalConfirm
+          msgError={errorMessage}
+          msgSuccess={successText}
+          titleErr={errorMsgTxt}
+          isOpen={openModalConfirm}
+          setModalOpen={() => setOpenModalConfirm(false)}
+        />
         <S.ContentModel>
           <S.ContentForm>
             <span>

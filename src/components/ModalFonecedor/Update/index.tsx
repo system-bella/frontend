@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import IlayoutModal from "../../IlayoutModal";
 import { IMaskInput } from 'react-imask';
 import * as Yup from 'yup';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AxiosError } from "axios";
 import axios_product from '../../../api/axios';
+import ModalConfirm from '../../../components/ModalConfirm'
 
 interface IModalCreateProps {
     isOpen: boolean;
@@ -75,65 +75,82 @@ export default function UpdateFornecedor(
         resolver: yupResolver(schema)
     });
     const { errors } = formState;
+    // ModalConfirm
+    const [openModalConfirm, setOpenModalConfirm] = useState(false);
+    const [successText, setSuccessText] = useState<boolean | null>(null);
+    const [errorMessage, setErrorMessage] = useState<boolean | null>(null);
+    const [errorMsgTxt, setErrorMsgTxt] = useState('');
 
     useEffect(() => {
         const fetchProductDetails = async () => {
-          try {
-    
-            const response = await axios_product.get(`v1/supplier/${itemId}`);
-            const customerData = response.data;
-    
-            for (const key in customerData) {
-              setValue(key as keyof IData, customerData[key]);
+            try {
+
+                const response = await axios_product.get(`v1/supplier/${itemId}`);
+                const customerData = response.data;
+
+                for (const key in customerData) {
+                    setValue(key as keyof IData, customerData[key]);
+                }
+            } catch (error) {
+                console.error('Error fetching product details:', error);
             }
-          } catch (error) {
-            console.error('Error fetching product details:', error);
-          }
         };
-    
+
         if (itemId) {
-          fetchProductDetails();
+            fetchProductDetails();
         }
-      }, [itemId]);
+    }, [itemId]);
 
     const onSubmit: SubmitHandler<IData> = async (data) => {
         setLoading(true);
         try {
-            console.log(data);
             const response = await axios_product.put(`v1/supplier/${itemId}`, data);
             const statusCode = response.status;
 
             if (statusCode === 200) {
-                alert('Atualizado com sucesso!');
-                reset();
+                setErrorMessage(false);
+                setSuccessText(true);
+                setOpenModalConfirm(true);
                 window.location.reload();
             }
         } catch (error) {
+            setSuccessText(false);
+            setErrorMessage(true);
+            setOpenModalConfirm(true);
             if ((error as AxiosError).response) {
                 const statusCode = (error as AxiosError).response?.status;
 
                 if (statusCode === 409) {
-                    alert('Já existe referência e/ou código de barras cadastrados');
+                    setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
                 } else {
-                    alert(`Error with status code: ${statusCode}`);
+                    setErrorMsgTxt(`Error with status code: ${statusCode}`);
                 }
             } else {
-                alert('Erro desconhecido: ' + error);
+                setErrorMsgTxt('Erro desconhecido: ' + error);
             }
         } finally {
             setLoading(false);
         }
     };
+    const handleCloseModal = () => {
+        setModalOpen();
+        setOpenModalConfirm(false);
+    };
 
     if (isOpen) {
         return (
-            <Container>
-                <IlayoutModal
-                    setModalFunctionRight={handleSubmit(onSubmit)}
-                    titleName="Fornecedor"
-                    titleRestName="Cadastrar"
-                    setModalClose={setModalOpen}
-                    loading={loading}>
+            <Main>
+                <ModalConfirm
+                    msgError={errorMessage}
+                    msgSuccess={successText}
+                    titleErr={errorMsgTxt}
+                    isOpen={openModalConfirm}
+                    setModalOpen={() => setOpenModalConfirm(false)}
+                />
+                <Container>
+                    <span>
+                        <strong>Fornecedor{'>'}</strong>Cadastrar
+                    </span>
                     <div>
                         <FormInput>
                             <label>Nome *</label>
@@ -183,18 +200,51 @@ export default function UpdateFornecedor(
                             />
                         </FormInput>
                     </div>
-                </IlayoutModal>
-            </Container>
+                    <Actions>
+                        <Cancel onClick={handleCloseModal}>Cancelar</Cancel>
+                        <Save
+                            onClick={handleSubmit(onSubmit)}
+                            type="submit"
+                            disabled={loading}>
+                            {loading ? 'Salvando...' : 'Salvar'}
+                        </Save>
+                    </Actions>
+                </Container>
+            </Main>
         )
     }
     return null;
 }
 
+export const Main = styled.div`
+    position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgb(0,0,0, 0.15);
+  z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
 
 export const Container = styled.div`
-div{
-    display: flex;
-}
+    border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
+  border-radius: 16px;
+  width: 500px;
+  font-size: 15px;
+  padding: 8px;
+  background-color: ${(props) => props.theme.colors.white};
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 10px;
+
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+    div{
+        display: flex;
+    }
 `
 
 // conten label+input
@@ -242,4 +292,33 @@ export const TextArea = styled.textarea`
   &::placeholder {
     font-size: 16px;
   }
+`;
+
+export const Actions = styled.div`
+  margin: 50px 10px 10px 10px;
+  display: flex;
+  justify-content: end;
+`;
+
+export const Cancel = styled.button`
+  font-size: 16px;
+  color: ${(props) => props.theme.colors.black};
+  padding: 10px;
+  background-color: transparent;
+  border: 1px solid ${(props) => props.theme.colors.black};
+  border-radius: 10px;
+
+  margin-right: 20px;
+`;
+
+export const Save = styled.button`
+  margin-left: 16px;
+
+  font-size: 16px;
+  color: ${(props) => props.theme.colors.white};
+
+  background-color: ${(props) => props.theme.colors.primary};
+
+  padding: 10px;
+  border-radius: 10px;
 `;
