@@ -2,12 +2,12 @@ import * as S from './styles';
 import Modal from '../../components/ModalDelete';
 import NewItem from '../../components/NewItem';
 import Pagination from '../../components/Pagination';
-import ModalDetails from '../../components/ModalProduct/Details';
 import { PiClipboardTextThin } from 'react-icons/pi';
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { useEffect, useState } from 'react';
 import axios_product from '../../api/axios';
 import Loading from '../../components/Loading';
+import ModalDetails from '../../components/ModalOrder/Details';
 
 import { NumericFormat } from 'react-number-format';
 import { parseISO, format } from 'date-fns';
@@ -67,6 +67,7 @@ export default function Orders() {
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
   const [items, setItems] = useState<IData[] | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
   //Paginas
   const [currentPage, setCurrentPage] = useState(1);
@@ -154,12 +155,17 @@ export default function Orders() {
                   <td>{val.user.first_name}</td>
                   <td>
                     <div>
-                      <button>
-                        <PiClipboardTextThin
-                          onClick={() => setOpenModalDetails(true)}
-                        />
+                      <button onClick={() => {
+                        setSelectedItemId(val.id);
+                        setOpenModalDetails(true);
+                      }}>
+                        <PiClipboardTextThin />
                       </button>
-                      <button onClick={() => setOpenModal(true)}>
+                      <button
+                        onClick={() => {
+                          setOpenModal(true);
+                          setSelectedItemId(val.id);
+                        }}>
                         <CiTrash />
                       </button>
                     </div>
@@ -183,23 +189,16 @@ export default function Orders() {
       </S.Footer>
       {/* Modals */}
       <Modal
-        itemId={1}
+        itemId={selectedItemId}
         isOpen={openModal}
         setModalOpen={() => setOpenModal(false)}
         url='order'
       />
       <ModalDetails
-        itemId={1}
+        itemId={selectedItemId}
         isOpen={openModalDetails}
         setModalOpen={() => setOpenModalDetails(false)}
       />
-
-      {/* <ModalConfirm
-        icon={<CiCircleInfo />}
-        title='Confirmado'
-        isOpen={openModalConfirm}
-        setModalOpen={() => setOpenModalConfirm(false)}
-      /> */}
     </S.Container>
   );
 }
