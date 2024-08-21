@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios_product from '../../../api/axios';
+import Loading from '../../../components/Loading';
 
 import * as S from './styles';
 import { PiClipboardTextThin } from 'react-icons/pi';
@@ -52,15 +53,20 @@ export default function ModalDetails({
   setModalOpen,
   itemId
 }: IModalDetailsProps) {
+
   const [item, setItem] = useState<IData | null>(null);
+  const [loadingModal, setLoadingModal] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
+      setLoadingModal(true);
       try {
         const response = await axios_product.get(`v1/order/${itemId}`);
         setItem(response.data); // Assuming your data is in the 'data' property of the response
       } catch (error) {
         console.error('Error fetching product details:', error);
+      } finally {
+        setLoadingModal(false);
       }
     };
 
@@ -69,10 +75,10 @@ export default function ModalDetails({
     }
   }, [itemId]);
 
-
   if (isOpen && item) {
     return (
       <S.Container>
+      {loadingModal && (<Loading />)}
         <S.Content>
           <S.Header>
             <S.Title>
@@ -124,16 +130,15 @@ export default function ModalDetails({
               <S.InfoDescription>
                 <div>
                   <h5>Produtos</h5>
-                  <span>{item.products.map(val =>{
-                    return(
+                  <span>{item.products.map(val => {
+                    return (
                       <p>
-                        {val.name} 
+                        {val.name}
                       </p>
                     )
                   })}</span>
                 </div>
               </S.InfoDescription>
-
             </S.DivideInfo>
           </S.MainInformation>
         </S.Content>

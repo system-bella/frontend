@@ -145,9 +145,9 @@ export default function CreateUser({
         if (statusCode === 409) {
           setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
         }
-        // else {
-        //   setErrorMsgTxt(`Error with status code: ${statusCode}`);
-        // }
+        else {
+          setErrorMsgTxt(`Error with status code: ${statusCode}`);
+        }
       } else {
         setErrorMsgTxt('Erro desconhecido: ' + error);
       }
@@ -160,6 +160,14 @@ export default function CreateUser({
     setModalOpen();
     reset();
   };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Previne o comportamento padrão do Enter, como pular para o próximo input
+      handleSubmit(onSubmit)(); // Submete o formulário manualmente
+    }
+  };
+  
 
   if (isOpen) {
     return (
@@ -176,8 +184,7 @@ export default function CreateUser({
             <span>
               <strong>Usuário{'>'}</strong>Cadastrar
             </span>
-            <S.Form onSubmit={handleSubmit(onSubmit)}>
-
+            <S.Form onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown}>
               <div>
                 <S.FormInput>
                   <label>Nome *</label>

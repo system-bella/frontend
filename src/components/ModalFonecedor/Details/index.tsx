@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios_product from '../../../api/axios';
+import Loading from '../../../components/Loading';
 
 import * as S from './styles';
 import { PiClipboardTextThin } from 'react-icons/pi';
 import { CiCircleRemove } from 'react-icons/ci';
-import QRCode from '../../QRCode';
 
 interface IModalDetailsProps {
   isOpen: boolean;
@@ -26,14 +26,18 @@ export default function DetailsFornecedor({
   itemId
 }: IModalDetailsProps) {
   const [item, setItem] = useState<IData | null>(null);
+  const [loadingModal, setLoadingModal] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
+      setLoadingModal(true);
       try {
         const response = await axios_product.get(`v1/supplier/${itemId}`);
         setItem(response.data); // Assuming your data is in the 'data' property of the response
       } catch (error) {
         console.error('Error fetching product details:', error);
+      } finally {
+        setLoadingModal(false);
       }
     };
 
@@ -42,10 +46,10 @@ export default function DetailsFornecedor({
     }
   }, [itemId]);
 
-
   if (isOpen && item) {
     return (
       <S.Container>
+        {loadingModal && (<Loading />)}
         <S.Content>
           <S.Header>
             <S.Title>
