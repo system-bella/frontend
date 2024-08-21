@@ -153,6 +153,7 @@ export const Content = styled.div`
         padding: 3px;
     }
 
+
     svg{
         color: ${(props) => props.theme.colors.warning};
         font-size: 18px;

@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import axios_product from '../../api/axios';
 import Loading from '../../components/Loading';
 
+import { NumericFormat } from 'react-number-format';
 import { parseISO, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -18,7 +19,7 @@ interface IData {
   customer: Customer,
   user: User,
   products: Produto[],
-  discount: string, 
+  discount: string,
   total_price: string;
 }
 
@@ -32,7 +33,7 @@ interface User {
   first_name: string;
 }
 
-interface Produto{
+interface Produto {
   id: number;
   quantity: number;
   price: string;
@@ -104,94 +105,101 @@ export default function Orders() {
     fetchData();
   }, [currentPage]);
 
-    return (
-      <S.Container>
-        {loadingModal && (<Loading />)}
-        <S.Content>
-          <S.Title>
-            <span>
-              Venda{'>'}
-              <small>Todos as vendas</small>
-            </span>
-            <S.Header>
-              <NewItem
-                url="/Orders/Create"
-                icon={<CiCirclePlus fontSize={24} />}
-                title="Novo"
-              />
-            </S.Header>
-          </S.Title>
-          <S.BodyTable>
-            <tr>
-              <th>#</th>
-              <th>Resumo</th>
-              <th>Cliente</th>
-              <th>Data</th>
-              <th>Vendedor</th>
-              <th>Ações</th>
-            </tr>
-            {
-              items?.map((val, index) => {
-                const totalVenda = calcularTotalVenda(val);
-                console.log(val);
-                return (
-                  <tr>
-                    <td>{index + 1}</td>
-                    <td>{totalVenda} R$</td>
-                    <td>{val.customer.name}</td>
-                    <td>{formatarData(val.created_at)}</td>
-                    <td>{val.user.first_name}</td>
-                    <td>
-                      <div>
-                        <button>
-                          <PiClipboardTextThin
-                            onClick={() => setOpenModalDetails(true)}
-                          />
-                        </button>
-                        <button>
-                          <CiEdit />
-                        </button>
-                        <button onClick={() => setOpenModal(true)}>
-                          <CiTrash />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+  return (
+    <S.Container>
+      {loadingModal && (<Loading />)}
+      <S.Content>
+        <S.Title>
+          <span>
+            Venda{'>'}
+            <small>Todos as vendas</small>
+          </span>
+          <S.Header>
+            <NewItem
+              url="/Orders/Create"
+              icon={<CiCirclePlus fontSize={24} />}
+              title="Novo"
+            />
+          </S.Header>
+        </S.Title>
+        <S.BodyTable>
+          <tr>
+            <th>#</th>
+            <th>Resumo</th>
+            <th>Cliente</th>
+            <th>Data</th>
+            <th>Vendedor</th>
+            <th>Ações</th>
+          </tr>
+          {
+            items?.map((val, index) => {
+              const totalVenda = calcularTotalVenda(val);
+              console.log(val);
+              return (
+                <tr>
+                  <td>{index + 1}</td>
+                  <td>
+                    <NumericFormat
+                      displayType={'text'}
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      decimalScale={2}
+                      value={val.total_price || "-"}
+                      fixedDecimalScale={true}
+                      prefix='R$'
+                    />
+                  </td>
+                  <td>{val.customer?.name || "-"}</td>
+                  <td>{formatarData(val.created_at)}</td>
+                  <td>{val.user.first_name}</td>
+                  <td>
+                    <div>
+                      <button>
+                        <PiClipboardTextThin
+                          onClick={() => setOpenModalDetails(true)}
+                        />
+                      </button>
+                      <button onClick={() => setOpenModal(true)}>
+                        <CiTrash />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
 
-                )
-              })
-            }
-          </S.BodyTable>
-        </S.Content>
+              )
+            })
+          }
+        </S.BodyTable>
+      </S.Content>
 
-        <S.Footer>
-          <Pagination
-            currentPage={currentPage}
-            lastPage={lastPage}
-            perPage={perPage}
-            prevPage={goToPrevPage}
-            nextPage={goToNextPage}
-          />
-        </S.Footer>
-        {/* Modals */}
-        <Modal
-          itemId={1}
-          isOpen={openModal}
-          setModalOpen={() => setOpenModal(false)}
-          url='order'
+      <S.Footer>
+        <Pagination
+          currentPage={currentPage}
+          lastPage={lastPage}
+          perPage={perPage}
+          prevPage={goToPrevPage}
+          nextPage={goToNextPage}
         />
-        <ModalDetails
-          itemId={1}
-          isOpen={openModalDetails}
-          setModalOpen={() => setOpenModalDetails(false)}
-        />
+      </S.Footer>
+      {/* Modals */}
+      <Modal
+        itemId={1}
+        isOpen={openModal}
+        setModalOpen={() => setOpenModal(false)}
+        url='order'
+      />
+      <ModalDetails
+        itemId={1}
+        isOpen={openModalDetails}
+        setModalOpen={() => setOpenModalDetails(false)}
+      />
 
-        {/* <ModalConfirm
+      {/* <ModalConfirm
         icon={<CiCircleInfo />}
         title='Confirmado'
         isOpen={openModalConfirm}
         setModalOpen={() => setOpenModalConfirm(false)}
       /> */}
-      </S.Container>
-    );
+    </S.Container>
+  );
 }

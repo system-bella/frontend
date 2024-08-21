@@ -41,7 +41,7 @@ export default function Customer() {
       setLoadingModal(true);
       try {
         let url = 'customer?page=' + currentPage;
-        if (searchTerm) {
+        if (6) {
           url = `customer?search=${searchTerm}`;
         }
         const response = await axios_product.get(`v1/${url}`);
