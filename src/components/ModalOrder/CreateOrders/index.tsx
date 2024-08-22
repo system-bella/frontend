@@ -12,7 +12,7 @@ import ModalConfirm from '../../../components/ModalConfirm'
 import * as Yup from 'yup';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 
 interface Customer {
   id: number;
@@ -34,6 +34,11 @@ type Input = {
   discount?: number;
   products?: Produto[];
 };
+
+interface ApiError {
+  message?: string;  // Mensagem genérica de erro (opcional)
+  error?: string;    // Detalhes específicos do erro (opcional)
+}
 
 // Validation
 const schema = Yup.object().shape({
@@ -186,7 +191,6 @@ export default function CreateOrders() {
 
     try {
       const productIds = selectedProducts.map((product) => ({ id: product.id, quantity: product.quantity }));
-      console.log(productIds.length);
       if (productIds.length > 0) {
         const payload = {
           customer_id: data.customer_id,
@@ -220,10 +224,22 @@ export default function CreateOrders() {
       setSuccessText(false);
       setErrorMessage(true);
       setOpenModalConfirm(true);
-      if ((error as AxiosError).response) {
+      if (axios.isAxiosError(error)) {
         const statusCode = (error as AxiosError).response?.status;
+        const errorData = (error as AxiosError).response?.data as ApiError;
 
-        if (statusCode === 409) {
+        if (errorData) {
+          if (errorData.error) {
+            console.log(errorData.error);
+            setErrorMsgTxt(errorData.error);
+          } else if (errorData.message) {
+            setErrorMsgTxt(errorData.message);
+          } else {
+            setErrorMsgTxt('Erro de validação desconhecido.');
+          }
+        }
+        
+        else if (statusCode === 409) {
           setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
         } else {
           setErrorMsgTxt(`Error with status code: ${statusCode}`);

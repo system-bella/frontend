@@ -145,9 +145,9 @@ export default function Product() {
             <tr>
               <th>Referência</th>
               <th>Produto</th>
-              <th>Categoria</th>
               <th>QTD</th>
               <th>Valor R$</th>
+              <th>Categoria</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -156,9 +156,9 @@ export default function Product() {
               <tr key={item.id}>
                 <td>{item.barcode}</td>
                 <td>{item.name}</td>
-                <td>{item.category.category}</td>
                 <td>{item.quantity}</td>
                 <td>{currencyFormat(parseFloat(item.price))}</td>
+                <td>{item.category.category}</td>
                 <td>
                   <span>
                     <button>

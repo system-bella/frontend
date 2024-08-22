@@ -6,10 +6,11 @@ import { PiClipboardTextThin } from 'react-icons/pi';
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { useEffect, useState } from 'react';
 import axios_product from '../../api/axios';
-import Loading from '../../components/Loading';
 import ModalDetails from '../../components/ModalOrder/Details';
-import Sleep from '../../components/Error/SleepSytem';
 import axios from 'axios';
+import Loading from '../../components/Loading';
+import Sleep from '../../components/Error/SleepSytem';
+import Erro429 from '../../components/Error/Error429';
 
 import { NumericFormat } from 'react-number-format';
 import { parseISO, format } from 'date-fns';
@@ -71,6 +72,7 @@ export default function Orders() {
   const [items, setItems] = useState<IData[] | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
   const [openSleep, setOpenSleep] = useState(false);
+  const [open429, setOpen429] = useState(false);
 
   //Paginas
   const [currentPage, setCurrentPage] = useState(1);
@@ -107,6 +109,9 @@ export default function Orders() {
           if (status === 401) {
             setOpenSleep(true);
           }
+          else if (status === 429) {
+            setOpen429(true);
+          }
         }
       } finally {
         setLoadingModal(false);
@@ -117,6 +122,8 @@ export default function Orders() {
 
   if (openSleep) {
     return <Sleep />
+  } else if (open429) {
+    return <Erro429 />
   }
 
   return (
@@ -148,7 +155,6 @@ export default function Orders() {
           {
             items?.map((val, index) => {
               const totalVenda = calcularTotalVenda(val);
-              console.log(val);
               return (
                 <tr>
                   <td>{index + 1}</td>
