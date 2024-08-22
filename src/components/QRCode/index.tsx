@@ -4,13 +4,15 @@ import html2canvas from 'html2canvas';
 import * as S from './styles';
 
 interface IQRCode {
-  name: string | undefined;
+  name: string;
   category: string | undefined;
-  reference: string;
   price: string | undefined;
 }
 
-export default function QRCode({ name, category, reference, price }: IQRCode) {
+export default function QRCode(
+  { name,
+    category,
+    price }: IQRCode) {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const handleCapture = () => {
@@ -20,7 +22,7 @@ export default function QRCode({ name, category, reference, price }: IQRCode) {
           const imgData = canvas.toDataURL('image/png');
           const link = document.createElement('a');
           link.href = imgData;
-          link.download = `qrcode_${reference}.png`;
+          link.download = `qrcode_${name}.png`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -35,7 +37,7 @@ export default function QRCode({ name, category, reference, price }: IQRCode) {
     <div>
       <S.Container>
         <S.PrintQrcode ref={targetRef}>
-          <Qrcode value={reference} size={200} />
+          <Qrcode value={name} size={130} />
           <S.Label>
             <img src={require('../../assets/logo.png')} />
             <p>
@@ -45,13 +47,12 @@ export default function QRCode({ name, category, reference, price }: IQRCode) {
               <strong>CATEGORIA:</strong> {category}
             </p>
             <p>
-              <strong>REFERÊNCIA: </strong> {reference}
             </p>
             <h1>R$ {price}</h1>
           </S.Label>
         </S.PrintQrcode>
         <S.CaputureQrcode onClick={handleCapture}>
-          Exportar QR Code
+          Exportar QRCode
         </S.CaputureQrcode>
       </S.Container>
     </div>

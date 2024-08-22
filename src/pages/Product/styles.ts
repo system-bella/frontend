@@ -8,13 +8,13 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   flex: 1;
-  //flex-direction:
 `;
 
 export const Header = styled.header`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  flex-direction: row;
+  gap: 20px;
   margin-bottom: 36px;
 
   div {
@@ -48,7 +48,10 @@ export const NewItem = styled.button`
 `;
 
 export const Title = styled.div`
-  margin-bottom: 32px;
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
 
   span {
     font-size: 16px;
@@ -67,7 +70,7 @@ export const BodyTable = styled.table`
   td,
   th {
     text-align: center;
-    padding: 12px 0;
+    padding: 10px 0;
   }
 
   thead > tr > th {
@@ -102,3 +105,14 @@ export const Footer = styled.footer`
 
   padding: 10px 0;
 `;
+
+export const ContentModal = styled.div`
+ position: relative;
+ 
+`
+
+export const ModalOpt = styled.div`
+ position: absolute;
+ top: 50px;
+ right: 0;
+`

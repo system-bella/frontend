@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
 
-  width: 300px;
+  width: 280px;
   border: 1px solid ${(props) => props.theme.colors.black};
   border-radius: 10px;
 
@@ -14,7 +14,7 @@ export const Container = styled.div`
   }
 
   svg {
-    font-size: 24px;
+    font-size: 16px;
     color: ${(props) => props.theme.colors.black};
   }
 
