@@ -56,6 +56,8 @@ interface MonthlyData {
   count: number;
 }
 
+
+
 export default function Report() {
 
   const headers = ['#', 'Resumo', 'Cliente', 'Data', 'Vendedor'];

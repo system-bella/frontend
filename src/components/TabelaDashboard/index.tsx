@@ -1,13 +1,19 @@
 import React from "react";
 import * as S from './style'
-import {
-    CiTrash,
-    CiEdit
-} from 'react-icons/ci';
+import { NumericFormat } from 'react-number-format';
+import { parseISO, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface TabelaProps {
     linhaHead: string[];
     dados: Array<{ [key: string]: any }>;
+}
+
+function formatarData(dataFormat: string) {
+    if (dataFormat !== null) {
+        const parsedDate = parseISO(dataFormat);
+        return format(parsedDate, 'dd/MM/yyyy', { locale: ptBR });
+    }
 }
 
 export default function TabelaDashboard({
@@ -28,16 +34,24 @@ export default function TabelaDashboard({
                     {dados.map((val, index) => (
                         <tr key={index}>
                             <td>
-                                {index+1}
+                                {index + 1}
                             </td>
                             <td>
-                                {val.total_price}
+                                <NumericFormat
+                                    displayType={'text'}
+                                    thousandSeparator="."
+                                    decimalSeparator=","
+                                    decimalScale={2}
+                                    value={val.total_price}
+                                    fixedDecimalScale={true}
+                                    prefix='R$'
+                                />
                             </td>
                             <td>
                                 {val.customer?.name || '-'}
                             </td>
                             <td>
-                                {val.created_at}
+                                {formatarData(val.created_at)}
                             </td>
                             <td>
                                 {val.user.first_name}
