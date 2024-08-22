@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios_product from '../../api/axios';
 // styles
 import * as S from './styles';
-
+import axios from 'axios';
 // components
 import FieldSearch from '../../components/FieldSearch';
 import ModalDel from '../../components/ModalDelete';
@@ -11,6 +11,7 @@ import ModalDetails from '../../components/ModalProduct/Details';
 import ModalEdit from '../../components/ModalProduct/Update';
 import ModalOption from '../../components/ModalOption';
 import Loading from '../../components/Loading';
+import Sleep from '../../components/Error/SleepSytem';
 // icons
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { PiClipboardTextThin } from 'react-icons/pi';
@@ -43,6 +44,7 @@ export default function Product() {
   const [openModalEdite, setOpenModalEdite] = useState(false);
   const [openModalDell, setOpenModalDell] = useState(false);
   const [openModalOpt, setOpenModalOpt] = useState(false);
+  const [openSleep, setOpenSleep] = useState(false);
 
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
@@ -79,7 +81,12 @@ export default function Product() {
         setLastPage(response.data.last_page);
 
       } catch (e) {
-        console.error(e);
+        if (axios.isAxiosError(e)) {
+          const status = e.response?.status;
+          if (status === 401) {
+            setOpenSleep(true);
+          }
+        }
       } finally {
         setLoadingModal(false);
       }
@@ -94,6 +101,10 @@ export default function Product() {
   const goToPrevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+  
+  if(openSleep){
+    return <Sleep />
+  }
 
   return (
     <S.Container>

@@ -3,13 +3,15 @@ import * as S from './style'
 import { CiInboxOut } from "react-icons/ci";
 import TabelaDashboard from "../../components/TabelaDashboard";
 import { useEffect, useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 import axios_api from '../../api/axios'
 import { MdOutlineAttachMoney, MdOutlineShoppingCart } from "react-icons/md";
 import DashboardValores from "../../components/DashboardValores";
 import { LineChart, Line, BarChart, Bar, Tooltip, Legend, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import { useReactToPrint } from 'react-to-print';
 import Relatorio from "../../components/Relatorio";
+import Sleep from '../../components/Error/SleepSytem';
+
 interface User {
   id: 1,
   first_name: string,
@@ -23,6 +25,7 @@ export default function Report() {
   const headers = ['#', 'Chave', 'Nome', 'E-mail', 'Usuário', 'Ações'];
   const [user, setUser] = useState<User[]>([]);
   const [totalProduct, setTotalProduct] = useState('');
+  const [openSleep, setOpenSleep] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,10 +36,16 @@ export default function Report() {
             axios_api.get(`v1/user`),
             axios_api.get('v1/product'),
           ]);
-          setUser(userResponse.data.data);
-          setTotalProduct(productResponse.data.total);
+        setUser(userResponse.data.data);
+        setTotalProduct(productResponse.data.total);
       } catch (e) {
         console.log(e);
+        if (axios.isAxiosError(e)) {
+          const status = e.response?.status;
+          if (status === 401) {
+            setOpenSleep(true);
+          }
+        }
       }
     };
     fetchData();
@@ -60,6 +69,10 @@ export default function Report() {
     { name: 'Nov', uv: 3490, pv: 4300, amt: 2100 },
     { name: 'Dez', uv: 3090, pv: 4000, amt: 2000, fill: "#DF3B82" },
   ];
+
+  if (openSleep) {
+    return <Sleep />
+  }
 
   return (
     <S.Container>

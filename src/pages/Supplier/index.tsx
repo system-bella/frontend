@@ -11,6 +11,8 @@ import CreateFornecedor from "../../components/ModalFonecedor/Create";
 import UpdateFornecedor from '../../components/ModalFonecedor/Update';
 import DetailsFornecedor from '../../components/ModalFonecedor/Details';
 import Loading from '../../components/Loading';
+import Sleep from '../../components/Error/SleepSytem';
+import axios from 'axios';
 
 interface IData {
   id: number;
@@ -27,6 +29,7 @@ export default function Supplier() {
   const [openModalEdite, setOpenModalEdite] = useState(false);
   const [openModalDetails, setOpenModalDetails] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
+  const [openSleep, setOpenSleep] = useState(false);
 
   //Paginas
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,7 +49,13 @@ export default function Supplier() {
         setLastPage(response.data.last_page);
 
       } catch (e) {
-        console.error(e);
+        console.log(e);
+        if (axios.isAxiosError(e)) {
+          const status = e.response?.status;
+          if (status === 401) {
+            setOpenSleep(true);
+          }
+        }
       } finally {
         setLoadingModal(false);
       }
@@ -62,10 +71,14 @@ export default function Supplier() {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
+  if (openSleep) {
+    return <Sleep />
+  }
+  
   return (
     <S.Container>
       {loadingModal && (<Loading />)}
-      
+
       <S.Content>
         <S.Title>
           <span>

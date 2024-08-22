@@ -13,14 +13,14 @@ export const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    
     width: 100%;
-    height: 100vh;
-
+    height: 100%;
+    
     h4{
         color: ${(props) => props.theme.colors.warning};
     }
-
+    
     img {
         width: 40%;
     }
