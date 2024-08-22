@@ -62,6 +62,7 @@ export default function ModalDetails({
       setLoadingModal(true);
       try {
         const response = await axios_product.get(`v1/order/${itemId}`);
+        console.log(response);
         setItem(response.data); // Assuming your data is in the 'data' property of the response
       } catch (error) {
         console.error('Error fetching product details:', error);
@@ -133,7 +134,7 @@ export default function ModalDetails({
                   <span>{item.products.map(val => {
                     return (
                       <p>
-                        {val.name}
+                        {`${val.name} - ${val.quantity} qtd.`}
                       </p>
                     )
                   })}</span>
