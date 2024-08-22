@@ -8,6 +8,9 @@ import CreateUser from '../../components/ModalUser/Create';
 import { useUser } from '../../api/contextApi/userContext';
 import Erro403 from '../../components/Error/Erro403';
 import Loading from '../../components/Loading';
+import Sleep from '../../components/Error/SleepSytem';
+import axios from 'axios';
+
 interface User {
     id: 1,
     first_name: string,
@@ -29,6 +32,8 @@ export default function User() {
     const [perPage, setPerPage] = useState();
     const [lastPage, setLastPage] = useState();
     const [isLoading, setIsLoading] = useState(true);
+    const [openSleep, setOpenSleep] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -62,6 +67,9 @@ export default function User() {
         return (
             <Erro403 />
         );
+    }
+    else if (openSleep) {
+        return <Sleep />
     }
 
     else {

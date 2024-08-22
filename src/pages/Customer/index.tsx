@@ -10,6 +10,7 @@ import CreateCustomer from '../../components/ModalCustomer/Create';
 import EditCustomer from '../../components/ModalCustomer/Update';
 import Loading from '../../components/Loading';
 import Sleep from '../../components/Error/SleepSytem';
+import axios from 'axios';
 
 interface IData {
   id: number;
@@ -26,6 +27,7 @@ export default function Customer() {
   const [openModalCreate, setOpenModalCreate] = useState(false);
   const [openModalEdite, setOpenModalEdite] = useState(false);
   const [loadingModal, setLoadingModal] = useState(false);
+  const [openSleep, setOpenSleep] = useState(false);
 
   //Paginas
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,8 +54,14 @@ export default function Customer() {
         setLastPage(response.data.last_page);
 
       } catch (e) {
-        console.error(e);
-      }finally {
+        console.log(e);
+        if (axios.isAxiosError(e)) {
+          const status = e.response?.status;
+          if (status === 401) {
+            setOpenSleep(true);
+          }
+        }
+      } finally {
         setLoadingModal(false);
       }
     };
@@ -67,6 +75,10 @@ export default function Customer() {
   const goToPrevPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+
+  if (openSleep) {
+    return <Sleep />
+  }
 
   return (
     <S.Container>
@@ -113,10 +125,10 @@ export default function Customer() {
                     <td>
                       <span>
                         <button
-                        onClick={() => {
-                          setSelectedItemId(val.id);
-                          setOpenModalEdite(true);
-                        }}
+                          onClick={() => {
+                            setSelectedItemId(val.id);
+                            setOpenModalEdite(true);
+                          }}
                         >
                           <CiEdit />
                         </button>

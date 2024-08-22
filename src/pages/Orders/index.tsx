@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import axios_product from '../../api/axios';
 import Loading from '../../components/Loading';
 import ModalDetails from '../../components/ModalOrder/Details';
+import Sleep from '../../components/Error/SleepSytem';
+import axios from 'axios';
 
 import { NumericFormat } from 'react-number-format';
 import { parseISO, format } from 'date-fns';
@@ -68,6 +70,7 @@ export default function Orders() {
   const [loadingModal, setLoadingModal] = useState(false);
   const [items, setItems] = useState<IData[] | null>(null);
   const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
+  const [openSleep, setOpenSleep] = useState(false);
 
   //Paginas
   const [currentPage, setCurrentPage] = useState(1);
@@ -98,13 +101,23 @@ export default function Orders() {
         }
 
       } catch (e) {
-        console.error(e);
+        console.log(e);
+        if (axios.isAxiosError(e)) {
+          const status = e.response?.status;
+          if (status === 401) {
+            setOpenSleep(true);
+          }
+        }
       } finally {
         setLoadingModal(false);
       }
     };
     fetchData();
   }, [currentPage]);
+
+  if (openSleep) {
+    return <Sleep />
+  }
 
   return (
     <S.Container>
