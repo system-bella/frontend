@@ -147,7 +147,7 @@ export default function CreateCustomer({
                         id="cpf"
                         mask="000.000.000-00"
                         placeholder="Digite o seu CPF"
-                        {...field}
+                        inputRef={field.ref}
                       />
                     )}
                   />

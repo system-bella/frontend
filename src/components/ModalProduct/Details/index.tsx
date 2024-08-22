@@ -33,6 +33,11 @@ interface Fornecedor {
   name: string,
 }
 
+const formattedTotalVenda = (totalVenda: any) => new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+}).format(parseFloat(totalVenda));
+
 export default function ModalDetails({
   isOpen,
   setModalOpen,
@@ -88,11 +93,11 @@ export default function ModalDetails({
               <S.Info>
               <div>
                   <h5>Preço de Compra</h5>
-                  <span>{item.purchase_value || '-'}</span>
+                  <span>{formattedTotalVenda(item.purchase_value) || '-'}</span>
                 </div>
                 <div>
                   <h5>Preço Final R$</h5>
-                  <span>{item.price}</span>
+                  <span>{formattedTotalVenda(item.price)}</span>
                 </div>
               </S.Info>
               <S.Info>

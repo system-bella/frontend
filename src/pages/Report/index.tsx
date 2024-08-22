@@ -5,7 +5,12 @@ import TabelaDashboard from "../../components/TabelaDashboard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import axios_api from '../../api/axios'
-import { MdOutlineAttachMoney, MdOutlineShoppingCart } from "react-icons/md";
+import {
+  MdOutlineAttachMoney,
+  MdOutlineShoppingCart,
+  MdPersonOutline,
+  MdOutlineShoppingBasket
+} from "react-icons/md";
 import DashboardValores from "../../components/DashboardValores";
 import {
   LineChart,
@@ -22,6 +27,7 @@ import {
 import { useReactToPrint } from 'react-to-print';
 import Relatorio from "../../components/Relatorio";
 import Sleep from '../../components/Error/SleepSytem';
+import Loading from '../../components/Loading';
 
 interface User {
   id: 1,
@@ -52,72 +58,78 @@ interface Product {
 }
 
 interface MonthlyData {
-  month: string;
-  count: number;
+  month: string; // Nome do mês, ex: "Jan", "Feb", etc.
+  total: string; // Total de vendas no mês em formato de string, ex: "1234.56"
+  index: number; // Índice do mês (0 = Janeiro, 11 = Dezembro)
 }
 
-
+const formattedTotalVenda = (totalVenda: any) => new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+}).format(parseFloat(totalVenda));
 
 export default function Report() {
 
   const headers = ['#', 'Resumo', 'Cliente', 'Data', 'Vendedor'];
-  const [user, setUser] = useState<User[]>([]);
   const [totalProduct, setTotalProduct] = useState('');
   const [totalCustom, setTotalCustom] = useState('');
   const [totalVenda, setTotalVenda] = useState('');
   const [venda, setVenda] = useState('');
-  const [openSleep, setOpenSleep] = useState(false);
   const [order, setOrder] = useState<Orders[]>([]);
   const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([]);
   const currentMonth = new Date().getMonth();
+  const [openSleep, setOpenSleep] = useState(false);
+  const [loadingModal, setLoadingModal] = useState(false);
+  const currentYear = new Date().getFullYear();
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingModal(true);
       try {
         const [
-          userResponse,
           productResponse,
           vendaResponse,
           customResponse] = await Promise.all([
-            axios_api.get(`v1/user`),
             axios_api.get('v1/product'),
             axios_api.get('v1/order'),
             axios_api.get('v1/customer'),
           ]);
-        setUser(userResponse.data.data);
         setTotalProduct(productResponse.data.total);
-        setOrder(vendaResponse.data.data);
         setTotalCustom(customResponse.data.total);
         setVenda(vendaResponse.data.total);
+        if (vendaResponse.data.data.length > 0) {
+          setOrder(vendaResponse.data.data);
+          
+          // Processar os dados dos agendamentos (vendas)
+          const filteredSales = vendaResponse.data.data.filter((venda: { created_at: string | number | Date; }) => {
+            const saleYear = new Date(venda.created_at).getFullYear(); // Ano atual
+            return saleYear === currentYear;
+          });
+          
+          const monthlySales = Array(12).fill(0); // Inicializa um array com 12 posições, uma para cada mês
+          filteredSales.forEach((venda: { created_at: string | number | Date; total_price: string; }) => {
+            const month = new Date(venda.created_at).getMonth(); // Pega o mês da venda (0 = Janeiro, 11 = Dezembro)
+            monthlySales[month] += parseFloat(venda.total_price); // Soma o total_price ao mês correspondente
+          });
 
-        // Processar os dados dos agendamentos
-        const currentYear = new Date().getFullYear();
-        const filteredSchedules = vendaResponse.data.data.filter((venda: { created_at: string | number | Date; }) => {
-          const scheduleYear = new Date(venda.created_at).getFullYear(); //ano atual
-          return scheduleYear === currentYear;
-        });
-        
-        const monthlyCount = Array(12).fill(0);
-        filteredSchedules.forEach((venda: { created_at: string | number | Date; }) => {
-          const month = new Date(venda.created_at).getMonth();
-          monthlyCount[month]++;
-        });
-        console.log(monthlyCount);
-        
-        const data = monthlyCount.map((count, index) => ({
-          month: new Date(2024, index).toLocaleString('default', { month: 'short' }),
-          count: count,
-          index
-        }));
-        setMonthlyData(data);
+          const data = monthlySales.map((total, index) => ({
+            month: new Date(2024, index).toLocaleString('default', { month: 'short' }),
+            total: total.toFixed(2), // Formata o total para duas casas decimais
+            index
+          }));
+          setMonthlyData(data);
 
-        // Mapeia para pegar o total_price de cada venda
-        const totalPrices = vendaResponse.data.data.map((order: { total_price: string; }) => parseFloat(order.total_price));
+          // Mapeia para pegar o total_price de cada venda
+          const totalPrices = vendaResponse.data.data.map((order: { total_price: string; }) => parseFloat(order.total_price));
 
-        // Se você quiser somar todos os valores
-        const totalSum = totalPrices.reduce((acc: any, curr: any) => acc + curr, 0).toString();
+          // Se você quiser somar todos os valores
+          const totalSum = totalPrices.reduce((acc: any, curr: any) => acc + curr, 0).toString();
 
-        setTotalVenda(totalSum);
+          // Total de vendas para o mês atual
+          const totalMesAtual = monthlySales[currentMonth];
+          setTotalVenda(totalMesAtual);
+        }
+
 
       } catch (e) {
         console.log(e);
@@ -127,6 +139,8 @@ export default function Report() {
             setOpenSleep(true);
           }
         }
+      } finally {
+        setLoadingModal(false);
       }
     };
     fetchData();
@@ -143,6 +157,7 @@ export default function Report() {
 
   return (
     <S.Container>
+      {loadingModal && (<Loading />)}
       <S.Title>
         <span>
           Relatório{'>'}
@@ -166,18 +181,18 @@ export default function Report() {
         />
         <DashboardValores
           title="Cliente"
-          icon={<MdOutlineAttachMoney />}
+          icon={<MdPersonOutline />}
           valor={totalCustom}
         />
         <DashboardValores
           title="Vendas"
-          icon={<MdOutlineAttachMoney />}
+          icon={<MdOutlineShoppingBasket />}
           valor={venda}
         />
         <DashboardValores
-          title="Total"
+          title="Total Mensal"
           icon={<MdOutlineAttachMoney />}
-          valor={totalVenda}
+          valor={formattedTotalVenda(totalVenda)}
         />
       </S.ContainerVal>
 
@@ -190,8 +205,8 @@ export default function Report() {
           <ResponsiveContainer width="100%" height="85%">
             <BarChart width={150} height={40} data={monthlyData}>
               <Bar
-                dataKey="count"
-                radius={6}> 
+                dataKey="total"
+                radius={6}>
                 {monthlyData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={index === currentMonth ? '#DF3B82' : '#ec66a0'} />
                 ))}
@@ -220,7 +235,7 @@ export default function Report() {
               <Tooltip />
               <Legend />
               <Line type="monotone" dataKey="month" stroke="#DF3B82" activeDot={{ r: 8 }} />
-              <Line type="monotone" dataKey="count" stroke="#82ca9d" />
+              <Line type="monotone" dataKey="total" stroke="#82ca9d" />
             </LineChart>
           </ResponsiveContainer>
         </S.DivRight>

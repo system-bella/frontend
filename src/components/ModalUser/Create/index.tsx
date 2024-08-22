@@ -137,7 +137,6 @@ export default function CreateUser({
               errorMessages += `${messages.join(', ')}\n`;
             }
           }
-
           // Exibir todas as mensagens de erro em um único alert
           setErrorMsgTxt(errorMessages || 'Erro de validação desconhecido.');
         }
