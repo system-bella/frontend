@@ -1,13 +1,19 @@
 import React from "react";
 import * as S from './style'
-import {
-    CiTrash,
-    CiEdit
-} from 'react-icons/ci';
+import { NumericFormat } from 'react-number-format';
+import { parseISO, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface TabelaProps {
     linhaHead: string[];
     dados: Array<{ [key: string]: any }>;
+}
+
+function formatarData(dataFormat: string) {
+    if (dataFormat !== null) {
+        const parsedDate = parseISO(dataFormat);
+        return format(parsedDate, 'dd/MM/yyyy', { locale: ptBR });
+    }
 }
 
 export default function TabelaDashboard({
@@ -28,29 +34,27 @@ export default function TabelaDashboard({
                     {dados.map((val, index) => (
                         <tr key={index}>
                             <td>
-                                {index+1}
+                                {index + 1}
                             </td>
                             <td>
-                                {val.id}
+                                <NumericFormat
+                                    displayType={'text'}
+                                    thousandSeparator="."
+                                    decimalSeparator=","
+                                    decimalScale={2}
+                                    value={val.total_price}
+                                    fixedDecimalScale={true}
+                                    prefix='R$'
+                                />
                             </td>
                             <td>
-                                {val.first_name + " " + val.last_name}
+                                {val.customer?.name || '-'}
                             </td>
                             <td>
-                                {val.email}
+                                {formatarData(val.created_at)}
                             </td>
                             <td>
-                                {val.is_admin}
-                            </td>
-                            <td>
-                                <span>
-                                    <button>
-                                        <CiEdit />
-                                    </button>
-                                    <button>
-                                        <CiTrash />
-                                    </button>
-                                </span>
+                                {val.user.first_name}
                             </td>
                         </tr>
                     ))}
