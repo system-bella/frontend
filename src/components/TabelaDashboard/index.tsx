@@ -31,26 +31,16 @@ export default function TabelaDashboard({
                                 {index+1}
                             </td>
                             <td>
-                                {val.id}
+                                {val.total_price}
                             </td>
                             <td>
-                                {val.first_name + " " + val.last_name}
+                                {val.customer?.name || '-'}
                             </td>
                             <td>
-                                {val.email}
+                                {val.created_at}
                             </td>
                             <td>
-                                {val.is_admin}
-                            </td>
-                            <td>
-                                <span>
-                                    <button>
-                                        <CiEdit />
-                                    </button>
-                                    <button>
-                                        <CiTrash />
-                                    </button>
-                                </span>
+                                {val.user.first_name}
                             </td>
                         </tr>
                     ))}
