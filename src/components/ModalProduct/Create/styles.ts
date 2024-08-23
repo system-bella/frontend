@@ -79,6 +79,10 @@ export const Filter = styled.select`
   padding: 10px 16px;
   width: 210px;
   max-width: 100%;
+  
+  @media (max-width: 700px) {
+    width: 150px;
+  }
 
 `;
 
