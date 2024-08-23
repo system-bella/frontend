@@ -11,8 +11,9 @@ export const Content = styled.div`
 `
 export const Title = styled.div`
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 36px;
 
   span {
     font-size: 16px;
@@ -29,7 +30,6 @@ export const Header = styled.header`
   align-items: center;
   flex-direction: row;
   gap: 20px;
-  margin-bottom: 36px;
 
   div {
     display: flex;
