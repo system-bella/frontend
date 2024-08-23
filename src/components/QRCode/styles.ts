@@ -8,6 +8,10 @@ export const PrintQrcode = styled.div`
   justify-content: center;
   
   padding: 20px;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
   `;
 
 export const Label = styled.div`

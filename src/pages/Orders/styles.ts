@@ -10,12 +10,7 @@ export const Content = styled.div`
   flex: 1;
 `;
 
-export const Header = styled.header`
-  /* display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 20px; */
-  
+export const Header = styled.header`  
   div {
     display: flex;
     justify-content: space-between;
@@ -68,6 +63,13 @@ export const BodyTable = styled.table`
 
   td > div > button > svg {
     font-size: 20px;
+  }
+
+  @media (max-width: 700px) {
+    th:nth-child(5), 
+    td:nth-child(5) {
+      display: none;
+    }
   }
 `;
 

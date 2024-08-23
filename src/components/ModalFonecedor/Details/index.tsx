@@ -56,7 +56,7 @@ export default function DetailsFornecedor({
               <PiClipboardTextThin />
               <div>
                 <h4>Detalhes {item.name}</h4>
-                <span>Veja todos os detalhes sobre o fornecedor</span>
+                <S.InforSpan>Veja todos os detalhes sobre o fornecedor</S.InforSpan>
               </div>
             </S.Title>
             <button onClick={setModalOpen}>
@@ -68,25 +68,25 @@ export default function DetailsFornecedor({
             <S.DivideInfo>
               <S.Info>
                 <div>
-                  <h5>Nome</h5>
-                  <span>{item.name}</span>
+                  <S.TituloH5>Nome</S.TituloH5>
+                  <S.InforSpan>{item.name}</S.InforSpan>
                 </div>
               </S.Info>
               <S.Info>
                 <div>
-                  <h5>E-mail</h5>
-                  <span>{item.email || "Dado não cadastrado!"}</span>
+                  <S.TituloH5>E-mail</S.TituloH5>
+                  <S.InforSpan>{item.email || "Dado não cadastrado!"}</S.InforSpan>
                 </div>
                 <div>
-                  <h5>Contato</h5>
-                  <span>{item.contact || "Dado não cadastrado!"}</span>
+                  <S.TituloH5>Contato</S.TituloH5>
+                  <S.InforSpan>{item.contact || "Dado não cadastrado!"}</S.InforSpan>
                 </div>
               </S.Info>
 
               <S.InfoDescription>
                 <div>
-                  <h5>Descrição</h5>
-                  <span>{item.description || "Dado não cadastrado!"}</span>
+                  <S.TituloH5>Descrição</S.TituloH5>
+                  <S.InforSpan>{item.description || "Dado não cadastrado!"}</S.InforSpan>
                 </div>
               </S.InfoDescription>
             </S.DivideInfo>

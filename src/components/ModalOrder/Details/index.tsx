@@ -86,7 +86,7 @@ export default function ModalDetails({
               <PiClipboardTextThin />
               <div>
                 <h4>Detalhes</h4>
-                <span>Veja todos os detalhes sobre a venda</span>
+                <S.InforSpan>Veja todos os detalhes sobre a venda</S.InforSpan>
               </div>
             </S.Title>
             <button onClick={setModalOpen}>
@@ -98,46 +98,46 @@ export default function ModalDetails({
             <S.DivideInfo>
               <S.Info>
                 <div>
-                  <h5>Data da Compra</h5>
-                  <span>{formatarData(item.created_at) || '-'}</span>
+                  <S.TituloH5>Data da Compra</S.TituloH5>
+                  <S.InforSpan>{formatarData(item.created_at) || '-'}</S.InforSpan>
                 </div>
                 <div>
-                  <h5>Resumo</h5>
-                  <span>{item.total_price}</span>
-                </div>
-              </S.Info>
-              <S.Info>
-                <div>
-                  <h5>Pagamento</h5>
-                  <span>{item.payment}</span>
-                </div>
-                <div>
-                  <h5>Desconto (R$)</h5>
-                  <span>{item.discount}</span>
+                  <S.TituloH5>Resumo</S.TituloH5>
+                  <S.InforSpan>{item.total_price}</S.InforSpan>
                 </div>
               </S.Info>
               <S.Info>
                 <div>
-                  <h5>Cliente</h5>
-                  <span>{item.customer?.name || '-'}</span>
+                  <S.TituloH5>Pagamento</S.TituloH5>
+                  <S.InforSpan>{item.payment}</S.InforSpan>
                 </div>
                 <div>
-                  <h5>Vendedor</h5>
-                  <span>{item.user.first_name}</span>
+                  <S.TituloH5>Desconto (R$)</S.TituloH5>
+                  <S.InforSpan>{item.discount}</S.InforSpan>
+                </div>
+              </S.Info>
+              <S.Info>
+                <div>
+                  <S.TituloH5>Cliente</S.TituloH5>
+                  <S.InforSpan>{item.customer?.name || '-'}</S.InforSpan>
+                </div>
+                <div>
+                  <S.TituloH5>Vendedor</S.TituloH5>
+                  <S.InforSpan>{item.user.first_name}</S.InforSpan>
                 </div>
               </S.Info>
 
 
               <S.InfoDescription>
                 <div>
-                  <h5>Produtos</h5>
-                  <span>{item.products.map(val => {
+                  <S.TituloH5>Produtos</S.TituloH5>
+                  <S.InforSpan>{item.products.map(val => {
                     return (
                       <p>
                         {`${val.name} - ${val.quantity} qtd.`}
                       </p>
                     )
-                  })}</span>
+                  })}</S.InforSpan>
                 </div>
               </S.InfoDescription>
             </S.DivideInfo>

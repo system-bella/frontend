@@ -4,29 +4,17 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-`;
+  `;
 
 export const Content = styled.div`
   flex: 1;
-`;
-
-export const Header = styled.header`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 20px;
-  margin-bottom: 36px;
-
-  div {
-    display: flex;
-    justify-content: space-between;
-  }
-`;
+  `;
 
 export const Title = styled.div`
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
+  margin-bottom: 36px;
 
   span {
     font-size: 16px;
@@ -37,6 +25,20 @@ export const Title = styled.div`
     font-weight: 300;
   }
 `;
+
+export const Header = styled.header`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 20px;
+  
+  div {
+    display: flex;
+    justify-content: space-between;
+  }
+  `;
+
+
 
 export const BodyTable = styled.table`
   width: 100%;
@@ -71,6 +73,13 @@ export const BodyTable = styled.table`
 
   td > span > button > svg {
     font-size: 20px;
+  }
+
+  @media (max-width: 700px) {
+    th:nth-child(4), 
+    td:nth-child(4) {
+      display: none;
+    }
   }
 `;
 

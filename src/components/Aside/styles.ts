@@ -4,10 +4,6 @@ export const Container = styled.div`
   grid-area: AS;
   background-color: ${(props) => props.theme.colors.primary};
   
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  
   @media (max-width: 900px) {
     display: flex;
     flex-direction: column;
@@ -28,6 +24,9 @@ export const Container = styled.div`
     padding: 0 16px;
   }
 `;
+
+export const Content = styled.div`
+`
 
 export const Title = styled.p`
   font-size: 16px;
@@ -129,6 +128,10 @@ export const Sidebar = styled.aside<{ isOpen: boolean }>`
   color: #fff;
   height: 100vh;
   position: fixed;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   
   @media (max-width: 900px) {
     transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(-100%)')};

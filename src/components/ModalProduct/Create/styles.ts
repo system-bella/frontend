@@ -23,7 +23,8 @@ export const Container = styled.div`
     width: 100%;
     height: 44px;
     }
-  `;
+`;
+
 export const ContentModel = styled.div`
   max-width: 500px;
   position: fixed;
@@ -77,11 +78,7 @@ export const Filter = styled.select`
   border-radius: 6px;
   padding: 10px 16px;
   width: 210px;
-  height: 44px;
-  max-width: 100%; // Garante que o select não ultrapasse o limite da div
-  /* width: 210px;
-  max-width: 210px; */
-  /* height: 44px; */
+  max-width: 100%;
 
 `;
 

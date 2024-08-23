@@ -19,11 +19,13 @@ export const Content = styled.div`
   width: 35%;
   height: 100vh;
   background-color: ${(props) => props.theme.colors.white};
-  
   padding: 32px;
-  
   border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
   border-radius: 32px 0 0 32px;
+
+  @media (max-width: 900px) {
+    width: 90%;
+  }
   `;
 
 export const Header = styled.header`
@@ -49,12 +51,6 @@ export const Title = styled.div`
     font-size: 24px;
     margin-right: 10px;
   }
-
-  div > span {
-    font-size: 16px;
-    font-weight: 400;
-    color: ${(props) => props.theme.colors.secondary.gray_100};
-  }
   `;
 
 export const MainInformation = styled.div`
@@ -76,17 +72,7 @@ export const Info = styled.div`
   div {
     width: 50%;
   }
-  div > h5 {
-    font-weight: 600;
-    color: ${(props) => props.theme.colors.black};
-    font-size: 16px;
-  }
-  div > span {
-    font-size: 16px;
-    color: ${(props) => props.theme.colors.secondary.gray_100};
-    
-  }
-  
+
   div {
     margin-bottom: 30px;
   }
@@ -100,30 +86,26 @@ export const InfoDescription = styled.div`
     width: 60%;
     margin-bottom: 35px;
   }
-  
-  div > h5 {
-    font-weight: 600;
-    color: ${(props) => props.theme.colors.black};
-    font-size: 16px;
-  }
-  
-  div > span {
-    font-size: 16px;
-    color: ${(props) => props.theme.colors.secondary.gray_100};
-    word-break: break-word; /* Garante que palavras longas sejam quebradas */
-    overflow-wrap: break-word; /* Garante que a quebra aconteça corretamente */
-  }
-  `;
 
-export const InfoQr = styled.div`
-  display: flex;
-  div > h5 {
-    font-weight: 600;
-    color: ${(props) => props.theme.colors.black};
-    font-size: 16px;
+`;
+
+export const TituloH5 = styled.h5`
+  font-weight: 600;
+  color: ${(props) => props.theme.colors.black};
+  font-size: 16px;
+
+  @media (max-width: 900px) {
+    font-size: 14px;
   }
-  div > span {
-    font-size: 16px;
-    color: ${(props) => props.theme.colors.secondary.gray_100};
-  }
-  `;
+`
+
+export const InforSpan = styled.span`
+font-size: 16px;
+color: ${(props) => props.theme.colors.secondary.gray_100};
+word-break: break-word; /* Garante que palavras longas sejam quebradas */
+overflow-wrap: break-word; /* Garante que a quebra aconteça corretamente */
+
+@media (max-width: 900px) {
+  font-size: 14px;
+}
+`

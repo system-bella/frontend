@@ -50,6 +50,13 @@ function formatarData(dataFormat: string) {
   }
 }
 
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + '...';
+  }
+  return text;
+};
+
 function calcularTotalVenda(val: any) {
   const totalProdutos = val.products.reduce((total: any, produto: any) => {
     // return total + produto.quantity * parseFloat(produto.price);
@@ -169,7 +176,8 @@ export default function Orders() {
                       prefix='R$'
                     />
                   </td>
-                  <td>{val.customer?.name || "-"}</td>
+                  {/* <td>{val.customer?.name || "-"}</td> */}
+                  <td>{truncateText(val.customer?.name || '-', 15)}</td>
                   <td>{formatarData(val.created_at)}</td>
                   <td>{val.user.first_name}</td>
                   <td>

@@ -117,7 +117,6 @@ export default function ModalCreate({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // const response = await axios_product.get('v1/supplier-find-all');
         const [responseForn, resposeCat] = await Promise.all([
           axios_product.get('v1/supplier-find-all'),
           axios_product.get('v1/category')
@@ -196,6 +195,18 @@ export default function ModalCreate({
                   />
                   {errors.name && <small>{errors.name.message}</small>}
                 </S.FormInput>
+
+                <S.FormInput>
+                  <label>Quantidade *</label>
+                  <S.Input
+                    {...register('quantity')}
+                    type="number"
+                    placeholder="0"
+                  />
+                  {errors.quantity && <small>{errors.quantity.message}</small>}
+                </S.FormInput>
+              </div>
+              <div>
                 <S.FormInput>
                   <label>Fornecedor *</label>
                   <S.Filter id="fornecedor" {...register('supplier_id')}>
@@ -214,18 +225,6 @@ export default function ModalCreate({
                     <small>{errors.supplier_id.message}</small>
                   )}
                 </S.FormInput>
-              </div>
-              <div>
-                <S.FormInput>
-                  <label>Quantidade *</label>
-                  <S.Input
-                    {...register('quantity')}
-                    type="number"
-                    placeholder="0"
-                  />
-                  {errors.quantity && <small>{errors.quantity.message}</small>}
-                </S.FormInput>
-
                 <S.FormInput>
                   <label>Categoria *</label>
                   <S.Filter id="categoria" {...register('category_id')}>

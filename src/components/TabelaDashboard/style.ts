@@ -38,4 +38,11 @@ export const BodyTable = styled.table`
   td > span > button > svg {
     font-size: 20px;
   }
+
+  @media (max-width: 900px) {
+    th:nth-child(5), 
+  td:nth-child(5) {
+    display: none;
+  }
+  }
 `;

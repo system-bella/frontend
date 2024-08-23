@@ -12,7 +12,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: end;
   align-items: center;
-`;
+  `;
 
 export const Content = styled.div`
   position: fixed;
@@ -24,6 +24,10 @@ export const Content = styled.div`
   
   border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
   border-radius: 32px 0 0 32px;
+  
+  @media (max-width: 900px) {
+    width: 90%;
+  }
   `;
 
 export const Header = styled.header`
@@ -55,6 +59,12 @@ export const Title = styled.div`
     font-weight: 400;
     color: ${(props) => props.theme.colors.secondary.gray_100};
   }
+
+  @media (max-width: 900px) {
+    div > span {
+      font-size: 14px;
+    }
+  }
   `;
 
 export const MainInformation = styled.div`
@@ -76,17 +86,7 @@ export const Info = styled.div`
   div {
     width: 50%;
   }
-  div > h5 {
-    font-weight: 600;
-    color: ${(props) => props.theme.colors.black};
-    font-size: 16px;
-  }
-  div > span {
-    font-size: 16px;
-    color: ${(props) => props.theme.colors.secondary.gray_100};
-    
-  }
-  
+
   div {
     margin-bottom: 30px;
   }
@@ -99,19 +99,6 @@ export const InfoDescription = styled.div`
   div {
     width: 60%;
     margin-bottom: 35px;
-  }
-  
-  div > h5 {
-    font-weight: 600;
-    color: ${(props) => props.theme.colors.black};
-    font-size: 16px;
-  }
-  
-  div > span {
-    font-size: 16px;
-    color: ${(props) => props.theme.colors.secondary.gray_100};
-    word-break: break-word; /* Garante que palavras longas sejam quebradas */
-    overflow-wrap: break-word; /* Garante que a quebra aconteça corretamente */
   }
   `;
 
@@ -127,3 +114,24 @@ export const InfoQr = styled.div`
     color: ${(props) => props.theme.colors.secondary.gray_100};
   }
   `;
+
+export const TituloH5 = styled.h5`
+  font-weight: 600;
+  color: ${(props) => props.theme.colors.black};
+  font-size: 16px;
+
+  @media (max-width: 900px) {
+    font-size: 14px;
+  }
+`
+
+export const InforSpan = styled.span`
+  font-size: 16px;
+  color: ${(props) => props.theme.colors.secondary.gray_100};
+  word-break: break-word; /* Garante que palavras longas sejam quebradas */
+  overflow-wrap: break-word; /* Garante que a quebra aconteça corretamente */
+
+  @media (max-width: 900px) {
+    font-size: 14px;
+  }
+`

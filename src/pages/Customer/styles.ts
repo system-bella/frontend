@@ -15,15 +15,15 @@ export const Header = styled.header`
   align-items: center;
   flex-direction: row;
   gap: 20px;
-  margin-bottom: 36px;
-
+  
   div {
     display: flex;
     justify-content: space-between;
   }
-`;
+  `;
 
 export const Title = styled.div`
+margin-bottom: 36px;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -35,6 +35,11 @@ export const Title = styled.div`
 
   span > small {
     font-weight: 300;
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    gap: 10px;
   }
 `;
 
@@ -71,6 +76,13 @@ export const BodyTable = styled.table`
 
   td > span > button > svg {
     font-size: 20px;
+  }
+
+  @media (max-width: 700px) {
+    th:nth-child(4), 
+    td:nth-child(4) {
+      display: none;
+    }
   }
 `;
 
