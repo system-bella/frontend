@@ -1,25 +1,24 @@
 import * as S from './styles';
-
 //components
 import Aside from '../components/Aside';
 import Content from '../components/Content';
-// import { useUser } from '../api/contextApi/userContext';
-// import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { CiMenuBurger } from "react-icons/ci";
 
 export default function Layout({ children }: any) {
-  // const { user } = useUser();
-  // const history = useHistory();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // console.log('userrrrrr: ', user);
-
-  // if (!user) {
-  //   history.push('/PageTest');
-  //   window.location.reload();
-  // }
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
     <S.Container>
-      <Aside />
+      <S.HamburgerButton onClick={toggleSidebar}>
+        <CiMenuBurger />
+      </S.HamburgerButton>
+      
+      <Aside isOpen={isSidebarOpen} />
       <Content>{children}</Content>
     </S.Container>
   );

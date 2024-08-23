@@ -3,11 +3,16 @@ import styled from 'styled-components';
 export const Container = styled.div`
   grid-area: AS;
   background-color: ${(props) => props.theme.colors.primary};
-
+  
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-
+  
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+  }
+  
   img {
     margin: 30px 16px;
     height: 60px;
@@ -24,7 +29,7 @@ export const Container = styled.div`
   }
 `;
 
-export const Title =styled.p`
+export const Title = styled.p`
   font-size: 16px;
   font-weight: 200;
   color: ${(props) => props.theme.colors.white};
@@ -117,4 +122,40 @@ export const ButtonExit = styled.button`
     background-color: rgb(255, 255, 255, 0.3);
   }
 `
+export const Sidebar = styled.aside<{ isOpen: boolean }>`
+  grid-area: AS;
+  background-color: ${(props) => props.theme.colors.primary};
+  width: 220px;
+  color: #fff;
+  height: 100vh;
+  position: fixed;
+  transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(-100%)')};
+  transition: transform 0.3s ease-in-out;
+  
+  @media (max-width: 900px) {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+  }
+`;
 
+export const HamburgerButton = styled.button`
+  display: none;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  z-index: 11;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  @media (max-width: 900px) {
+    display: block;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;

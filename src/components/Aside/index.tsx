@@ -13,7 +13,11 @@ import {
 import Logout from '../Logout';
 import { IoAnalytics } from "react-icons/io5";
 
-export default function Aside() {
+type AsideProps = {
+  isOpen: boolean;
+};
+
+export default function Aside({isOpen}:AsideProps) {
   const [clicked, setClicked] = useState(() => {
     const currentURL = window.location.pathname.slice(1);
     return currentURL || 'Orders';
@@ -29,101 +33,102 @@ export default function Aside() {
 
   return (
     <S.Container>
-      <div>
+      <S.Sidebar isOpen={isOpen}>
+        <div>
+          <a href="/Orders">
+            <img src={require('../../assets/logo.png')} alt="logo" />
+          </a>
 
-        <a href="/Orders">
-          <img src={require('../../assets/logo.png')} alt="logo" />
-        </a>
+          <S.Title>Principal</S.Title>
 
-        <S.Title>Principal</S.Title>
-
-        <S.MenuLink
-          href="/Report"
-          onClick={() => tootleMenu('Report')}
-          className={clicked === 'Report' ? 'active' : ''}
-        >
-          <IoAnalytics />
-          <small>Relatórios</small>
-        </S.MenuLink>
-
-        <S.Menu>
           <S.MenuLink
-            href="/Orders"
-            onClick={() => tootleMenu('Orders')}
-            className={clicked === 'Orders' || clicked === 'Orders/Create' ? 'active' : ''}
+            href="/Report"
+            onClick={() => tootleMenu('Report')}
+            className={clicked === 'Report' ? 'active' : ''}
           >
-            <CiShoppingCart />
-            <small>Vendas</small>
+            <IoAnalytics />
+            <small>Relatórios</small>
           </S.MenuLink>
 
-          <S.MenuLink
-            href="/Product"
-            onClick={() => tootleMenu('Product')}
-            className={clicked === 'Product' || clicked === 'Product/Create' ? 'active' : ''}
-          >
-            <CiGrid42 />
-            <small>Produtos</small>
-          </S.MenuLink>
+          <S.Menu>
+            <S.MenuLink
+              href="/Orders"
+              onClick={() => tootleMenu('Orders')}
+              className={clicked === 'Orders' || clicked === 'Orders/Create' ? 'active' : ''}
+            >
+              <CiShoppingCart />
+              <small>Vendas</small>
+            </S.MenuLink>
 
-          <S.MenuLink
-            href="/Client"
-            onClick={() => tootleMenu('Client')}
-            className={clicked === 'Client' ? 'active' : ''}
-          >
-            <CiUser />
-            <small>Clientes</small>
-          </S.MenuLink>
+            <S.MenuLink
+              href="/Product"
+              onClick={() => tootleMenu('Product')}
+              className={clicked === 'Product' || clicked === 'Product/Create' ? 'active' : ''}
+            >
+              <CiGrid42 />
+              <small>Produtos</small>
+            </S.MenuLink>
 
-          <S.MenuLink
-            href="/Supplier"
-            onClick={() => tootleMenu('Supplier')}
-            className={clicked === 'Supplier' ? 'active' : ''}>
-            <CiBoxes />
-            <small>Fornecedores</small>
-          </S.MenuLink>
-        </S.Menu>
+            <S.MenuLink
+              href="/Client"
+              onClick={() => tootleMenu('Client')}
+              className={clicked === 'Client' ? 'active' : ''}
+            >
+              <CiUser />
+              <small>Clientes</small>
+            </S.MenuLink>
 
-        <S.Title>Outros</S.Title>
+            <S.MenuLink
+              href="/Supplier"
+              onClick={() => tootleMenu('Supplier')}
+              className={clicked === 'Supplier' ? 'active' : ''}>
+              <CiBoxes />
+              <small>Fornecedores</small>
+            </S.MenuLink>
+          </S.Menu>
 
-        <S.Menu>
-          <S.MenuLink
-            href="/usuario"
-            onClick={() => tootleMenu('usuario')}
-            className={clicked === 'usuario' ? 'active' : ''}
-          >
-            <CiSun />
-            <small>Usuário</small>
-          </S.MenuLink>
+          <S.Title>Outros</S.Title>
 
-          <S.MenuLink
-            href="https://truth-macaroon-fe8.notion.site/Manual-de-Usu-rio-do-Sistema-L-Bella-40dac94394de4aa7ad7e437d81cb8055?pvs=4"
-            target="_blank">
-            <CiCircleInfo />
-            <small>Manual</small>
-          </S.MenuLink>
+          <S.Menu>
+            <S.MenuLink
+              href="/usuario"
+              onClick={() => tootleMenu('usuario')}
+              className={clicked === 'usuario' ? 'active' : ''}
+            >
+              <CiSun />
+              <small>Usuário</small>
+            </S.MenuLink>
 
-          <S.ButtonExit onClick={() => setOpenModalLogout(true)}>
-            <CiLogout />
-            <small>Sair</small>
-          </S.ButtonExit>
+            <S.MenuLink
+              href="https://truth-macaroon-fe8.notion.site/Manual-de-Usu-rio-do-Sistema-L-Bella-40dac94394de4aa7ad7e437d81cb8055?pvs=4"
+              target="_blank">
+              <CiCircleInfo />
+              <small>Manual</small>
+            </S.MenuLink>
 
-        </S.Menu>
-      </div>
+            <S.ButtonExit onClick={() => setOpenModalLogout(true)}>
+              <CiLogout />
+              <small>Sair</small>
+            </S.ButtonExit>
 
-      <Logout
-        isOpen={openModalLogout}
-        setModalOpen={() => setOpenModalLogout(false)} />
+          </S.Menu>
+        </div>
 
-      <S.Footer>
-        <S.Imagem>
-          <p>
-            {(user?.first_name[0] +
-              ""
-              + user?.last_name[0]).toLocaleUpperCase()}
-          </p>
-        </S.Imagem>
-        <small>{user?.first_name}</small>
-      </S.Footer>
+        <Logout
+          isOpen={openModalLogout}
+          setModalOpen={() => setOpenModalLogout(false)} />
+
+        <S.Footer>
+          <S.Imagem>
+            <p>
+              {(user?.first_name[0] +
+                ""
+                + user?.last_name[0]).toLocaleUpperCase()}
+            </p>
+          </S.Imagem>
+          <small>{user?.first_name}</small>
+        </S.Footer>
+      </S.Sidebar>
     </S.Container>
   );
 }
