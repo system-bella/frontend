@@ -129,10 +129,10 @@ export const Sidebar = styled.aside<{ isOpen: boolean }>`
   color: #fff;
   height: 100vh;
   position: fixed;
-  transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(-100%)')};
-  transition: transform 0.3s ease-in-out;
   
   @media (max-width: 900px) {
+    transform: ${({ isOpen }) => (isOpen ? 'translateX(0)' : 'translateX(-100%)')};
+    transition: transform 0.3s ease-in-out;
     position: fixed;
     left: 0;
     top: 0;
@@ -144,18 +144,30 @@ export const Sidebar = styled.aside<{ isOpen: boolean }>`
 export const HamburgerButton = styled.button`
   display: none;
   position: absolute;
-  top: 15px;
-  left: 15px;
-  z-index: 11;
-  background: none;
-  border: none;
-  cursor: pointer;
+  top: 95px;
+  left: auto;
+  right: -30px;
+  z-index: 100;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 10px;
+  padding: 5px;
+  background-color: transparent;
+  border-radius: 10%;
+  
+  svg{
+    color: ${(props) => props.theme.colors.primary};
+    font-size: 24px;
+  }
 
   @media (max-width: 900px) {
-    display: block;
+    display: flex;
   }
 
-  &:focus {
-    outline: none;
+  &:hover{
+    background-color: ${(props) => props.theme.colors.primary};
+    svg{
+      color: white;
+    }
   }
 `;
+
+

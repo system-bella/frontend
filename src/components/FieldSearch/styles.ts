@@ -6,6 +6,11 @@ export const Container = styled.div`
   width: 280px;
   border: 1px solid ${(props) => props.theme.colors.black};
   border-radius: 10px;
+  
+  
+  @media (max-width: 900px) {
+    width: 180px;
+  }
 
   button {
     width: 20%;

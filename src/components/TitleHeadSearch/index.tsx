@@ -44,10 +44,10 @@ export default function TitleHeadSearch({
 }
 
 export const Container = styled.div`
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+`;
 
 export const Right = styled.div`
     display: flex;
