@@ -127,8 +127,9 @@ export default function CreateUser({
       if ((error as AxiosError).response) {
         const statusCode = (error as AxiosError).response?.status;
         const errorData = (error as AxiosError).response?.data as ApiError;
+        console.log(errorData);
 
-        if (statusCode === 422 && errorData) {
+        if (statusCode === 422) {
           let errorMessages = 'Por favor, corrija os seguintes erros:\n';
 
           // Coletar todas as mensagens de erro
@@ -141,7 +142,7 @@ export default function CreateUser({
           setErrorMsgTxt(errorMessages || 'Erro de validação desconhecido.');
         }
 
-        if (statusCode === 409) {
+        else if (statusCode === 409) {
           setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
         }
         else {

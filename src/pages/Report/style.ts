@@ -3,12 +3,27 @@ import styled from "styled-components";
 export const Container = styled.div`
 `
 
+export const Title = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 36px;
+
+  span {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  span > small {
+    font-weight: 300;
+  }
+`;
+
 export const Header = styled.header`
   display: flex;
   align-items: center;
   flex-direction: row;
   gap: 20px;
-  margin-bottom: 36px;
 
   div {
     display: flex;
@@ -37,33 +52,29 @@ export const NewItem = styled.button`
     font-size: 16px;
     margin-left: 8px;
   }
-`;
 
-export const Title = styled.div`
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-
-  span {
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  span > small {
-    font-weight: 300;
+  @media (max-width: 700px) {
+    span{
+      display: none;
+    }
   }
 `;
 
 export const ContainerVal = styled.div`
   display: flex;
   gap: 30px;
-`
+  
+  @media (max-width: 700px) {
+    flex-wrap: wrap;
+  }
+  `
 
 export const ContainerTop = styled.div`
   display: flex;
   gap: 30px;
   margin-top: 30px;
   height: 280px;
+
 `
 
 export const DivLeft = styled.div`
@@ -72,9 +83,13 @@ export const DivLeft = styled.div`
   border-radius: 16px;
   box-shadow: 0px 4px 4px 0px #c1c1c1;
   padding: 15px;
-
+  
   display: flex;
   flex-direction: column;
+  
+  @media (max-width: 900px) {
+    width: 100%;
+  }
 `
 
 export const DivRight = styled.div`
@@ -85,6 +100,10 @@ export const DivRight = styled.div`
   padding: 15px;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
   `
 
 export const ContainerBottom = styled.div`
@@ -93,6 +112,13 @@ export const ContainerBottom = styled.div`
   border-radius: 16px;
   box-shadow: 0px 4px 4px 0px #c1c1c1;
   padding: 15px;
+
+  height: 220px;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+      width: 8px;
+  }
 `
 
 export const TitleBlack = styled.p`

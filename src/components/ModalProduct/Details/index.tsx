@@ -70,7 +70,7 @@ export default function ModalDetails({
               <PiClipboardTextThin />
               <div>
                 <h4>Detalhes {item.name}</h4>
-                <span>Veja todos os detalhes sobre o produto</span>
+                <S.InforSpan>Veja todos os detalhes sobre o produto</S.InforSpan>
               </div>
             </S.Title>
             <button onClick={setModalOpen}>
@@ -82,50 +82,50 @@ export default function ModalDetails({
             <S.DivideInfo>
               <S.Info>
                 <div>
-                  <h5>Nome</h5>
-                  <span>{item.name}</span>
+                  <S.TituloH5>Nome</S.TituloH5>
+                  <S.InforSpan>{item.name}</S.InforSpan>
                 </div>
                 <div>
-                  <h5>Referência</h5>
-                  <span>{item.barcode}</span>
+                  <S.TituloH5>Referência</S.TituloH5>
+                  <S.InforSpan>{item.barcode}</S.InforSpan>
                 </div>
               </S.Info>
               <S.Info>
               <div>
-                  <h5>Preço de Compra</h5>
-                  <span>{formattedTotalVenda(item.purchase_value) || '-'}</span>
+                  <S.TituloH5>Preço de Compra</S.TituloH5>
+                  <S.InforSpan>{formattedTotalVenda(item.purchase_value) || '-'}</S.InforSpan>
                 </div>
                 <div>
-                  <h5>Preço Final R$</h5>
-                  <span>{formattedTotalVenda(item.price)}</span>
+                  <S.TituloH5>Preço Final R$</S.TituloH5>
+                  <S.InforSpan>{formattedTotalVenda(item.price)}</S.InforSpan>
                 </div>
               </S.Info>
               <S.Info>
                 <div>
-                  <h5>Fornecedor</h5>
-                  <span>{item.supplier.name}</span>
+                  <S.TituloH5>Fornecedor</S.TituloH5>
+                  <S.InforSpan>{item.supplier.name}</S.InforSpan>
                 </div>
                 <div>
-                  <h5>Quantidade</h5>
-                  <span>{item.quantity}</span>
+                  <S.TituloH5>Quantidade</S.TituloH5>
+                  <S.InforSpan>{item.quantity}</S.InforSpan>
                 </div>
               </S.Info>
               
 
               <S.InfoDescription>
                 <div>
-                  <h5>Descrição</h5>
-                  <span>{item.description || "Dado não cadastrado!"}</span>
+                  <S.TituloH5>Descrição</S.TituloH5>
+                  <S.InforSpan>{item.description || "Dado não cadastrado!"}</S.InforSpan>
                 </div>
                 <div>
-                  <h5>Categoria</h5>
-                  <span>{item.category.category}</span>
+                  <S.TituloH5>Categoria</S.TituloH5>
+                  <S.InforSpan>{item.category.category}</S.InforSpan>
                 </div>
               </S.InfoDescription>
 
               <S.InfoQr>
                 <div>
-                  <h5>Código QR</h5>
+                  <S.TituloH5>Código QR</S.TituloH5>
                   <QRCode
                     category={item.category.category}
                     name={item.name}

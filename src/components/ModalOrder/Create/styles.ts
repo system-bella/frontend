@@ -28,7 +28,93 @@ export const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+
+  `;
+
+export const HeaderSearch = styled.div`
+  display: flex;
+  gap: 20px;
+
+  @media (max-width: 900px) {
+    gap: 5px;
+  }
+`
+
+export const InputLeft = styled.div`
+  width: 20%;
+  `
+export const InputRight = styled.div`
+  position: relative;
+  `
+
+export const DivInput = styled.div`
+  width: 300px;
+  display: flex;
+  border: 2px solid #ef9dc0;
+  padding: 12px 10px;
+  border-radius: 10px;
+  font-size: 1em;
+  
+  input{
+    width: 100%;
+    &::placeholder {
+      font-size: 16px;
+    }
+    
+  }
+  
+  button {
+    width: 20%;
+    font-size: 1em;
+    background-color: ${(props) => props.theme.colors.white};
+    border-radius: 10px;
+  }
+
+  @media (max-width: 900px) {
+    width: 180px;
+  }
 `;
+
+export const ListDados = styled.ul`
+  width: 100%;
+  position: absolute;
+  top: 55px;
+  border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
+  border-radius: 16px;
+  background-color: ${(props) => props.theme.colors.white};
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 10px;
+  
+  span{
+    display: flex;
+    gap: 10px;
+  }
+
+  li{
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 3px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+  }
+  
+  li:hover{
+    background-color: ${(props) => props.theme.colors.primary};
+    color: white;
+
+    button{
+      color: white;
+    }
+  }
+
+  button{
+    background-color: transparent;
+    padding: 10px 16px;
+    text-align: start;
+    margin-left: 5px;
+    width: 100%;
+  }
+`
 
 export const ContainerBloc = styled.div`
   display: flex;
@@ -38,15 +124,29 @@ export const ContainerBloc = styled.div`
   small {
     color: ${(props) => props.theme.colors.warning};
   }
+
+  @media (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
 `
 export const ContentLeft = styled.div`
   display: flex;
   flex-direction: column;
   width: 35%;
   gap: 15px;
-`
+  
+  @media (max-width: 700px) {
+    width: 100%;
+  }
+  `
 
 export const ContentRight = styled.div`
+  @media (max-width: 700px) {
+    width: 100%;
+  }
+
   width: 60%;
 `
 
@@ -118,7 +218,7 @@ export const DivDuple = styled.div`
 `;
 
 export const Button = styled.button`
-  padding: 10px 16px;
+  padding: 12px;
 
   display: flex;
   justify-content: space-between;
@@ -132,6 +232,15 @@ export const Button = styled.button`
   span {
     font-size: 16px;
     margin-left: 8px;
+  }
+
+  @media (max-width: 700px) {
+   span{
+    display: none;
+   }
+   svg{
+    font-size: 18px;
+   }
   }
 `;
 
@@ -158,82 +267,6 @@ export const Filter = styled.select`
   font-size: 1em;
 
   background-color: ${(props) => props.theme.colors.white};
-`;
-
-export const ListDados = styled.ul`
-  width: 100%;
-  position: absolute;
-  top: 55px;
-  border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
-  border-radius: 16px;
-  background-color: ${(props) => props.theme.colors.white};
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 10px;
-  
-  span{
-    display: flex;
-    gap: 10px;
-  }
-
-  li{
-    list-style: none;
-    display: flex;
-    justify-content: space-between;
-    padding: 3px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 16px;
-  }
-  
-  li:hover{
-    background-color: ${(props) => props.theme.colors.primary};
-    color: white;
-
-    button{
-      color: white;
-    }
-  }
-
-  button{
-    background-color: transparent;
-    padding: 10px 16px;
-    text-align: start;
-    margin-left: 5px;
-    width: 100%;
-  }
-`
-
-export const HeaderSearch = styled.div`
-  display: flex;
-  gap: 20px;
-`
-
-export const InputLeft = styled.div`
-  width: 15%;
-  `
-export const InputRight = styled.div`
-  width: 60%;
-  position: relative;
-`
-export const DivInput = styled.div`
-  width: 300px;
-  display: flex;
-  border: 2px solid #ef9dc0;
-  padding: 12px 10px;
-  border-radius: 10px;
-  font-size: 1em;
-  
-  input{
-    &::placeholder {
-      font-size: 16px;
-    }
-    
-  }
-  
-  button {
-    width: 20%;
-    font-size: 1em;
-    background-color: ${(props) => props.theme.colors.white};
-    border-radius: 10px;
-  }
 `;
 
 export const Save = styled.button`

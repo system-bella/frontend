@@ -11,26 +11,32 @@ export const Container = styled.div`
 
   display: flex;
   justify-content: center;
-  align-items: center;
 `;
 
 export const ContentModel = styled.div`
-  position: fixed;
-  width: 424px;
-  height: 166px;
-  background-color: ${(props) => props.theme.colors.white};
+    position: fixed;
+    
+    margin-top: 20px;
+    width: 424px;
+    height: 166px;
+    background-color: ${(props) => props.theme.colors.white};
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
+    border-radius: 16px;
+    
+    -webkit-box-shadow: 7px 8px 29px -16px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 7px 8px 29px -16px rgba(66, 68, 90, 1);
+    box-shadow: 7px 8px 29px -16px rgba(66, 68, 90, 1);
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 
-  border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
-  border-radius: 16px;
-
-  -webkit-box-shadow: 7px 8px 29px -16px rgba(66, 68, 90, 1);
-  -moz-box-shadow: 7px 8px 29px -16px rgba(66, 68, 90, 1);
-  box-shadow: 7px 8px 29px -16px rgba(66, 68, 90, 1);
-`;
+  @media (max-width: 700px) {
+    width: 90%;
+  }
+  `;
 
 export const InfoModel = styled.div`
   display: flex;

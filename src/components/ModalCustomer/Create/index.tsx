@@ -23,34 +23,13 @@ interface IProductData {
 
 // Validation
 const schema = Yup.object().shape({
-  // begin error
   name: Yup.string()
-    .transform((value, originalValue) => {
-      if (originalValue === null || originalValue === undefined) {
-        return undefined;
-      }
-      return String(originalValue).trim(); // Remova espaços em branco extras
-    })
     .required('Campo obrigatório'),
 
   cpf: Yup.string()
-    .transform((value, originalValue) => {
-      if (originalValue === null || originalValue === undefined) {
-        return undefined;
-      }
-      return String(originalValue).trim(); // Remova espaços em branco extras
-    })
     .required('Campo obrigatório'),
 
   contact: Yup.string()
-    .transform((value, originalValue) => {
-      if (originalValue === null || originalValue === undefined) {
-        return undefined;
-      }
-      return String(originalValue).trim(); // Remova espaços em branco extras
-    })
-
-
 });
 
 export default function CreateCustomer({
@@ -90,7 +69,7 @@ export default function CreateCustomer({
         const statusCode = (error as AxiosError).response?.status;
 
         if (statusCode === 409) {
-          setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
+          setErrorMsgTxt('Já existe referência cadastrados');
         } else {
           setErrorMsgTxt(`Error with status code: ${statusCode}`);
         }
@@ -136,7 +115,7 @@ export default function CreateCustomer({
               </S.FormInput>
 
               <div>
-                <S.FormInput>
+              <S.FormInput>
                   <label>CPF *</label>
                   <Controller
                     name="cpf"
@@ -147,6 +126,8 @@ export default function CreateCustomer({
                         id="cpf"
                         mask="000.000.000-00"
                         placeholder="Digite o seu CPF"
+                        value={field.value}
+                        onChange={(e) => field.onChange((e.target as HTMLInputElement).value)}
                         inputRef={field.ref}
                       />
                     )}

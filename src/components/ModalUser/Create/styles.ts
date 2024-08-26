@@ -106,6 +106,10 @@ export const Filter = styled.select`
   width: 210px;
   height: 44px;
   max-width: 100%; // Garante que o select não ultrapasse o limite da div
+
+  @media (max-width: 700px) {
+    width: 150px;
+  }
 `;
 
 export const TextArea = styled.textarea`

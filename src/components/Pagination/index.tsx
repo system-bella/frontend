@@ -21,7 +21,7 @@ export default function Pagination({
     <S.Container>
       <S.InfoPagination>
         <small>{perPage}</small>
-        <span>Itens exibidos por página</span>
+        <span>Itens por página</span>
       </S.InfoPagination>
 
       <S.Pagination>

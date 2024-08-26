@@ -44,10 +44,10 @@ export default function TitleHeadSearch({
 }
 
 export const Container = styled.div`
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+`;
 
 export const Right = styled.div`
     display: flex;
@@ -90,26 +90,26 @@ export const Search = styled.div`
 `
 
 export const ButtonNew = styled.button`
-width: 100px;
-  padding: 10px 16px;
+    width: 100px;
+    padding: 10px 16px;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  color: ${(props) => props.theme.colors.white};
+    color: ${(props) => props.theme.colors.white};
 
-  background-color: ${(props) => props.theme.colors.primary};
+    background-color: ${(props) => props.theme.colors.primary};
 
-  border-radius: 12px;
+    border-radius: 12px;
 
-  svg {
-    font-size: 24px;
-  }
+    svg {
+        font-size: 24px;
+    }
 
-  span {
-    font-size: 16px;
-    margin-left: 8px;
-  }
+    span {
+        font-size: 16px;
+        margin-left: 8px;
+    }
     
 `

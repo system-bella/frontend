@@ -6,7 +6,7 @@ import Product from '../pages/Product';
 import Orders from '../pages/Orders';
 import Customer from '../pages/Customer';
 import Report from '../pages/Report';
-import CreateOrders from '../components/ModalOrder/CreateOrders';
+import CreateOrders from '../components/ModalOrder/Create';
 import PageTest from '../pages/PageTest';
 import User from '../pages/User';
 import Supplier from '../pages/Supplier';

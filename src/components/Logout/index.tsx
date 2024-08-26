@@ -9,17 +9,14 @@ import { CiCircleAlert } from 'react-icons/ci';
 interface IModalProps {
   isOpen: boolean;
   setModalOpen: any;
-  // itemId: number | null;
-  // url: string;
 }
 
 export default function Logout({
   isOpen,
   setModalOpen,
-  // itemId,
-  // url
+
 }: IModalProps) {
-  // console.log(itemId);
+
   const [loading, setLoading] = useState(false);
 
   const handleLogout = async () => {

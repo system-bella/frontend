@@ -19,6 +19,13 @@ interface IData {
   contact: string;
 }
 
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + '...';
+  }
+  return text;
+};
+
 export default function Customer() {
   const [items, setItems] = useState<IData[] | null>(null);
   const [openModalDell, setOpenModalDell] = useState(false);
@@ -119,7 +126,7 @@ export default function Customer() {
                 return (
                   <tr>
                     <td>{index + 1}</td>
-                    <td>{val.name}</td>
+                    <td>{truncateText(val.name, 15)}</td>
                     <td>{val.cpf}</td>
                     <td>{val.contact || "-"}</td>
                     <td>

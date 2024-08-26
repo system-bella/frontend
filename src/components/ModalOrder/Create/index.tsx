@@ -1,4 +1,3 @@
-//import FieldSearch from '../FieldSearch';
 import * as S from './styles';
 import { BsArrowReturnLeft } from 'react-icons/bs';
 import ButtonAutolineCancel from '../../ButtonAutolineCancel';
@@ -8,7 +7,7 @@ import { CiSearch } from 'react-icons/ci';
 import axios_product from '../../../api/axios';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../../api/contextApi/userContext';
-import ModalConfirm from '../../../components/ModalConfirm'
+import ModalConfirm from '../../ModalConfirm'
 import * as Yup from 'yup';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -288,7 +287,7 @@ export default function CreateOrders() {
                 </button>
                 <input
                   type='text'
-                  placeholder='Nome ou código do produto'
+                  placeholder='Nome ou código'
                   onChange={handleInputChange}
                   value={searchTerm}
                 />

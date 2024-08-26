@@ -31,6 +31,13 @@ interface Categoria {
   category: string,
 }
 
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length > maxLength) {
+    return text.substring(0, maxLength) + '...';
+  }
+  return text;
+};
+
 export default function Product() {
   const [items, setItems] = useState<IData[] | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -155,7 +162,7 @@ export default function Product() {
             {items?.map((item) => (
               <tr key={item.id}>
                 <td>{item.barcode}</td>
-                <td>{item.name}</td>
+                <td>{truncateText(item.name, 10)}</td>
                 <td>{item.quantity}</td>
                 <td>{currencyFormat(parseFloat(item.price))}</td>
                 <td>{item.category.category}</td>

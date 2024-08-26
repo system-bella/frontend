@@ -50,7 +50,7 @@ export default function Login() {
   };
 
   const initializeCSRF = async () => {
-    await axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie');
+    await axios.get('https://labella.clinicadeolhos.shop/sanctum/csrf-cookie');
   };
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {

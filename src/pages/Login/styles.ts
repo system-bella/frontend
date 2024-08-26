@@ -23,7 +23,7 @@ export const ContentForm = styled.div`
 export const Label = styled.div`
   display: flex;
   flex-direction: column;
-  width: 400px;
+  /* width: 400px; */
 
   margin-top: 50px;
 
@@ -46,8 +46,13 @@ export const Error = styled.div`
 `;
 
 export const Form = styled.form`
+  width: 400px;
   small {
     color: ${(props) => props.theme.colors.warning};
+  }
+  
+  @media (max-width: 700px) {
+    width: 90%;
   }
 `;
 
@@ -58,7 +63,6 @@ export const InputEmail = styled.div`
 `;
 
 export const Input = styled.input`
-  width: 400px;
   height: 56px;
   padding: 10px 16px;
   border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
@@ -110,7 +114,7 @@ export const ButtonLook = styled.button`
 `;
 
 export const Login = styled.button`
-  width: 400px;
+  width: 100%;
   height: 56px;
   padding: 10px;
 
@@ -127,6 +131,7 @@ export const ImgLateral = styled.div`
   width: auto;
   display: flex;
   justify-content: end;
+
   img {
     width: 100%;
     height: 100vh;
