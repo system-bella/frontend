@@ -1,10 +1,39 @@
 import React from "react";
 import * as S from './style'
 import DashboardValores from "../DashboardValores";
-import { MdOutlineAttachMoney, MdOutlineShoppingCart } from "react-icons/md";
-import { LineChart, Line, BarChart, Bar, Tooltip, Legend, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import {
+    MdOutlineAttachMoney,
+    MdOutlineShoppingCart,
+    MdPersonOutline,
+    MdOutlineShoppingBasket
+} from "react-icons/md";
 
-export default function Relatorio() {
+interface Props {
+    produto: string,
+    cliente: string,
+    venda: string,
+    total: string
+
+}
+
+const formattedTotalVenda = (totalVenda: any) => new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+}).format(parseFloat(totalVenda));
+
+export default function Relatorio({
+    produto,
+    venda,
+    cliente,
+    total
+}: Props) {
+
+    const timestamp = Date.now();
+    // Cria um objeto Date usando o timestamp
+    const currentDate = new Date(timestamp);
+    // Converte para um formato legível (data e hora)
+    const formattedDate = currentDate.toLocaleString(); // Exibe data e hora
+    console.log(formattedDate);
 
     return (
         <S.Container>
@@ -23,7 +52,7 @@ export default function Relatorio() {
                     <strong>
                         Data:
                     </strong>
-                    18/12/2024
+                    {formattedDate}
                 </p>
             </S.Data>
             <S.Content>
@@ -31,24 +60,24 @@ export default function Relatorio() {
                 <h2>Relatório de Venda</h2>
                 <S.DivValores>
                     <DashboardValores
-                        title="Produtos Vendidos"
+                        title="Produtos"
                         icon={<MdOutlineShoppingCart />}
-                        valor="1.115"
+                        valor={produto}
                     />
                     <DashboardValores
-                        title="Total Entrada"
-                        icon={<MdOutlineAttachMoney />}
-                        valor="R$ 35.166,50"
+                        title="Cliente"
+                        icon={<MdPersonOutline />}
+                        valor={cliente}
                     />
                     <DashboardValores
-                        title="Total Saída"
-                        icon={<MdOutlineAttachMoney />}
-                        valor="R$ 5.166,50"
+                        title="Vendas"
+                        icon={<MdOutlineShoppingBasket />}
+                        valor={venda}
                     />
                     <DashboardValores
-                        title="Total"
+                        title="Total Mensal"
                         icon={<MdOutlineAttachMoney />}
-                        valor="R$ 30.166,50"
+                        valor={formattedTotalVenda(total)}
                     />
                 </S.DivValores>
 

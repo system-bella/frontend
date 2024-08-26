@@ -185,7 +185,6 @@ export default function ModalCreate({
             </span>
             <S.Form onSubmit={handleSubmit(onSubmit)}>
               <div>
-
                 <S.FormInput>
                   <label>Nome do Produto *</label>
                   <S.Input
@@ -195,18 +194,6 @@ export default function ModalCreate({
                   />
                   {errors.name && <small>{errors.name.message}</small>}
                 </S.FormInput>
-
-                <S.FormInput>
-                  <label>Quantidade *</label>
-                  <S.Input
-                    {...register('quantity')}
-                    type="number"
-                    placeholder="0"
-                  />
-                  {errors.quantity && <small>{errors.quantity.message}</small>}
-                </S.FormInput>
-              </div>
-              <div>
                 <S.FormInput>
                   <label>Fornecedor *</label>
                   <S.Filter id="fornecedor" {...register('supplier_id')}>
@@ -225,6 +212,18 @@ export default function ModalCreate({
                     <small>{errors.supplier_id.message}</small>
                   )}
                 </S.FormInput>
+              </div>
+              <div>
+                <S.FormInput>
+                  <label>Quantidade *</label>
+                  <S.Input
+                    {...register('quantity')}
+                    type="number"
+                    placeholder="0"
+                  />
+                  {errors.quantity && <small>{errors.quantity.message}</small>}
+                </S.FormInput>
+
                 <S.FormInput>
                   <label>Categoria *</label>
                   <S.Filter id="categoria" {...register('category_id')}>

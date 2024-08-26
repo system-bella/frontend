@@ -30,16 +30,21 @@ export const Title = styled.div`
     flex-direction: column;
     gap: 10px;
   }
-`;
+  `;
 
 export const Header = styled.header`
   display: flex;
   align-items: center;
   flex-direction: row;
   gap: 20px;
-
+  
   div {
     display: flex;
+    justify-content: space-between;
+  }
+  
+  @media (max-width: 700px) {
+    width: 100%;
     justify-content: space-between;
   }
 `;

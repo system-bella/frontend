@@ -99,13 +99,13 @@ export default function Report() {
         setVenda(vendaResponse.data.total);
         if (vendaResponse.data.data.length > 0) {
           setOrder(vendaResponse.data.data);
-          
+
           // Processar os dados dos agendamentos (vendas)
           const filteredSales = vendaResponse.data.data.filter((venda: { created_at: string | number | Date; }) => {
             const saleYear = new Date(venda.created_at).getFullYear(); // Ano atual
             return saleYear === currentYear;
           });
-          
+
           const monthlySales = Array(12).fill(0); // Inicializa um array com 12 posições, uma para cada mês
           filteredSales.forEach((venda: { created_at: string | number | Date; total_price: string; }) => {
             const month = new Date(venda.created_at).getMonth(); // Pega o mês da venda (0 = Janeiro, 11 = Dezembro)
@@ -252,7 +252,11 @@ export default function Report() {
         style={{ display: 'none' }}
       >
         <div ref={contentRef}>
-          <Relatorio />
+          <Relatorio
+            produto={totalProduct}
+            cliente={totalCustom}
+            venda={venda}
+            total={totalVenda} />
         </div>
       </div>
     </S.Container>
