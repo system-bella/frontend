@@ -160,19 +160,23 @@ export default function UpdateUser({
 
           // Exibir todas as mensagens de erro em um único alert
           setErrorMsgTxt(errorMessages || 'Erro de validação desconhecido.');
-        }
-
-        if (statusCode === 409) {
+        } else if (statusCode === 409) {
           setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
+        } else {
+          setErrorMsgTxt(`Error with status code: ${statusCode}`);
         }
-        // else {
-        //   setErrorMsgTxt(`Error with status code: ${statusCode}`);
-        // }
       } else {
         setErrorMsgTxt('Erro desconhecido: ' + error);
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Previne o comportamento padrão do Enter, como pular para o próximo input
+      handleSubmit(onSubmit)(); // Submete o formulário manualmente
     }
   };
 
@@ -191,7 +195,7 @@ export default function UpdateUser({
             <span>
               <strong>Usuário{'>'}</strong>Editar
             </span>
-            <S.Form onSubmit={handleSubmit(onSubmit)}>
+            <S.Form onSubmit={handleSubmit(onSubmit)} onKeyDown={handleKeyDown}>
 
               <div>
                 <S.FormInput>
