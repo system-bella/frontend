@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 //api
-import api from '../../api/axios';
+import api from '../../api/login';
 import axios, { AxiosError } from 'axios';
 // form validation
 import * as Yup from 'yup';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // assets
-const logo = require('../../assets/logo.png');
-const imgLateral = require('../../assets/imgLateral.jpg');
-import { CiLock, CiUnlock } from 'react-icons/ci';
-
 // styles
 import * as S from './styles';
+import { CiLock, CiUnlock } from 'react-icons/ci';
+
+const logo = require('../../assets/logo.png');
+const imgLateral = require('../../assets/imgLateral.jpg');
+
 
 interface ILogin {
   email: string;
@@ -29,6 +30,7 @@ export default function Login() {
   const [locked, setLocked] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [redirect, setRedirect] = useState(false);
   const history = useHistory();
 
   const { register, handleSubmit, formState } = useForm<ILogin>({
@@ -42,27 +44,44 @@ export default function Login() {
     if (axios.isAxiosError(err)) {
       const axiosError = err as AxiosError;
 
-      if (axiosError.response?.status === 422)
+      if (axiosError.response?.status === 401)
         setError('Credenciais inválidas!');
     }
   };
 
+  const initializeCSRF = async () => {
+    await axios.get('https://labella.clinicadeolhos.shop/sanctum/csrf-cookie');
+  };
+
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
+    setLoading(true);
     try {
       setLoading(!loading);
-      const response = await api.post('/login', data);
-      if (response.status === 201) {
-        history.push('/Product');
-        setLoading(false);
-        window.location.reload();
-      }
+
+      await initializeCSRF(); // Inicializa a proteção CSRF
+
+      const response = await api.post('login', data);
+
+      const token = response.data.token;
+
+      localStorage.setItem('authToken', token);
+
+      setRedirect(true);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         handleLoginError(err);
-        setLoading(false);
+      } else {
+        setError('Erro inesperado. Por favor, tente novamente.');
       }
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (redirect) {
+    history.push('/Product');
+    window.location.reload();
+  }
 
   return (
     <S.Container>

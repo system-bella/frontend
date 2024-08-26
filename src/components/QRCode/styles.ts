@@ -6,34 +6,40 @@ export const PrintQrcode = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
+  
   padding: 20px;
-`;
+
+  @media (max-width: 700px) {
+    display: none;
+  }
+  `;
 
 export const Label = styled.div`
   margin-left: 20px;
-
+  
   img {
-    width: 80%;
+    height: 60px;
   }
-
+  
   p {
-    font-size: 18px;
+    font-size: 16px;
     color: ${(props) => props.theme.colors.black};
   }
   h1 {
-    font-size: 30px;
+    font-size: 24px;
     color: ${(props) => props.theme.colors.black};
   }
-`;
+  `;
 
 export const CaputureQrcode = styled.button`
   border-radius: 12px;
-  padding: 10px 16px;
-  height: 56px;
+  padding: 10px;
   background-color: ${(props) => props.theme.colors.primary};
 
   color: ${(props) => props.theme.colors.white};
-  font-weight: 400;
   font-size: 16px;
+
+  &:hover{
+    background-color: #e976a8;
+  }
 `;

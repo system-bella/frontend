@@ -8,14 +8,35 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   flex: 1;
-  //flex-direction:
+`;
+
+export const Title = styled.div`
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 36px;
+  
+  span {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  span > small {
+    font-weight: 300;
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
 
 export const Header = styled.header`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 36px;
+  flex-direction: row;
+  gap: 20px;
 
   div {
     display: flex;
@@ -25,11 +46,12 @@ export const Header = styled.header`
 
 export const NewItem = styled.button`
   width: 100px;
-  padding: 10px 16px;
+  padding: 10px;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 5px;
 
   color: ${(props) => props.theme.colors.white};
 
@@ -43,20 +65,6 @@ export const NewItem = styled.button`
 
   span {
     font-size: 16px;
-    margin-left: 8px;
-  }
-`;
-
-export const Title = styled.div`
-  margin-bottom: 32px;
-
-  span {
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  span > small {
-    font-weight: 300;
   }
 `;
 
@@ -67,7 +75,7 @@ export const BodyTable = styled.table`
   td,
   th {
     text-align: center;
-    padding: 12px 0;
+    padding: 10px 0;
   }
 
   thead > tr > th {
@@ -94,6 +102,13 @@ export const BodyTable = styled.table`
   td > span > button > svg {
     font-size: 20px;
   }
+
+  @media (max-width: 700px) {
+    th:nth-child(5), 
+    td:nth-child(5) {
+      display: none;
+    }
+  }
 `;
 
 export const Footer = styled.footer`
@@ -102,3 +117,14 @@ export const Footer = styled.footer`
 
   padding: 10px 0;
 `;
+
+export const ContentModal = styled.div`
+ position: relative;
+ 
+`
+
+export const ModalOpt = styled.div`
+ position: absolute;
+ top: 50px;
+ right: 0;
+`

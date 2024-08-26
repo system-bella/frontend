@@ -8,23 +8,20 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   flex: 1;
-  //flex-direction:
 `;
 
-export const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 36px;
-
+export const Header = styled.header`  
   div {
     display: flex;
     justify-content: space-between;
   }
-`;
+  `;
 
 export const Title = styled.div`
-  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 36px;
 
   span {
     font-size: 16px;
@@ -66,6 +63,13 @@ export const BodyTable = styled.table`
 
   td > div > button > svg {
     font-size: 20px;
+  }
+
+  @media (max-width: 700px) {
+    th:nth-child(5), 
+    td:nth-child(5) {
+      display: none;
+    }
   }
 `;
 
