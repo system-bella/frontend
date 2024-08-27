@@ -1,10 +1,53 @@
 import React from "react";
 import * as S from './style'
 import DashboardValores from "../DashboardValores";
-import { MdOutlineAttachMoney, MdOutlineShoppingCart } from "react-icons/md";
-import { LineChart, Line, BarChart, Bar, Tooltip, Legend, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import {
+    MdOutlineAttachMoney,
+    MdOutlineShoppingCart,
+    MdPersonOutline,
+    MdOutlineShoppingBasket
+} from "react-icons/md";
 
-export default function Relatorio() {
+import { NumericFormat } from 'react-number-format';
+import { parseISO, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+
+interface Props {
+    produto: string,
+    cliente: string,
+    venda: string,
+    total: string
+    dados: Array<{ [key: string]: any }>;
+}
+
+const formattedTotalVenda = (totalVenda: any) => new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+}).format(parseFloat(totalVenda));
+
+
+function formatarData(dataFormat: string) {
+    if (dataFormat !== null) {
+        const parsedDate = parseISO(dataFormat);
+        return format(parsedDate, 'dd/MM/yyyy', { locale: ptBR });
+    }
+}
+
+export default function Relatorio({
+    produto,
+    venda,
+    cliente,
+    total,
+    dados
+}: Props) {
+
+    const timestamp = Date.now();
+    // Cria um objeto Date usando o timestamp
+    const currentDate = new Date(timestamp);
+    // Converte para um formato legível (data e hora)
+    const formattedDate = currentDate.toLocaleString(); // Exibe data e hora
+    console.log(formattedDate);
 
     return (
         <S.Container>
@@ -23,7 +66,7 @@ export default function Relatorio() {
                     <strong>
                         Data:
                     </strong>
-                    18/12/2024
+                    {formattedDate}
                 </p>
             </S.Data>
             <S.Content>
@@ -31,24 +74,24 @@ export default function Relatorio() {
                 <h2>Relatório de Venda</h2>
                 <S.DivValores>
                     <DashboardValores
-                        title="Produtos Vendidos"
+                        title="Produtos"
                         icon={<MdOutlineShoppingCart />}
-                        valor="1.115"
+                        valor={produto}
                     />
                     <DashboardValores
-                        title="Total Entrada"
-                        icon={<MdOutlineAttachMoney />}
-                        valor="R$ 35.166,50"
+                        title="Cliente"
+                        icon={<MdPersonOutline />}
+                        valor={cliente}
                     />
                     <DashboardValores
-                        title="Total Saída"
-                        icon={<MdOutlineAttachMoney />}
-                        valor="R$ 5.166,50"
+                        title="Vendas"
+                        icon={<MdOutlineShoppingBasket />}
+                        valor={venda}
                     />
                     <DashboardValores
-                        title="Total"
+                        title="Total Mensal"
                         icon={<MdOutlineAttachMoney />}
-                        valor="R$ 30.166,50"
+                        valor={formattedTotalVenda(total)}
                     />
                 </S.DivValores>
 
@@ -62,53 +105,46 @@ export default function Relatorio() {
                                 Resumo
                             </th>
                             <th>
-                                Data
-                            </th><th>
-                                Produtos
-                            </th><th>
-                                Quantidade
-                            </th><th>
                                 Cliente
+                            </th>
+                            <th>
+                                Data
+                            </th>
+                            <th>
+                                Vendedor
+                            </th>
+                            <th>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>900, 00 R$</td>
-                            <td>13/12/2012 08:50</td>
-                            <td>Bolsa</td>
-                            <td>1</td>
-                            <td>Fabiana Luiza</td>
-                        </tr><tr>
-                            <td>1</td>
-                            <td>900, 00 R$</td>
-                            <td>13/12/2012 08:50</td>
-                            <td>Bolsa</td>
-                            <td>1</td>
-                            <td>Fabiana Luiza</td>
-                        </tr><tr>
-                            <td>1</td>
-                            <td>900, 00 R$</td>
-                            <td>13/12/2012 08:50</td>
-                            <td>Bolsa</td>
-                            <td>1</td>
-                            <td>Fabiana Luiza</td>
-                        </tr><tr>
-                            <td>1</td>
-                            <td>900, 00 R$</td>
-                            <td>13/12/2012 08:50</td>
-                            <td>Bolsa</td>
-                            <td>1</td>
-                            <td>Fabiana Luiza</td>
-                        </tr><tr>
-                            <td>1</td>
-                            <td>900, 00 R$</td>
-                            <td>13/12/2012 08:50</td>
-                            <td>Bolsa</td>
-                            <td>1</td>
-                            <td>Fabiana Luiza</td>
-                        </tr>
+                        {dados.map((val, index) => (
+                            <tr key={index}>
+                                <td>
+                                    {index + 1}
+                                </td>
+                                <td>
+                                    <NumericFormat
+                                        displayType={'text'}
+                                        thousandSeparator="."
+                                        decimalSeparator=","
+                                        decimalScale={2}
+                                        value={val.total_price}
+                                        fixedDecimalScale={true}
+                                        prefix='R$'
+                                    />
+                                </td>
+                                <td>
+                                    {val.customer?.name || '-'}
+                                </td>
+                                <td>
+                                    {formatarData(val.created_at)}
+                                </td>
+                                <td>
+                                    {val.user.first_name}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </S.Tabela>
             </S.Content>
