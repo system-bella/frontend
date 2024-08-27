@@ -8,12 +8,17 @@ import {
     MdOutlineShoppingBasket
 } from "react-icons/md";
 
+import { NumericFormat } from 'react-number-format';
+import { parseISO, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+
 interface Props {
     produto: string,
     cliente: string,
     venda: string,
     total: string
-
+    dados: Array<{ [key: string]: any }>;
 }
 
 const formattedTotalVenda = (totalVenda: any) => new Intl.NumberFormat('pt-BR', {
@@ -21,11 +26,20 @@ const formattedTotalVenda = (totalVenda: any) => new Intl.NumberFormat('pt-BR', 
     currency: 'BRL',
 }).format(parseFloat(totalVenda));
 
+
+function formatarData(dataFormat: string) {
+    if (dataFormat !== null) {
+        const parsedDate = parseISO(dataFormat);
+        return format(parsedDate, 'dd/MM/yyyy', { locale: ptBR });
+    }
+}
+
 export default function Relatorio({
     produto,
     venda,
     cliente,
-    total
+    total,
+    dados
 }: Props) {
 
     const timestamp = Date.now();
@@ -91,53 +105,46 @@ export default function Relatorio({
                                 Resumo
                             </th>
                             <th>
-                                Data
-                            </th><th>
-                                Produtos
-                            </th><th>
-                                Quantidade
-                            </th><th>
                                 Cliente
+                            </th>
+                            <th>
+                                Data
+                            </th>
+                            <th>
+                                Vendedor
+                            </th>
+                            <th>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>900, 00 R$</td>
-                            <td>13/12/2012 08:50</td>
-                            <td>Bolsa</td>
-                            <td>1</td>
-                            <td>Fabiana Luiza</td>
-                        </tr><tr>
-                            <td>1</td>
-                            <td>900, 00 R$</td>
-                            <td>13/12/2012 08:50</td>
-                            <td>Bolsa</td>
-                            <td>1</td>
-                            <td>Fabiana Luiza</td>
-                        </tr><tr>
-                            <td>1</td>
-                            <td>900, 00 R$</td>
-                            <td>13/12/2012 08:50</td>
-                            <td>Bolsa</td>
-                            <td>1</td>
-                            <td>Fabiana Luiza</td>
-                        </tr><tr>
-                            <td>1</td>
-                            <td>900, 00 R$</td>
-                            <td>13/12/2012 08:50</td>
-                            <td>Bolsa</td>
-                            <td>1</td>
-                            <td>Fabiana Luiza</td>
-                        </tr><tr>
-                            <td>1</td>
-                            <td>900, 00 R$</td>
-                            <td>13/12/2012 08:50</td>
-                            <td>Bolsa</td>
-                            <td>1</td>
-                            <td>Fabiana Luiza</td>
-                        </tr>
+                        {dados.map((val, index) => (
+                            <tr key={index}>
+                                <td>
+                                    {index + 1}
+                                </td>
+                                <td>
+                                    <NumericFormat
+                                        displayType={'text'}
+                                        thousandSeparator="."
+                                        decimalSeparator=","
+                                        decimalScale={2}
+                                        value={val.total_price}
+                                        fixedDecimalScale={true}
+                                        prefix='R$'
+                                    />
+                                </td>
+                                <td>
+                                    {val.customer?.name || '-'}
+                                </td>
+                                <td>
+                                    {formatarData(val.created_at)}
+                                </td>
+                                <td>
+                                    {val.user.first_name}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </S.Tabela>
             </S.Content>

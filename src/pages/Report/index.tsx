@@ -256,7 +256,8 @@ export default function Report() {
             produto={totalProduct}
             cliente={totalCustom}
             venda={venda}
-            total={totalVenda} />
+            total={totalVenda} 
+            dados={order}/>
         </div>
       </div>
     </S.Container>
