@@ -11,11 +11,9 @@ import PageTest from '../pages/PageTest';
 import User from '../pages/User';
 import Supplier from '../pages/Supplier';
 import { useUser } from '../api/contextApi/userContext';
-import { useEffect } from 'react';
 
 export default function AppRoutes() {
   const user = useUser();
-  const history = useHistory();
 
   return (
     <Switch>

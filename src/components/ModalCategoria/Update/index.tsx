@@ -42,7 +42,7 @@ export default function EditCategoria(
   }: IModalCreateProps) {
 
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, formState, reset, setValue } = useForm<Input>({
+  const { register, handleSubmit, formState, setValue } = useForm<Input>({
     mode: 'onBlur',
     resolver: yupResolver(schema)
   });

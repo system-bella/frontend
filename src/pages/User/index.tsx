@@ -9,6 +9,7 @@ import { useUser } from '../../api/contextApi/userContext';
 import Erro403 from '../../components/Error/Erro403';
 import Loading from '../../components/Loading';
 import Sleep from '../../components/Error/SleepSytem';
+import axios from 'axios';
 
 interface User {
     id: 1,
@@ -44,7 +45,13 @@ export default function User() {
                 setLastPage(response.data.last_page);
 
             } catch (e) {
-                console.error(e);
+                console.log(e);
+                if (axios.isAxiosError(e)) {
+                    const status = e.response?.status;
+                    if (status === 401) {
+                        setOpenSleep(true);
+                    }
+                }
             } finally {
                 setIsLoading(false); // Define o estado de carregamento como concluído
             }
