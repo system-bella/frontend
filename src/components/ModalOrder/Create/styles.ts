@@ -28,27 +28,33 @@ export const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-
+  
   `;
 
 export const HeaderSearch = styled.div`
   display: flex;
-  gap: 20px;
-
+  justify-content: space-between;
+  width: 35%;
+  
   @media (max-width: 900px) {
     gap: 5px;
   }
+  `
+
+export const Input = styled.input`
+  border: 2px solid #ef9dc0;
+  border-radius: 10px;
+  padding: 12px 10px;
+  width: 70px;
+  font-size: 1em;
 `
 
-export const InputLeft = styled.div`
-  width: 20%;
-  `
 export const InputRight = styled.div`
   position: relative;
-  `
+  width: 270px;
+`
 
 export const DivInput = styled.div`
-  width: 300px;
   display: flex;
   border: 2px solid #ef9dc0;
   padding: 12px 10px;
@@ -56,7 +62,7 @@ export const DivInput = styled.div`
   font-size: 1em;
   
   input{
-    width: 100%;
+    width: 90%;
     &::placeholder {
       font-size: 16px;
     }
@@ -64,7 +70,7 @@ export const DivInput = styled.div`
   }
   
   button {
-    width: 20%;
+    width: 10%;
     font-size: 1em;
     background-color: ${(props) => props.theme.colors.white};
     border-radius: 10px;
@@ -151,7 +157,7 @@ export const ContentRight = styled.div`
 `
 
 export const ListProduct = styled.div`
-  border: 2px solid #ef9dc0;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 10px;
   border-radius: 8px;
   max-height: 350px;
   height: 320px;
@@ -162,10 +168,14 @@ export const TableProduct = styled.table`
   width: 100%;
   border-collapse: collapse;
 
+  thead{
+    background-color: #f4f4f5;
+  }
+
   td,
   th {
     text-align: center;
-    padding: 5px 0;
+    padding: 12px 0;
   }
 
   tbody {
@@ -187,10 +197,10 @@ export const TableProduct = styled.table`
 
 export const FormTotal = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  width: 100%;
-  
+  flex-direction: row;
+  gap: 20px;
+  margin-top: 20px;
+
   button {
     background-color: white;
     color: red;
@@ -250,14 +260,6 @@ export const Footer = styled.footer`
   justify-content: space-between;
 `;
 
-export const Input = styled.input`
-  border: 2px solid #ef9dc0;
-  border-radius: 10px;
-  padding: 12px 10px;
-  width: 100%;
-  font-size: 1em;
-`
-
 export const Filter = styled.select`
   border: 2px solid #ef9dc0;
   border-radius: 10px;
@@ -289,24 +291,24 @@ export const Save = styled.button`
 export const FormInput = styled.div`
   display: flex;
   flex-direction: column;
-
+  
   small {
     color: ${(props) => props.theme.colors.warning};
   }
-
+  
   .imask{
     border: 1px solid ${(props) => props.theme.colors.secondary.gray_100};
     border-radius: 6px;
     padding: 10px 16px;
-
+    
     &::placeholder {
       font-size: 16px;
     }
-
+    
     width: 100%;
     height: 44px;
   }
-
+  
   input[type='text']{
     border: 2px solid #ef9dc0;
     border-radius: 10px;

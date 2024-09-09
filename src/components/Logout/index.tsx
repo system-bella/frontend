@@ -39,7 +39,7 @@ export default function Logout({
             <CiCircleAlert />
             <div>
               <span>Tem certeza que deseja sair?</span>
-              <small>Na próxima vez você deverá realizar seu login</small>
+              <small>Na próxima vez você deverá realizar seu login.</small>
             </div>
           </S.InfoModel>
           <S.Action>

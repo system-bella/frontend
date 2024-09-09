@@ -9,9 +9,4 @@ export const Container = styled.button`
   border-radius: 10px;
 
   margin-right: 20px;
-
-  &:hover{
-    background-color: black;
-    color: white;
-  }
 `;

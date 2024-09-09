@@ -237,7 +237,7 @@ export default function CreateOrders() {
             setErrorMsgTxt('Erro de validação desconhecido.');
           }
         }
-        
+
         else if (statusCode === 409) {
           setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
         } else {
@@ -270,15 +270,13 @@ export default function CreateOrders() {
 
         <S.Header>
           <S.HeaderSearch>
-            <S.InputLeft>
-              <S.Input
-                type='number'
-                placeholder='1'
-                min={1}
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-              />
-            </S.InputLeft>
+            <S.Input
+              type='number'
+              placeholder='1'
+              min={1}
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+            />
 
             <S.InputRight>
               <S.DivInput>
@@ -376,11 +374,6 @@ export default function CreateOrders() {
                   />
                 )}
               />
-              {/* <S.Input
-                type='number'
-                placeholder='0,00'
-                {...register('discount')}
-              /> */}
             </S.FormInput>
           </S.ContentLeft>
 
@@ -443,6 +436,8 @@ export default function CreateOrders() {
                     prefix='R$ '
                   />
                 </S.ValoresT>
+              </div>
+              <div>
                 <label>TOTAL</label>
                 <S.ValoresT>
                   <NumericFormat
