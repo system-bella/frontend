@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 import CreateCustomer from '../../components/ModalCustomer/Create';
 import EditCustomer from '../../components/ModalCustomer/Update';
 import Loading from '../../components/Loading';
-import Sleep from '../../components/Error/SleepSytem';
 import axios from 'axios';
+import ModalSection from '../../components/ModalSection';
 
 interface IData {
   id: number;
@@ -84,7 +84,7 @@ export default function Customer() {
   };
 
   if (openSleep) {
-    return <Sleep />
+    return <ModalSection />
   }
 
   return (

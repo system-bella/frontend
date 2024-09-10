@@ -7,7 +7,6 @@ export const PrintQrcode = styled.div`
   align-items: center;
   justify-content: center;
   
-  padding: 20px;
 
   @media (max-width: 700px) {
     display: none;

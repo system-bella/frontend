@@ -11,8 +11,8 @@ import CreateFornecedor from "../../components/ModalFonecedor/Create";
 import UpdateFornecedor from '../../components/ModalFonecedor/Update';
 import DetailsFornecedor from '../../components/ModalFonecedor/Details';
 import Loading from '../../components/Loading';
-import Sleep from '../../components/Error/SleepSytem';
 import axios from 'axios';
+import ModalSection from '../../components/ModalSection';
 
 interface IData {
   id: number;
@@ -79,7 +79,7 @@ export default function Supplier() {
   };
 
   if (openSleep) {
-    return <Sleep />
+    return <ModalSection />
   }
   
   return (

@@ -21,6 +21,7 @@ interface IData {
   barcode: string;
   supplier: Fornecedor;
   purchase_value: number;
+  discount: number;
 }
 
 interface Categoria {
@@ -91,7 +92,7 @@ export default function ModalDetails({
                 </div>
               </S.Info>
               <S.Info>
-              <div>
+                <div>
                   <S.TituloH5>Preço de Compra</S.TituloH5>
                   <S.InforSpan>{formattedTotalVenda(item.purchase_value) || '-'}</S.InforSpan>
                 </div>
@@ -110,12 +111,11 @@ export default function ModalDetails({
                   <S.InforSpan>{item.quantity}</S.InforSpan>
                 </div>
               </S.Info>
-              
 
               <S.InfoDescription>
                 <div>
-                  <S.TituloH5>Descrição</S.TituloH5>
-                  <S.InforSpan>{item.description || "Dado não cadastrado!"}</S.InforSpan>
+                  <S.TituloH5>Desconto</S.TituloH5>
+                  <S.InforSpan>{`${item.discount}%` || "Dado não cadastrado!"}</S.InforSpan>
                 </div>
                 <div>
                   <S.TituloH5>Categoria</S.TituloH5>
@@ -123,11 +123,17 @@ export default function ModalDetails({
                 </div>
               </S.InfoDescription>
 
+              <S.Info>
+                <div>
+                  <S.TituloH5>Descrição</S.TituloH5>
+                  <S.InforSpan>{item.description || "Dado não cadastrado!"}</S.InforSpan>
+                </div>
+              </S.Info>
+
               <S.InfoQr>
                 <div>
                   <S.TituloH5>Código QR</S.TituloH5>
                   <QRCode
-                    category={item.category.category}
                     name={item.name}
                     price={item.price}
                   />

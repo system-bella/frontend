@@ -22,6 +22,7 @@ interface IProductData {
   price: number;
   description?: string;
   purchase_value: number;
+  discount?: number;
 }
 
 interface Fornecedor {
@@ -54,6 +55,14 @@ const schema = Yup.object().shape({
       return Number(originalValue); //
     })
     .required('Campo obrigatório'),
+
+  discount: Yup.number()
+    .transform((value, originalValue) => {
+      if (originalValue === '' || isNaN(originalValue)) {
+        return undefined;
+      }
+      return Number(originalValue); //
+    }),
 
   category_id: Yup.number()
     .transform((value, originalValue) => {
@@ -101,7 +110,7 @@ export default function ModalCreate({
   const [loading, setLoading] = useState(false);
   const [categoria, setCategoria] = useState<Categoria[] | null>(null);
   const [fornecedor, setFornecedor] = useState<Fornecedor[] | null>(null);
-  const { register, handleSubmit, formState, reset, control, setValue } = useForm<IProductData>({
+  const { register, handleSubmit, formState, reset, control } = useForm<IProductData>({
     mode: 'onBlur',
     resolver: yupResolver(schema)
   });
@@ -271,10 +280,9 @@ export default function ModalCreate({
                 </S.FormInput>
 
                 <S.FormInput>
-                  <label>Preço Final *</label>
-
+                  <label>Desconto *</label>
                   <Controller
-                    name="price"
+                    name="discount"
                     control={control}
                     rules={{ required: 'Este campo é obrigatório' }}
                     render={({ field: { onChange, value, ref } }) => (
@@ -283,8 +291,8 @@ export default function ModalCreate({
                         decimalSeparator=","
                         decimalScale={2}
                         fixedDecimalScale={true}
-                        placeholder="R$ 0,00"
-                        prefix="R$ "
+                        placeholder="0,0%"
+                        suffix="%"
                         value={value}
                         onValueChange={(values) => {
                           onChange(values.floatValue); // Use formattedValue to store the formatted string
@@ -293,9 +301,35 @@ export default function ModalCreate({
                       />
                     )}
                   />
-                  {errors.price && <small>{errors.price.message}</small>}
+                  {errors.discount && <small>{errors.discount.message}</small>}
                 </S.FormInput>
               </div>
+
+              <S.FormInput>
+                <label>Preço Final *</label>
+
+                <Controller
+                  name="price"
+                  control={control}
+                  rules={{ required: 'Este campo é obrigatório' }}
+                  render={({ field: { onChange, value, ref } }) => (
+                    <NumericFormat
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      decimalScale={2}
+                      fixedDecimalScale={true}
+                      placeholder="R$ 0,00"
+                      prefix="R$ "
+                      value={value}
+                      onValueChange={(values) => {
+                        onChange(values.floatValue); // Use formattedValue to store the formatted string
+                      }}
+                      getInputRef={ref}
+                    />
+                  )}
+                />
+                {errors.price && <small>{errors.price.message}</small>}
+              </S.FormInput>
 
               <S.FormInput>
                 <label>Descrição</label>

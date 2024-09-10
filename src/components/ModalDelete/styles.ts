@@ -57,7 +57,7 @@ export const InfoModel = styled.div`
 
   div > small {
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     color: ${(props) => props.theme.colors.secondary.gray_100};
   }
 `;

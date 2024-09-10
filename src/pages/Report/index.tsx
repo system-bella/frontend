@@ -26,9 +26,8 @@ import {
 } from 'recharts';
 import { useReactToPrint } from 'react-to-print';
 import Relatorio from "../../components/Relatorio";
-import Sleep from '../../components/Error/SleepSytem';
 import Loading from '../../components/Loading';
-
+import ModalSection from "../../components/ModalSection";
 interface User {
   id: 1,
   first_name: string,
@@ -152,7 +151,7 @@ export default function Report() {
   });
 
   if (openSleep) {
-    return <Sleep />
+    return <ModalSection />
   }
 
   return (

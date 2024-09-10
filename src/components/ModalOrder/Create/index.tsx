@@ -32,6 +32,7 @@ type Input = {
   payment_id: string;
   discount?: number;
   products?: Produto[];
+  number_payments?: number;
 };
 
 interface ApiError {
@@ -58,6 +59,14 @@ const schema = Yup.object().shape({
     }),
 
   user_id: Yup.number()
+    .transform((value, originalValue) => {
+      if (originalValue === "" || originalValue === undefined) {
+        return undefined;
+      }
+      return Number(originalValue); // Remova espaços em branco extras
+    }),
+
+  number_payments: Yup.number()
     .transform((value, originalValue) => {
       if (originalValue === "" || originalValue === undefined) {
         return undefined;
@@ -92,6 +101,7 @@ export default function CreateOrders() {
   const [openModalList, setOpenModalList] = useState(false);
   const [quantity, setQuantity] = useState<number>(1);
   const { user } = useUser();
+  const [openModalParcel, setOpenModalParcel] = useState(false);
   // ModalConfirm
   const [openModalConfirm, setOpenModalConfirm] = useState(false);
   const [successText, setSuccessText] = useState<boolean | null>(null);
@@ -99,7 +109,7 @@ export default function CreateOrders() {
   const [errorMsgTxt, setErrorMsgTxt] = useState('');
 
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit, formState, watch, control } = useForm<Input>({
+  const { register, handleSubmit, formState, watch, control, resetField } = useForm<Input>({
     mode: 'onBlur',
     resolver: yupResolver(schema)
   });
@@ -172,6 +182,18 @@ export default function CreateOrders() {
     }
   };
 
+  const handlePaymentChange = (e: any) => {
+    const selectedMethod = e.target.value;
+
+    // Verifica se o método de pagamento selecionado é "Cartão de Crédito" (ajuste o valor conforme o necessário)
+    if (selectedMethod === "Cartão de Crédito") { // Supondo que o ID do Cartão de Crédito seja 1
+      setOpenModalParcel(true);
+    } else {
+      setOpenModalParcel(false);
+      resetField("number_payments");
+    }
+  };
+
   const calculateSubTotal = () => {
     return selectedProducts.reduce(
       (total, product) => total + Number(product.price) * product.quantity,
@@ -185,6 +207,18 @@ export default function CreateOrders() {
     return discountedTotal // Formata com duas casas decimais
   };
 
+  const calculateParcelas = (qtd: number, taxa: number) => {
+    const total = calculateDiscountedTotal() / qtd;
+    return total + (total * (taxa / 100));
+  }
+
+  function formatarDinheiro(valor: number): string {
+    return valor.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  }
+
   const onSubmit: SubmitHandler<Input> = async (data) => {
     setLoading(true);
 
@@ -195,13 +229,15 @@ export default function CreateOrders() {
           customer_id: data.customer_id,
           user_id: userId,
           payment: data.payment_id,
+          number_payments:data.number_payments,
           discount: data.discount || 0, // Defina desconto padrão se não houver
           products: selectedProducts.map(product => ({
             id: product.id,
             quantity: product.quantity,
           })),
         };
-        const response = await axios_product.post('v1/order', { ...payload });
+        console.log({...payload});
+        const response = await axios_product.post('v1/order', {...payload});
         const statusCode = response.status;
 
         if (statusCode === 201) {
@@ -237,7 +273,7 @@ export default function CreateOrders() {
             setErrorMsgTxt('Erro de validação desconhecido.');
           }
         }
-        
+
         else if (statusCode === 409) {
           setErrorMsgTxt('Já existe referência e/ou código de barras cadastrados');
         } else {
@@ -270,15 +306,13 @@ export default function CreateOrders() {
 
         <S.Header>
           <S.HeaderSearch>
-            <S.InputLeft>
-              <S.Input
-                type='number'
-                placeholder='1'
-                min={1}
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-              />
-            </S.InputLeft>
+            <S.Input
+              type='number'
+              placeholder='1'
+              min={1}
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+            />
 
             <S.InputRight>
               <S.DivInput>
@@ -318,23 +352,6 @@ export default function CreateOrders() {
         <S.ContainerBloc>
           <S.ContentLeft>
             <S.FormInput>
-              <label>Forma de Pagamento</label>
-              <S.Filter
-                id="payment_id"
-                {...register('payment_id')}
-              >
-                <option value="Dinheiro">Dinheiro</option>
-                <option value="Pix">Pix</option>
-                <option value="Credito">Cartão de Crédito</option>
-                <option value="Debito">Cartão de Débito</option>
-                <option value="Boleto">Boleto</option>
-              </S.Filter>
-              {errors.payment_id && (
-                <small>{errors.payment_id.message}</small>
-              )}
-            </S.FormInput>
-
-            <S.FormInput>
               <label>Cliente</label>
               <S.Filter
                 id="customer_id"
@@ -353,6 +370,42 @@ export default function CreateOrders() {
                 }
               </S.Filter>
             </S.FormInput>
+
+            <S.FormInput>
+              <label>Forma de Pagamento</label>
+              <S.Filter
+                onClick={handlePaymentChange}
+                id="payment_id"
+                {...register('payment_id')}
+              >
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="Pix">Pix</option>
+                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                <option value="Cartão de Débito">Cartão de Débito</option>
+              </S.Filter>
+              {errors.payment_id && (
+                <small>{errors.payment_id.message}</small>
+              )}
+            </S.FormInput>
+            {openModalParcel &&
+              <S.FormInput>
+                <label>Parcelas</label>
+                <S.Filter
+                  {...register("number_payments")}
+                >
+                  <option value=""
+                    disabled selected hidden>
+                    Selecione
+                  </option>
+                  <option value="1">1X {formatarDinheiro(calculateParcelas(1, 3.64))}</option>
+                  <option value="2">2X {formatarDinheiro(calculateParcelas(2, 4.97))}</option>
+                  <option value="3">3X {formatarDinheiro(calculateParcelas(3, 5.89))}</option>
+                  <option value="4">4X {formatarDinheiro(calculateParcelas(4, 6.8))}</option>
+                  <option value="5">5X {formatarDinheiro(calculateParcelas(5, 7.69))}</option>
+                  <option value="6">6X {formatarDinheiro(calculateParcelas(6, 8.58))}</option>
+                </S.Filter>
+              </S.FormInput>
+            }
 
             <S.FormInput>
               <label>Desconto</label>
@@ -376,11 +429,6 @@ export default function CreateOrders() {
                   />
                 )}
               />
-              {/* <S.Input
-                type='number'
-                placeholder='0,00'
-                {...register('discount')}
-              /> */}
             </S.FormInput>
           </S.ContentLeft>
 
@@ -443,6 +491,8 @@ export default function CreateOrders() {
                     prefix='R$ '
                   />
                 </S.ValoresT>
+              </div>
+              <div>
                 <label>TOTAL</label>
                 <S.ValoresT>
                   <NumericFormat

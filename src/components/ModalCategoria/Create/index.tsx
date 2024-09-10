@@ -110,7 +110,7 @@ export default function CreateCategoria(
               <Input
                 {...register('category')}
                 type="text"
-                placeholder="Pesquise a categoria"
+                placeholder="Nome da categoria"
               />
               {errors.category && (
                 <small>{errors.category.message}</small>

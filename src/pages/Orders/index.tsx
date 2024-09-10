@@ -9,8 +9,8 @@ import axios_product from '../../api/axios';
 import ModalDetails from '../../components/ModalOrder/Details';
 import axios from 'axios';
 import Loading from '../../components/Loading';
-import Sleep from '../../components/Error/SleepSytem';
 import Erro429 from '../../components/Error/Error429';
+import ModalSection from '../../components/ModalSection';
 
 import { NumericFormat } from 'react-number-format';
 import { parseISO, format } from 'date-fns';
@@ -103,6 +103,7 @@ export default function Orders() {
 
         const response = await axios_product.get(`v1/${url}`);
         if (response.data.data.length > 0) {
+          console.log(response.data);
           setItems(response.data.data);
           setTotalPages(response.data.last_page);
           setPerPage(response.data.per_page);
@@ -128,7 +129,7 @@ export default function Orders() {
   }, [currentPage]);
 
   if (openSleep) {
-    return <Sleep />
+    return <ModalSection />
   } else if (open429) {
     return <Erro429 />
   }
