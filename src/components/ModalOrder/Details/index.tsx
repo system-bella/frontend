@@ -23,6 +23,7 @@ interface IData {
   discount: string,
   total_price: string;
   payment: string;
+  number_payments: number;
 }
 
 interface Customer {
@@ -138,6 +139,12 @@ export default function ModalDetails({
                       </p>
                     )
                   })}</S.InforSpan>
+                </div>
+                <div>
+                  <S.TituloH5>Quantidade de Parcelas</S.TituloH5>
+                  <S.InforSpan>
+                    {item.number_payments || 'Sem parcelas'}
+                  </S.InforSpan>
                 </div>
               </S.InfoDescription>
             </S.DivideInfo>

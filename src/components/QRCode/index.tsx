@@ -5,13 +5,11 @@ import * as S from './styles';
 
 interface IQRCode {
   name: string;
-  category: string | undefined;
   price: string | undefined;
 }
 
 export default function QRCode(
   { name,
-    category,
     price }: IQRCode) {
   const targetRef = useRef<HTMLDivElement>(null);
 
@@ -37,16 +35,11 @@ export default function QRCode(
     <div>
       <S.Container>
         <S.PrintQrcode ref={targetRef}>
-          <Qrcode value={name} size={130} />
+          <Qrcode value={name} size={100} />
           <S.Label>
             <img src={require('../../assets/logo.png')} />
             <p>
               <strong>PRODUTO:</strong> {name}
-            </p>
-            <p>
-              <strong>CATEGORIA:</strong> {category}
-            </p>
-            <p>
             </p>
             <h1>R$ {price}</h1>
           </S.Label>

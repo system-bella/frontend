@@ -76,7 +76,7 @@ export const Info = styled.div`
   }
   
   div {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
   }
   `;
 
@@ -86,7 +86,7 @@ export const InfoDescription = styled.div`
   
   div {
     width: 60%;
-    margin-bottom: 35px;
+    margin-bottom: 15px;
   }
 `;
 

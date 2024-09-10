@@ -2,30 +2,23 @@ import { useState } from 'react';
 import { GoAlert } from "react-icons/go";
 import { useHistory } from 'react-router-dom';
 import * as S from './style'
-interface ModalDetailsProps {
-  isOpen: boolean;
-}
 
-export default function ModalSection({
-    isOpen,
-}: ModalDetailsProps
-) { 
+export default function ModalSection() {
     const [loading, setLoading] = useState(false);
     const history = useHistory();
     const handleRightButtonClick = async () => {
         setLoading(true)
-        try {    
+        try {
             history.push('/');
         } catch (e) {
             alert(e);
-        } finally{
+        } finally {
             setLoading(false)
         }
     };
 
-    if (isOpen) {
-        return (
-            <S.Container>
+    return (
+        <S.Container>
             <S.Content>
                 <S.InputDuple>
                     <GoAlert />
@@ -36,11 +29,10 @@ export default function ModalSection({
                 </S.InputDuple>
                 <S.Footer>
                     <S.ButtonDelete type="button" onClick={handleRightButtonClick} disabled={loading}>
-                    {loading ? 'Login...' : 'Login'}
+                        {loading ? 'Login...' : 'Login'}
                     </S.ButtonDelete>
                 </S.Footer>
             </S.Content>
         </S.Container>
-        )
-    }
+    )
 }

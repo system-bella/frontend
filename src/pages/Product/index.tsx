@@ -11,7 +11,7 @@ import ModalDetails from '../../components/ModalProduct/Details';
 import ModalEdit from '../../components/ModalProduct/Update';
 import ModalOption from '../../components/ModalOption';
 import Loading from '../../components/Loading';
-import Sleep from '../../components/Error/SleepSytem';
+import ModalSection from '../../components/ModalSection';
 // icons
 import { CiCirclePlus, CiTrash, CiEdit } from 'react-icons/ci';
 import { PiClipboardTextThin } from 'react-icons/pi';
@@ -81,7 +81,6 @@ export default function Product() {
           url = `product?search=${searchTerm}`;
         }
         const response = await axios_product.get(`v1/${url}`);
-        console.log(response.data.data);
         setItems(response.data.data);
         setTotalPages(response.data.last_page);
         setPerPage(response.data.per_page);
@@ -110,7 +109,7 @@ export default function Product() {
   };
   
   if(openSleep){
-    return <Sleep />
+    return <ModalSection />
   }
 
   return (

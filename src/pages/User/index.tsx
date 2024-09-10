@@ -8,8 +8,8 @@ import CreateUser from '../../components/ModalUser/Create';
 import { useUser } from '../../api/contextApi/userContext';
 import Erro403 from '../../components/Error/Erro403';
 import Loading from '../../components/Loading';
-import Sleep from '../../components/Error/SleepSytem';
 import axios from 'axios';
+import ModalSection from '../../components/ModalSection';
 
 interface User {
     id: 1,
@@ -75,7 +75,7 @@ export default function User() {
         );
     }
     else if (openSleep) {
-        return <Sleep />
+        return <ModalSection />
     }
 
     else {
